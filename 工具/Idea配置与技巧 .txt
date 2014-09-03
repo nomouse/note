@@ -1,0 +1,59 @@
+常用快捷键：
+1、弹出快捷代码生成菜单  Alt+Insert
+2、全局搜索              Ctrl+h
+
+
+
+
+
+一、idea中查看Android源码
+在用户目录下的.AndroidStudioBeta目录下搜索jdk.table.xml这个文件，然后找到下面的一段（根据android版本自行匹配），在sourcePath的root节点下添加<root type="simple" url="file://$APPLICATION_HOME_DIR$/sdk/sources/android-19" />这一段，其中$APPLICATION_HOME_DIR$代表本机android sdk的安装位置，然后重启。
+
+<jdk version="2">
+      <name value="Android API 19 Platform" />
+      <type value="Android SDK" />
+      <version value="java version "1.7.0_45"" />
+      <homePath value="D:\adt-bundle\android-studio\sdk" />
+      <roots>
+        <annotationsPath>
+          <root type="composite">
+            <root type="simple" url="jar://$APPLICATION_HOME_DIR$/plugins/android/lib/androidAnnotations.jar!/" />
+          </root>
+        </annotationsPath>
+        <classPath>
+          <root type="composite">
+            <root type="simple" url="jar://$APPLICATION_HOME_DIR$/sdk/platforms/android-19/android.jar!/" />
+            <root type="simple" url="file://$APPLICATION_HOME_DIR$/sdk/platforms/android-19/data/res" />
+          </root>
+        </classPath>
+        <javadocPath>
+          <root type="composite">
+            <root type="simple" url="http://developer.android.com/reference/" />
+          </root>
+        </javadocPath>
+        <sourcePath>
+          <root type="composite">
+            <root type="simple" url="file://$APPLICATION_HOME_DIR$/sdk/sources/android-19" />
+          </root>
+        </sourcePath>
+      </roots>
+      <additional jdk="JDK" sdk="android-19" />
+</jdk>
+
+二、idea中查看Android Private Libraries下第三方包的源码
+比如想看android support包的源码，需要在Project下面的.idea/libraries文件夹内，找到相关的配置，比如support_v4_20_0_0.xml这个文件，在SOURCES
+节点下，添加<root url="file://$APPLICATION_HOME_DIR$/sdk/extras/android/support/v4/src" />
+
+<component name="libraryTable">
+  <library name="support-v4-20.0.0">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/LXBaseFrame/build/intermediates/exploded-aar/com.android.support/support-v4/20.0.0/classes.jar!/" />
+      <root url="jar://$PROJECT_DIR$/LXBaseFrame/build/intermediates/exploded-aar/com.android.support/support-v4/20.0.0/libs/internal_impl-20.0.0.jar!/" />
+      <root url="file://$PROJECT_DIR$/LXBaseFrame/build/intermediates/exploded-aar/com.android.support/support-v4/20.0.0/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <<root url="file://$APPLICATION_HOME_DIR$/sdk/extras/android/support/v4/src" />
+    </SOURCES>
+  </library>
+</component>
