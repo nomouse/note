@@ -67,16 +67,17 @@ sed 按行检索文本文件并且进行文本修改
 	常用命令：
      a∶新增， a 的后面可以接字串，而这些字串会在新的一行出现(目前的下一行)～
      c∶取代， c 的后面可以接字串，这些字串可以取代 n1,n2 之间的行！
-     d∶删除，因为是删除啊，所以 d 后面通常不接任何咚咚；
      i∶插入， i 的后面可以接字串，而这些字串会在新的一行出现(目前的上一行)；
      p∶列印，亦即将某个选择的资料印出。通常 p 会与参数 sed -n 一起运作～
+     d∶删除，因为是删除啊，所以 d 后面通常不接任何咚咚；
      s∶取代，可以直接进行取代的工作哩！通常这个 s 的动作可以搭配正规表示法！例如 1,20s/old/new/g 就是啦！
 	 
 	 例子：
 	 sed -i '1d' test.cnf 修改test.cnf文件，删除第一行
-	 sed -i '/dfdf/i\add' 修改test.cnf文件，搜索所有包含'dfdf'的行，在其上面一行插入'add'这一行
-	 sed -i '/^dfdf$/d'   修改test.cnf文件，搜索所有为'dfdf'的行
-	 sed -i 's:dfdf:#dfdf:g'   修改test.cnf文件，将所有为'dfdf'的文本替换为'#dfdf'
+	 sed -i '/dfdf/i\add' test.cnf 修改test.cnf文件，搜索所有包含'dfdf'的行，在其上面一行插入'add'这一行
+	 sed -i '/^dfdf$d' test.cnf   修改test.cnf文件，搜索所有为'dfdf'的行
+	 sed -i 's:dfdf:#dfdf:g' test.cnf   修改test.cnf文件，将所有为'dfdf'的文本替换为'#dfdf'
+
 	 echo -e ${a}adbc\\n[adbc] | sed "/^\[adbc\]$/i\\$a" 输出
-	
+	 sed -i "/^export JAVA_HOME=/c\export JAVA_HOME=$java_home" /etc/profile 将/etc/profile文件中以"export JAVA_HOME="开头的行替换为"export JAVA_HOME=$java_home"
 	

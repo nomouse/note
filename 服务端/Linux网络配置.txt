@@ -15,16 +15,16 @@
 　　nameserver 202.96.134.133
 　　nameserver 202.96.128.68
 　　nameserver 202.96.128.166
-
 查看DNS
 　　less /etc/resolv.conf
-
 激活设备
 ifconfig eth0 up
-
 禁用设备
 ifconfig eth0 down
 
+查看防火墙设置
+vi /etc/sysconfig/iptables
+开放防火墙端口
 
 
 (二)配置网络，单网卡单ip

@@ -1,0 +1,131 @@
+﻿<html>
+<head>
+	<title>笔记</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+<body>
+<div class="postbody"><br />&nbsp; &nbsp; 我发现很多人没办法高效地解决问题的关键原因是不熟悉工具，不熟悉工具也还罢了，甚至还不知道怎么去找工具，这个问题就大条了。我想列下我能想到的一个Java程序员会用到的常用工具。<br />
+<br />
+一、编码工具<br />
+<br />
+1.IDE：<a href="http://www.eclipse.org/">Eclipse</a>或者<a href="http://www.jetbrains.com/idea/">IDEA</a>，熟悉尽可能多的快捷键，《<a href="https://www.google.com/#hl=zh-CN&amp;site=&amp;source=hp&amp;q=Eclipse+%E5%B8%B8%E7%94%A8%E5%BF%AB%E6%8D%B7%E9%94%AE&amp;oq=Eclipse+%E5%B8%B8%E7%94%A8%E5%BF%AB%E6%8D%B7%E9%94%AE&amp;aq=f&amp;aqi=g-l1&amp;aql=&amp;gs_l=hp.3..0i13.449l7739l0l7948l53l49l9l4l4l9l278l4511l14j15j7l36l0.&amp;bav=on.2,or.r_gc.r_pw.r_cp.,cf.osb&amp;fp=eef1a08d3fa904e4&amp;biw=1594&amp;bih=858">Eclipse常见快捷键列表</a>》<br />
+2.插件：&nbsp;<br />
+(1) <a href="http://findbugs.sourceforge.net/">Findbugs</a>，在release之前进行一次静态代码检查是必须的<br />
+(2) <a href="http://www.atlassian.com/software/clover/overview">Clover</a>，关心你的单元测试覆盖率<br />
+(3)&nbsp;<a href="http://checkstyle.sourceforge.net/">Checkstyle</a>&nbsp;代码风格检查<br />
+<br />
+3.构建和部署工具:<a href="http://ant.apache.org/">ant</a>或者<a href="http://maven.apache.org/">maven</a>，现在主流都是maven了吧，<a href="http://www.sonatype.org/nexus/">使用nexus搭建maven私服</a>，再加上持续集成<a href="http://jenkins-ci.org/">jenkins</a>。代码质量不用愁。<br />
+<br />
+4.版本管理工具： <a href="http://subversion.tigris.org/">svn</a>或者<a href="http://git-scm.com/">git</a><br />
+<br />
+5.<a href="http://www.linuxsky.org/doc/admin/200712/213.html">diff和patch</a><br />
+<br />
+6.设置你的eclipse或者IDEA，如formatter,<a href="http://mestreota.blogspot.jp/2007/11/save-action-on-eclipse.html">save actions</a>以及code template等。代码风格，直接用google的也可以啊。《<a href="http://code.google.com/p/google-styleguide/">Google style guide</a>》<br />
+<br />
+7.掌握一个文本编辑器，Emacs或者VIM，熟悉常用快捷键。这在你需要在线编辑代码，或者编写其他语言代码时候特别有用。《<a href="http://linuxtoy.org/archives/why-emacs-vim-good.html">神器圣战</a>》<br />
+<br />
+二、JDK相关<br />
+<br />
+1.jstat : 观察GC情况，如：<br />
+<br />
+<div style="font-size: 13px; border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; border-top-style: solid; border-right-style: solid; border-bottom-style: solid; border-left-style: solid; border-top-color: #cccccc; border-right-color: #cccccc; border-bottom-color: #cccccc; border-left-color: #cccccc; border-image: initial; padding-right: 5px; padding-bottom: 4px; padding-left: 4px; padding-top: 4px; width: 98%; word-break: break-all; background-color: #eeeeee; "><!--<br />
+<br />
+Code highlighting produced by Actipro CodeHighlighter (freeware)<br />
+http://www.CodeHighlighter.com/<br />
+<br />
+-->jstat&nbsp;-gcutil&nbsp;pid&nbsp;2000</div>
+<br />
+2.jmap，查看heap情况，如查看存活对象列表：<br />
+<div style="font-size: 13px; border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; border-top-style: solid; border-right-style: solid; border-bottom-style: solid; border-left-style: solid; border-top-color: #cccccc; border-right-color: #cccccc; border-bottom-color: #cccccc; border-left-color: #cccccc; border-image: initial; padding-right: 5px; padding-bottom: 4px; padding-left: 4px; padding-top: 4px; width: 98%; word-break: break-all; background-color: #eeeeee; "><!--<br />
+<br />
+Code highlighting produced by Actipro CodeHighlighter (freeware)<br />
+http://www.CodeHighlighter.com/<br />
+<br />
+-->jmap&nbsp;-histo:live&nbsp;pid&nbsp;|grep&nbsp;com.company&nbsp;|less&nbsp;</div>
+<br />
+或者dump内存用来分析：<br />
+<br />
+<div style="background-color:#eeeeee;font-size:13px;border:1px solid #CCCCCC;padding-right: 5px;padding-bottom: 4px;padding-left: 4px;padding-top: 4px;width: 98%;word-break:break-all"><!--<br />
+<br />
+Code highlighting produced by Actipro CodeHighlighter (freeware)<br />
+http://www.CodeHighlighter.com/<br />
+<br />
+-->jmap&nbsp;-dump:file=test.bin&nbsp;pid</div>
+<br />
+3.分析dump的堆文件，可以用jhat:<br />
+<br />
+<div style="background-color:#eeeeee;font-size:13px;border:1px solid #CCCCCC;padding-right: 5px;padding-bottom: 4px;padding-left: 4px;padding-top: 4px;width: 98%;word-break:break-all"><!--<br />
+<br />
+Code highlighting produced by Actipro CodeHighlighter (freeware)<br />
+http://www.CodeHighlighter.com/<br />
+<br />
+-->jhat&nbsp;test.bin</div>
+<br />
+&nbsp; 分析完成后可以用浏览器查看堆的情况。这个工具的分析结果还比较原始，你还可以用<a href="http://www.eclipse.org/mat/">Eclipse MAT</a>插件进行图形化分析，或者IBM的<a href="https://www.ibm.com/developerworks/community/groups/service/html/communityview?communityUuid=4544bafe-c7a2-455f-9d43-eb866ea60091">Heap Analyzer</a>.<br />
+<br />
+4.jvisualvm和jconsole： JVM自带的性能分析和监控工具，怎么用？<a href="http://docs.oracle.com/javase/6/docs/technotes/guides/visualvm/index.html">请自己看文档。</a><br />
+<br />
+5.jstack：分析线程堆栈，如<br />
+<br />
+<div style="font-size: 13px; border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; border-top-style: solid; border-right-style: solid; border-bottom-style: solid; border-left-style: solid; border-top-color: #cccccc; border-right-color: #cccccc; border-bottom-color: #cccccc; border-left-color: #cccccc; border-image: initial; padding-right: 5px; padding-bottom: 4px; padding-left: 4px; padding-top: 4px; width: 98%; word-break: break-all; background-color: #eeeeee; "><!--<br />
+<br />
+Code highlighting produced by Actipro CodeHighlighter (freeware)<br />
+http://www.CodeHighlighter.com/<br />
+<br />
+-->jstack&nbsp;pid&nbsp;&gt;&nbsp;thread_dump</div>
+<br />
+&nbsp; &nbsp; 查看CPU最高的线程在干什么的方法结合top和jstack：<a href="http://www.iteye.com/topic/1114219">http://www.iteye.com/topic/1114219</a><br />
+<br />
+6.更多JVM工具，参见官方文档：<a href="http://docs.oracle.com/javase/6/docs/technotes/tools/">http://docs.oracle.com/javase/6/docs/technotes/tools/<br />
+<br />
+</a>7.学习使用btrace分析java运行时问题。《<a href="http://rdc.taobao.com/team/jm/archives/509">Btrace使用简介</a>》<br />
+<br />
+8.GC日志分析工具：<a href="http://www.tagtraum.com/gcviewer.html">GC viewer</a>、<a href="http://code.google.com/p/gc-console/">GC-console</a>或者<a href="http://stackoverflow.com/questions/1839599/analyze-gc-logs-for-sun-hotspots-jvm-6">自己挑吧。</a><br />
+<br />
+9.性能分析工具，除了自带的jvisualvm外，还可以用商业的<a href="http://www.ej-technologies.com/products/jprofiler/overview.html">jprofiler</a>。<br />
+<br />
+<a href="http://kenwublog.com/docs/java6-jvm-options-chinese-edition.htm">10.JVM参数大全<br />
+<br />
+</a>11.《<a href="http://hllvm.group.iteye.com/group/topic/27945">JVM调优标准参数陷阱</a>》，iteye神贴。<br />
+<br />
+三、Linux工具<br />
+<br />
+1.<a href="http://www.commandlinefu.com/commands/browse/sort-by-votes">熟悉常用的shell命令，</a><br />
+<div style="display: inline-block; "><br />
+2.<a href="http://paulkeck.com/ssh/">设置ssh免登陆<br />
+</a></div>
+<br />
+<br />
+3.使用<a href="http://htop.sourceforge.net/">htop</a>替换top。<br />
+<br />
+4.熟悉下<a href="http://www.ibm.com/developerworks/aix/library/au-unix-strace.html">strace,gdb</a>甚至<a href="http://sourceware.org/systemtap/" title="systemtap"></a><a href="http://sourceware.org/systemtap/"></a><a href="http://sourceware.org/systemtap/" title="systemtap">systemta</a>p来分析问题。<br />
+<br />
+<a href="http://techgurulive.com/2009/01/29/performance-tuning-tools-ps-top-sar-iostat-and-vmstat/">5.熟悉vmstat,iostat,sar等性能统计工具。</a><br />
+<br />
+5.自动化部署脚本，<a href="http://docs.fabfile.org/en/1.4.1/index.html">py-fabric</a>或者自荐下我的<a href="https://github.com/killme2008/clojure-control">clojure-control</a>。<br />
+<br />
+四、其他<br />
+<br />
+1.掌握一门脚本语言，<a href="http://python.org">Python</a>或者<a href="http://www.ruby-lang.org">Ruby</a>，高效解决一些需要quick and dirty的任务：比如读写文件、导入导出数据库、网页爬虫等。注意不是python.com，咔咔。<br />
+<br />
+2.使用Linux或者Mac os系统作为你的开发环境。<br />
+<br />
+3.升级你的&#8220;硬件工具&#8221;，双屏大屏显示器、SSD、8G内存甚至更多。<br /><br />4.你懂的：<a href="https://code.google.com/p/goagent/">https://code.google.com/p/goagent/</a><br />
+<br />
+五、如何查找工具？<br />
+<br />
+1.搜索引擎，google或者baidu，《<a href="http://www.williamlong.info/archives/728.html">搜索技巧</a>》<br />
+<br />
+2.万能的stack overflow：<a href="http://stackoverflow.com/">http://stackoverflow.com/<br />
+</a>
+<br />
+3.虚心问牛人。<br /><br />六、最重要的是&#8943;&#8943;<br /><br />一颗永不停止学习的心。</div>
+	</div>
+
+</body>
+</html>
+
+
+
+
+
