@@ -1,0 +1,89 @@
+Android系统架构
+
+
+Android四大组件
+
+Activity概述
+字面意思为活动，可以从两方面来理解：从用户的角度看，Activity为用户提供了一个与之交互的画面，用来完成某一项任务。从软件系统的角度来看，每一个Activity都是一个相对独立的组件，它通常包含多个视图控件，并且通过这些控件与用户进行交互，来驱动整个程序的运行。
+ 
+
+
+Service概述
+字面意思为服务，可以从两方面来理解：从用户的角度看，Service为用户提供一个需要长时间运行的，并且大多数时间不需要和用户直接交互的任务，从软件系统的角度来看，Service为其他程序提供功能性支持。
+
+Broadcast概述
+
+
+
+ContentProvider概述
+
+
+Activity生命周期
+常用
+onCreate
+onStart
+onPause
+onResume
+onStop
+onDestory
+特殊
+onActivityResult
+onConfigurationChanged
+onAttachWindow
+
+
+Activity与Task
+Task可以看作一个Activity栈，在默认情况下，当前Activity开始时，新的Activity推入栈顶并获取焦点，上一个Activity仍然在栈中，当用户按下返回键时，当前Activity弹出栈并销毁，上一个Activity恢复。
+
+Task管理
+activity manifest属性：
+
+alwaysRetainTaskState:
+如果Task 中根Activity 的此属性设为 "true" ，则默认的清理方式不会进行.即使过了很长一段时间,Task 中所有的Activity也还会保留在栈中.
+
+clearTaskOnLaunch:
+如果Task 中根Activity 的此属性设为 "true"，则只要用户离开并再次返回该 Task,栈就会被清理至根Activity。也就是说，正好与alwaysRetainTaskState相反.用户每次返回Task时看到的都是初始状态,即使只是离开一会儿.
+
+finishOnTaskLaunch
+此属性类似于clearTaskOnLaunch,只是它只对一个 Activity有效,不是整个Task.这能让任何一个Activity 消失,包括 根Activity.如果Activity 的此属性设为 "true"，则只会保留Task中当前session所涉及的内容.如果用户离开后再返回Task,它就不存在.
+
+intent flag常量:
+FLAG_ACTIVITY_NEW_TASK
+在新的Task 中启动Activity.如果要启动的Activity 已经运行于某个Task 中,则那个Task 将调入前台中,最后保存的状态也将会恢复,Activity 将在onNewIntent()中接收到这个新 intent.
+这个模式与前一章节所描述述的"singleTask"launchMode模式相同.
+
+FLAG_ACTIVITY_SINGLE_TOP
+如果要启动的Activity 就是当前Activity（位于Back Stack 顶）,则已存在的实例将接收到一个onNewIntent()调用,而不是创建一个Activity 的新实例.
+这个模式与前一章节所述的 "singleTop"launchMode模式相同.
+
+FLAG_ACTIVITY_CLEAR_TOP
+如果要启动的Activity 已经在当前Task中运行,则不再启动一个新的实例，且所有在其上面的Activity 将被销毁，然后通过onNewIntent()传入 intent 并恢复Activity（不在栈顶）的运行.
+此种模式在launchMode中没有对应的属性值.
+
+
+Activity四种launchMode
+standard(默认) 
+	"每次访问实例化新的Activity",系统在启动Activity 的Task 中创建一个新的Activity 实例,并且把 intent 传送路径指向它.该Activity 可以被实例化多次,各个实例可以属于不同的Task，一个Task 中也可以存在多个实例
+
+singleTop 
+	"每次访问,看栈顶元素目标对象,是则返回,不再实例化,否则,还是实例化新的Activity." 如果Activity的一个实例已经存在于当前Task的栈顶，该系统就会使用onNewIntent()方法通过intent 传递给已有实例，而不是创建一个新的Activity 实例.Activity 可以被实例化多次,各个实例可以属于不同的Task,一个Task中可以存在多个实例(但只有Back Stack的Activity 实例不是该Activity 的）
+	应用：
+
+singleTask 
+	"保证activity实例化一次,单任务,由此所开启的活动和本活动位于同一task中" 系统将创建一个新的Task，并把Activity 实例作为根放入其中.但是，如果Activity 已经在其它Task 中存在实例，则系统会通过调用其实例的onNewIntent() 方法把 intent传给已有实例,而不是再创建一个新实例. 此 activity 同一时刻只能存在一个实例
+	应用：
+
+singleInstance 
+	"保证Activity实例化一次,单实例,由此所开启的Activity在新的task中,和本活动id不一致." 除了系统不会把其它Activity 放入当前实例所在的 Task 之外，其它均与"singleTask"相同,Activity 总是它所在Task 的唯一成员；它所启动的任何Activity 都会放入其它Task 中
+
+
+Home操作
+相当于intent中放入FLAG_ACTIVITY_NEW_TASK|FLAG_ACTIVITY_RESET_IF_NEEDED
+
+
+
+
+
+
+
+

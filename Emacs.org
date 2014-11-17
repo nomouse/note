@@ -1,0 +1,18 @@
+* Introduction
+* Install and Config
+* Shortcut keys
+** Basic
+*** C-x C-f Find a file(Open or New)
+*** C-x C-s Save current file 
+*** C-x C-c Quit 
+*** C-x C-w Save as
+** Important
+*** C-g     Quit current command
+*** C-x u   Undo last command
+** Help
+*** C-h f   Show function 
+*** C-h v   Show variables
+*** C-h k   Show shortcut keys
+** Search
+*** C-s     Search below
+*** C-r     Search above

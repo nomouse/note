@@ -1,0 +1,13 @@
+一、JVM常见参数
+-server
+-Xms100M
+-Xmx200M
+-XX:PermSize=32m
+-XX:MaxPermSize=256m
+-XX:MaxDirectMemorySize=128m
+
+二、java -D配置环境变量
+-Dfile.encoding=UTF-8
+-Dsun.jnu.encoding=UTF-8
+-Djdbc.drivers=com.mysql.jdbc.Driver:org.postgresql.Driver:org.apache.derby.jdbc.EmbeddedDriver
+-Djava.ext.dirs=E:\workspace_indigo\tigase-server\jars

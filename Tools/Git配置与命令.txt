@@ -1,0 +1,26 @@
+一、Git的特点
+Git是一个分布式版本控制系统，而CVS，SVN为集中式版本控制系统
+Git相比其他系统的优点
+1、在无网络的情况下也可以正常提交、回滚
+2、分支功能更强大
+
+二、安装与配置
+1、下载http://git-scm.com/download/中的git客户端进行安装
+2、安装Git之后，首先要建立一个本地仓库，进入某个目录，比如/home/repository，执行git init，在此目录下会生成一个.git文件夹
+
+三、常用命令
+git add [文件]
+	添加文件或文件夹到版本控制
+git commit [文件]
+	提交修改
+git remote add origin git@github.com:nomouse/note.get
+	建立远程仓库
+git clone [地址]
+	将远程仓库迁入当前文件夹
+git branch -va
+	查看当前分支
+git branch [分支名]
+	切换分支
+git checkout -b [分支名]
+	当前远程分支为基础创建本地新分支
+

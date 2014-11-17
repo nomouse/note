@@ -1,0 +1,15 @@
+一、Linux下安装启动SSH服务端
+ssh服务端状态：service sshd status
+如果没有此服务，安装：yum install openssh-server
+安装完成后启动：service openssh start
+
+二、Linux下安装使用SSH客户端
+是否安装ssh：ssh -version
+没有的话安装：yum install openssh-clients
+登录远程机器：ssh root@192.168.0.38
+
+三、使用dsa实现客户端不输入密码直接登录远程服务器
+1、在客户端的~/.ssh目录下生成dsa私钥和公钥（安全起见要输入密码passphrase，默认公钥私钥文件名为id_dsa和id_dsa.pub）：ssh-keygen -t dsa
+2、将客户端的公钥复制到服务器的~/.ssh目录下，执行命令：cat id_dsa.pub > authorized_key2
+3、在客户端执行：ssh-agent sh -c 'ssh-add < /dev/null && bash'
+4、
