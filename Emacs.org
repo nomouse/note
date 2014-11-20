@@ -16,3 +16,6 @@
 ** Search
 *** C-s     Search below
 *** C-r     Search above
+** Advanced
+*** M-x linum-mode  Show or Hide line numbers 
+*** C-x k           Close buffer

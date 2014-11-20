@@ -1,4 +1,4 @@
-Ò»¡¢¹â±êÒÆ¶¯
+* ¹â±êÒÆ¶¯
 h  		 	¹â±êÏò×óÒÆ¶¯Ò»¸ö×Ö·û
 j  		 	¹â±êÏòÏÂÒÆ¶¯Ò»¸ö×Ö·û
 k  		 	¹â±êÏòÉÏÒÆ¶¯Ò»¸ö×Ö·û
@@ -19,7 +19,35 @@ G        	¹â±êÒÆ¶¯µ½ÎÄ¼þµÄ×îºóÒ»ÐÐ?
 [N]G       	ÒÆ¶¯µ½Õâ¸öÎÄ¼þµÄµÚnÐÐ¡£ÀýÈç20G£¬Ôò»áÒÆ¶¯µ½Õâ¸öÎÄ¼þµÄµÚ20ÐÐ£¨¿ÉÅäºÏ:set?nu£©
 [N]<Enter> 	¹â±êÏòÏÂÒÆ¶¯nÐÐ
 
-¶þ¡¢É¾³ý¡¢¸´ÖÆ¡¢Õ³Ìû
+h £º¹â±ê×óÒÆÒ»¸ö×Ö·û
+l £º¹â±êÓÒÒÆÒ»¸ö×Ö·û
+space£º¹â±êÓÒÒÆÒ»¸ö×Ö·û
+Backspace£º¹â±ê×óÒÆÒ»¸ö×Ö·û
+k»òCtrl+p£º¹â±êÉÏÒÆÒ»ÐÐ
+j»òCtrl+n £º¹â±êÏÂÒÆÒ»ÐÐ
+Enter £º¹â±êÏÂÒÆÒ»ÐÐ
+w»òW £º¹â±êÓÒÒÆÒ»¸ö×ÖÖÁ×ÖÊ×
+b»òB £º¹â±ê×óÒÆÒ»¸ö×ÖÖÁ×ÖÊ×
+e»òE £º¹â±êÓÒÒÆÒ»¸ö×ÖÖÁ×ÖÎ²
+) £º¹â±êÒÆÖÁ¾äÎ²
+( £º¹â±êÒÆÖÁ¾äÊ×
+}£º¹â±êÒÆÖÁ¶ÎÂä¿ªÍ·
+{£º¹â±êÒÆÖÁ¶ÎÂä½áÎ²
+nG£º¹â±êÒÆÖÁµÚnÐÐÊ×
+n+£º¹â±êÏÂÒÆnÐÐ
+n-£º¹â±êÉÏÒÆnÐÐ
+n$£º¹â±êÒÆÖÁµÚnÐÐÎ²
+H £º¹â±êÒÆÖÁÆÁÄ»¶¥ÐÐ
+M £º¹â±êÒÆÖÁÆÁÄ»ÖÐ¼äÐÐ
+L £º¹â±êÒÆÖÁÆÁÄ»×îºóÐÐ
+0£º£¨×¢ÒâÊÇÊý×ÖÁã£©¹â±êÒÆÖÁµ±Ç°ÐÐÊ×
+$£º¹â±êÒÆÖÁµ±Ç°ÐÐÎ²
+n+        //ÏòÏÂÌønÐÐ
+n-         //ÏòÉÏÌønÐÐ
+nG        //Ìøµ½ÐÐºÅÎªnµÄÐÐ
+G           //ÌøÖÁÎÄ¼þµÄµ×²¿
+
+* É¾³ý¡¢¸´ÖÆ¡¢Õ³Ìû
 x       ÏòºóÉ¾³ýÒ»¸ö×Ö·û 
 X       ÏòÇ°É¾³ýÒ»¸ö×Ö·û
 [N]x 	ÏòºóÉ¾³ýn¸ö×Ö·û
@@ -43,7 +71,7 @@ vimÓÐ12¸öÕ³Ìù°å£¬·Ö±ðÊÇ0¡¢1¡¢2¡¢...¡¢9¡¢a¡¢¡°¡¢£«£»ÓÃ:regÃüÁî¿ÉÒÔ²é¿´¸÷¸öÕ³Ìù°åÀ
 
 
 
-Èý¡¢²éÕÒÌæ»»
+* ²éÕÒÌæ»»
 
 /word	               ÔÚ¹â±êÖ®ºó²éÕÒÒ»¸öÃûÎªwordµÄ×Ö·û´®£¨³£ÓÃ£© 
 word                   ÔÚ¹â±êÖ®Ç°²éÕÒÒ»¸öÃûÎªwordµÄ×Ö·û´®  
@@ -53,7 +81,7 @@ word                   ÔÚ¹â±êÖ®Ç°²éÕÒÒ»¸öÃûÎªwordµÄ×Ö·û´®
 :%s/word1/word2/g      È«¾ÖÌæ»»word1Îªword2,ÇÒ²»Çø·Ö´óÐ¡Ð´
 
 
-ËÄ¡¢±à¼­Ä£Ê½
+* ±à¼­Ä£Ê½
 i,I?			²åÈë£ºÔÚµ±Ç°¹â±êËùÔÚ´¦²åÈëÊäÈëµÄÎÄ×Ö£¬ÒÑ´æÔÚ?
 a,A?			Ìí¼Ó£ºÓÉµ±Ç°¹â±êËùÔÚ´¦µÄÏÂÒ»¸ö×Ö·û¿ªÊ¼ÊäÈë£¬ÒÑ´æÔÚµÄ×Ö·û»áÏòºóÍË£¨³£ÓÃ£©?
 o,O?			²åÈëÐÂµÄÒ»ÐÐ£º´Ó¹â±êËùÔÚÐÐµÄÏÂÒ»ÐÐÐÐÊ×¿ªÊ¼ÊäÈë×Ö·û£¨³£ÓÃ£©?
