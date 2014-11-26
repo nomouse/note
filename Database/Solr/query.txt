@@ -1,0 +1,4 @@
+http://192.168.0.38:8080/solr/query?defType=edismax&q.alt=*:*&fl=id,updateTime,distance:geodist(),score&fq={!geofilt}&sfield=pt&pt=31.281609,120.73913&d=100&sort=score asc&start=0&rows=200&bf=recip(ord(updateTime),1,1000,10)^1 geodist()^1
+
+
+http://192.168.0.38:8080/solr/query?defType=edismax&q.alt=*:*&fl=id,updateTime,distance:geodist(),score&fq={!geofilt}&sfield=pt&pt=31.281609,120.73913&d=100&sort=score asc&start=0&rows=200&bf=recip(ord(updateTime),1,1000,10)

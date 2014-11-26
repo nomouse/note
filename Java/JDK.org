@@ -1,0 +1,97 @@
+* 常用
+** 环境变量
+*** JAVA_HOME
+*** JAVA_TOOL_OPTIONS 
+      在所有JDK命令前添加一些系统变量，比如:JAVA_TOOL_OPTIONS=-Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=US
+*** CLASS_PATH
+*** -D系统变量
+    file.encoding=UTF-8
+    sun.jnu.encoding=UTF-8
+    jdbc.drivers=com.mysql.jdbc.Driver:org.postgresql.Driver:org.apache.derby.jdbc.EmbeddedDriver
+    java.ext.dirs=E:\workspace_indigo\tigase-server\jars
+    java.home=D:/Java
+    sun.boot.library.path=C:\Program Files\Java\jre1.5.0_08\bin 
+    java.vm.version=1.5.0_08-b03 
+    java.vm.vendor=Sun Microsystems Inc. 
+    java.vendor.url=http://java.sun.com/ 
+    path.separator=; 
+    java.vm.name=Java HotSpot(TM) Client VM 
+    file.encoding.pkg=sun.io 
+    user.country=CN 
+    sun.os.patch.level=Service Pack 2 
+    java.vm.specification.name=Java Virtual Machine Specification 
+    user.dir=D:\wapSearchLogService 
+    java.runtime.version=1.5.0_08-b03 
+    java.awt.graphicsenv=sun.awt.Win32GraphicsEnvironment 
+    java.endorsed.dirs=C:\Program Files\Java\jre1.5.0_08\lib... 
+    os.arch=x86 
+    java.io.tmpdir=C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\ 
+    line.separator= 
+    java.vm.specification.vendor=Sun Microsystems Inc. 
+    user.variant= 
+    os.name=Windows XP 
+    sun.jnu.encoding=GBK 
+    java.library.path=C:\Program Files\Java\jre1.5.0_08\bin... 
+    java.specification.name=Java Platform API Specification 
+    java.class.version=49.0 
+    sun.management.compiler=HotSpot Client Compiler 
+    os.version=5.1 
+    user.home=C:\Documents and Settings\Administrator 
+    user.timezone=Asia/Shanghai 
+    java.awt.printerjob=sun.awt.windows.WPrinterJob 
+    file.encoding=GBK 
+    java.specification.version=1.5 
+    user.name=Administrator 
+    java.class.path=D:\wapSearchLogService\bin;D:\wapSear... 
+    java.vm.specification.version=1.0 
+    sun.arch.data.model=32 
+    java.home=C:\Program Files\Java\jre1.5.0_08 
+    java.specification.vendor=Sun Microsystems Inc. 
+    user.language=zh 
+    awt.toolkit=sun.awt.windows.WToolkit 
+    java.vm.info=mixed mode, sharing 
+    java.version=1.5.0_08 
+    java.ext.dirs=C:\Program Files\Java\jre1.5.0_08\lib... 
+    sun.boot.class.path=C:\Program Files\Java\jre1.5.0_08\lib... 
+    java.vendor=Sun Microsystems Inc. 
+    file.separator=\ 
+    java.vendor.url.bug=http://java.sun.com/cgi-bin/bugreport... 
+    sun.cpu.endian=little 
+    sun.io.unicode.encoding=UnicodeLittle 
+    sun.desktop=windows 
+    sun.cpu.isalist=amd64
+    
+** java
+*** -server
+    -server
+    -Xms100M
+    -Xmx200M
+    -XX:PermSize=32m
+    -XX:MaxPermSize=256m
+    -XX:MaxDirectMemorySize=128m
+*** -jar
+** javac 
+* 高级
+** jstat
+   观察GC情况，如：
+   jstat -gcutil pid 2000
+   
+** jmap
+   查看heap情况，如查看存活对象列表：
+   jmap -histo:live pid |grep com.company |less 
+   
+   或者dump内存用来分析：
+   
+   jmap -dump:file=test.bin pid
+   
+** jhat
+   分析dump的堆文件，可以用jhat:
+   jhat test.bin
+   
+   分析完成后可以用浏览器查看堆的情况。这个工具的分析结果还比较原始，你还可以用Eclipse MAT插件进行图形化分析，或者IBM的Heap Analyzer.
+   
+** jvisualvm和jconsole
+   JVM自带的性能分析和监控工具，怎么用？请自己看文档。
+** jstack
+   分析线程堆栈，当cpu被java程序消耗的比较多的时候，可以使用jstack工具来分析jvm进程
+   jstack -F [进程pid] | grep -A 100 [线程pid]

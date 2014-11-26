@@ -1,5 +1,10 @@
-* ¸ÅÊö
-* °²×°ÅäÖÃ=dfsdfds 
-* dfdfsdfds
-  
-
+* å…¨æ–‡
+** å®‰è£…
+*** ç¯å¢ƒå˜é‡
+    GRADLE_HOME
+    GRADLE_USER_HOME
+*** å¸¸ç”¨å‘½ä»¤
+    1. gradle
+    2. gradle build
+    3. gradle assemble
+    4. gradle

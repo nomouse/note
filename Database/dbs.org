@@ -1,0 +1,18 @@
+* Search Expression
+|       | mysql                                         | mongodb                                    | solr                 | redis |
+|-------+-----------------------------------------------+--------------------------------------------+----------------------+-------|
+| find  | select * from users                           | db.users.find()                            | q=*:*&fl=*           |       |
+|       | select a,b from users                         | db.users.find({},{a:true,b:true})          | q=*:*&fl=a,b         |       |
+|       | select a,b from users where id=99             | db.users.find({id:99},{a:1,b:1})           | q=id:99&fl=a,b       |       |
+|       | select * from users where age>3 and age<=9    | db.users.find({age:{$gt:3,$lte:9}})        | fq=age:[4 TO 9]      |       |
+|       | select * from users where age>3               | db.users.find({age:{$gt:3}})               | fq=age:[4 TO *]      |       |
+|-------+-----------------------------------------------+--------------------------------------------+----------------------+-------|
+| where | select * from users where id=99 and name='s1' | db.users.find({id:99,name:'s1'})           | q=id:99,name:'s1'    |       |
+|       | select * from users where id=99 or name='s1'  | db.users.find({$or:[{id:99},{name:'s1'}]}) | q=id:99 OR name:'s1' |       |
+|       | select * from users where name like '%s1%'    | db.users.find({name:'/s1/'})               | q=*:*&fq=name:'*s1*' |       |
+|       | select * from users where name like '%s1'     | db.users.find({name:'/^s1/'})              | q=*:*&fq=name:'*s1'  |       |
+|       | select * from users where name like 's_1'     | db.users.find({name:'/s?1/'})              | q=*:*&fq=name:'s?1'  |       |
+|       |                                               |                                            |                      |       |
+|-------+-----------------------------------------------+--------------------------------------------+----------------------+-------|
+| order | select * from users order by age desc         | db.users.find().sort({age:-1})             | fl=*&sort=age desc   |       |
+| page  | select * from users limits 11 to 20           | db.users.find().limit(10).skip(10)         | start=9&rows=10      |       |

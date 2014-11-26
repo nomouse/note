@@ -19,3 +19,9 @@
 ** Advanced
 *** M-x linum-mode  Show or Hide line numbers 
 *** C-x k           Close buffer
+
+
+* Org mode
+** Structure
+*** TAB     cycling
+***  
