@@ -1,0 +1,8 @@
+* 全文
+** 安装配置
+*** windows
+	bin目录下添加setenv.bat，内容如下:
+	set "CATALINA_OPTS=%CATALINA_OPTS% -Dspring.profiles.active=development"
+*** linux
+	bin目录下添加setenv.sh，内容如下:
+	CATALINA_OPTS="$CATALINA_OPTS -Dspring.profiles.active=development"	

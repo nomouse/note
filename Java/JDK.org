@@ -1,5 +1,6 @@
-* 常用
-** 环境变量
+* 全文
+** 常用
+*** 环境变量
 *** JAVA_HOME
 *** JAVA_TOOL_OPTIONS 
       在所有JDK命令前添加一些系统变量，比如:JAVA_TOOL_OPTIONS=-Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=US
@@ -61,7 +62,7 @@
     sun.desktop=windows 
     sun.cpu.isalist=amd64
     
-** java
+*** java
 *** -server
     -server
     -Xms100M
@@ -70,13 +71,13 @@
     -XX:MaxPermSize=256m
     -XX:MaxDirectMemorySize=128m
 *** -jar
-** javac 
-* 高级
-** jstat
+*** javac 
+** 高级
+*** jstat
    观察GC情况，如：
    jstat -gcutil pid 2000
    
-** jmap
+*** jmap
    查看heap情况，如查看存活对象列表：
    jmap -histo:live pid |grep com.company |less 
    
@@ -84,14 +85,20 @@
    
    jmap -dump:file=test.bin pid
    
-** jhat
+*** jhat
    分析dump的堆文件，可以用jhat:
    jhat test.bin
    
    分析完成后可以用浏览器查看堆的情况。这个工具的分析结果还比较原始，你还可以用Eclipse MAT插件进行图形化分析，或者IBM的Heap Analyzer.
    
-** jvisualvm和jconsole
-   JVM自带的性能分析和监控工具，怎么用？请自己看文档。
-** jstack
+*** jvisualvm
+    JVM自带的性能分析和监控工具，怎么用？请自己看文档。
+*** jconsole
+    运行java程序时添加系统变量:
+    -Dcom.sun.management.jmxremote.port=1090
+    -Dcom.sun.management.jmxremote.ssl=false
+    -Dcom.sun.management.jmxremote.authenticate=false
+    然后打开jconsole，监听本地端口
+*** jstack
    分析线程堆栈，当cpu被java程序消耗的比较多的时候，可以使用jstack工具来分析jvm进程
    jstack -F [进程pid] | grep -A 100 [线程pid]
