@@ -1,8 +1,8 @@
-* ¼òÊö
-ÎÒÃÇÔÚÊ¹ÓÃmavenÊ±£¬Ò»°ãÍ¨¹ýÍøÂçÉÏÒ»Ð©¹«¹²µÄmaven²Ö¿âÀ´»ñÈ¡jar°ü£¬µ«ÊÇÓÐÊ±ºò»áÅöµ½ÍøËÙ±È½ÏÂýµÄÇé¿ö¾Í±È½ÏÓôÃÆ£¬NexusÊÇÒ»¸ömavenµÄ·þÎñÆ÷£¬¿ÉÒÔÈÃÎÒÃÇ´î½¨Ò»¸ö±¾µØµÄjar°ü¹ÜÀí¿â£¬ÕâÑùÎÒÃÇ¾Í¿ÉÒÔÖ±½Ó´ÓÄÚÍøÏÂÔØjar°ü£¬²¢ÇÒ¿ÉÒÔ½øÐÐÒ»Ð©ÏàÓ¦µÄ¹ÜÀí¡£ 
-* ×¼±¸
-[[http://www.sonatype.org/nexus] [ÏÂÔØµØÖ·] ]
-* °²×°
-  1. Ê×ÏÈÈ·±£±¾»úÓÐjavaÔËÐÐ»·¾³
-  2. ÏÂÔØºÃµÄÎÄ¼þ½âÑ¹ÖÁ±¾»ú£¬ÀýÈç£ºD
+* ç®€è¿°
+æˆ‘ä»¬åœ¨ä½¿ç”¨mavenæ—¶ï¼Œä¸€èˆ¬é€šè¿‡ç½‘ç»œä¸Šä¸€äº›å…¬å…±çš„mavenä»“åº“æ¥èŽ·å–jaråŒ…ï¼Œä½†æ˜¯æœ‰æ—¶å€™ä¼šç¢°åˆ°ç½‘é€Ÿæ¯”è¾ƒæ…¢çš„æƒ…å†µå°±æ¯”è¾ƒéƒé—·ï¼ŒNexusæ˜¯ä¸€ä¸ªmavençš„æœåŠ¡å™¨ï¼Œå¯ä»¥è®©æˆ‘ä»¬æ­å»ºä¸€ä¸ªæœ¬åœ°çš„jaråŒ…ç®¡ç†åº“ï¼Œè¿™æ ·æˆ‘ä»¬å°±å¯ä»¥ç›´æŽ¥ä»Žå†…ç½‘ä¸‹è½½jaråŒ…ï¼Œå¹¶ä¸”å¯ä»¥è¿›è¡Œä¸€äº›ç›¸åº”çš„ç®¡ç†ã€‚ 
+* å‡†å¤‡
+[[http://www.sonatype.org/nexus] [ä¸‹è½½åœ°å€] ]
+* å®‰è£…
+  1. é¦–å…ˆç¡®ä¿æœ¬æœºæœ‰javaè¿è¡ŒçŽ¯å¢ƒ
+  2. ä¸‹è½½å¥½çš„æ–‡ä»¶è§£åŽ‹è‡³æœ¬æœºï¼Œä¾‹å¦‚ï¼šD
    

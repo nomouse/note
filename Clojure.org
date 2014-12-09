@@ -1,0 +1,8 @@
+* 全文
+** 安装
+*** clojure
+    java -cp clojure-1.6.0.jar clojure.main
+*** leiningen
+    LEIN_HOME=.lein
+    LEIN_JAR=.lein/leiningen-2.5.0-standalone.jar
+**

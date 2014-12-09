@@ -1,0 +1,11 @@
+* 全文
+** 安装配置
+***
+*** Maven地址
+    Apache https://repository.apache.org/snapshots/
+    Maven Central https://repo1.maven.org/maven2/
+    Codehaus    https://nexus.codehaus.org/snapshots/
+    Spring http://repo.springsource.org/plugins-release/
+    JCenter https://jcenter.bintray.com/
+    Clojars https://clojars.org/repo/
+    ibiblio http://mirrors.ibiblio.org/maven2/
