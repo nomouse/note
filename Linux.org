@@ -137,7 +137,7 @@
    # record the memory usage of the system every monday 
    # at 3:30AM in the file /tmp/meminfo
    30 3 * * mon cat /proc/meminfo >> /tmp/meminfo
-   # run custom script the first day of every month at 4:10AM
+   # run custom script thee first day of every month at 4:10AM
    10 4 1 * * /root/scripts/backup.sh 
  
 
@@ -518,4 +518,8 @@ ssh服务端状态：service sshd status
     chkconfig --level 2345 NetworkManager off
     chkconfig --level 2345 network on
     service NetworkManager stop
-service network start
+    service network start
+** 一些杂项
+*** 命令行显示-bash-3.2#
+    cp /etc/skel/.{bash_profile,bashrc} ~
+    source ~/.bashrc
