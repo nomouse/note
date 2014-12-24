@@ -1,0 +1,260 @@
+* 基础
+** JDK常用类
+*** String
+*** equre和hashCode
+** Java反射
+** Java注解
+** Java范型
+*** 范型的优点
+*** 范型的应用
+*** 伪范型
+** Java集合
+*** List
+   1. ArrayList原理
+       ArrayList的数据存放在一个Object数组中(transient Object[] elementData)。
+       ArrayList的size等于initialCapacity -1 时，会生成一个更大的数组来放置当前数据
+*** Map
+   1. HashMap原理 
+      HashMap的所有数据存放在一个Entry数组中(transient Entry<K,V>[] table)，其中Entry代表一个键值对，并存放指向另外一个Entry的引用，
+      这样就构成一个链表，因此HashMap的数据结构是数组+链表。
+      调用put方法时，先计算key的hash值，然后以此为下标将Entry放入table中，如果hash值相等，则放入对应的链表中。
+      调用get方法时，先计算key的hash值，然后通过table下标取得Entry，并遍历链表返回value
+   2. HashMap的性能问题
+      HashMap有两个可选参数，即initialCapacity(初始数组大小)和loaderFactor(负载因子)
+      当HashMap的size大于initialCapacity * loaderFactor时，HashMap会进行rehash，即生成一个更大的table来存放当前Entry。
+*** Set
+   1. HashSet原理
+       HashSet内部通过一个HashMap的key来放置数据
+** Java枚举
+** JavaIO
+* 中级
+** JDK
+*** PATH
+*** JAVA_HOME
+*** JAVA_TOOL_OPTIONS 
+      在所有JDK命令前添加一些系统变量，比如:JAVA_TOOL_OPTIONS=-Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=US
+*** CLASS_PATH
+*** -D系统变量
+    file.encoding=UTF-8
+    sun.jnu.encoding=UTF-8
+    jdbc.drivers=com.mysql.jdbc.Driver:org.postgresql.Driver:org.apache.derby.jdbc.EmbeddedDriver
+    java.ext.dirs=E:\workspace_indigo\tigase-server\jars
+    java.home=D:/Java
+    sun.boot.library.path=C:\Program Files\Java\jre1.5.0_08\bin 
+    java.vm.version=1.5.0_08-b03 
+    java.vm.vendor=Sun Microsystems Inc. 
+    java.vendor.url=http://java.sun.com/ 
+    path.separator=; 
+    java.vm.name=Java HotSpot(TM) Client VM 
+    file.encoding.pkg=sun.io 
+    user.country=CN 
+    sun.os.patch.level=Service Pack 2 
+    java.vm.specification.name=Java Virtual Machine Specification 
+    user.dir=D:\wapSearchLogService 
+    java.runtime.version=1.5.0_08-b03 
+    java.awt.graphicsenv=sun.awt.Win32GraphicsEnvironment 
+    java.endorsed.dirs=C:\Program Files\Java\jre1.5.0_08\lib... 
+    os.arch=x86 
+    java.io.tmpdir=C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\ 
+    line.separator= 
+    java.vm.specification.vendor=Sun Microsystems Inc. 
+    user.variant= 
+    os.name=Windows XP 
+    sun.jnu.encoding=GBK 
+    java.library.path=C:\Program Files\Java\jre1.5.0_08\bin... 
+    java.specification.name=Java Platform API Specification 
+    java.class.version=49.0 
+    sun.management.compiler=HotSpot Client Compiler 
+    os.version=5.1 
+    user.home=C:\Documents and Settings\Administrator 
+    user.timezone=Asia/Shanghai 
+    java.awt.printerjob=sun.awt.windows.WPrinterJob 
+    file.encoding=GBK 
+    java.specification.version=1.5 
+    user.name=Administrator 
+    java.class.path=D:\wapSearchLogService\bin;D:\wapSear... 
+    java.vm.specification.version=1.0 
+    sun.arch.data.model=32 
+    java.home=C:\Program Files\Java\jre1.5.0_08 
+    java.specification.vendor=Sun Microsystems Inc. 
+    user.language=zh 
+    awt.toolkit=sun.awt.windows.WToolkit 
+    java.vm.info=mixed mode, sharing 
+    java.version=1.5.0_08 
+    java.ext.dirs=C:\Program Files\Java\jre1.5.0_08\lib... 
+    sun.boot.class.path=C:\Program Files\Java\jre1.5.0_08\lib... 
+    java.vendor=Sun Microsystems Inc. 
+    file.separator=\ 
+    java.vendor.url.bug=http://java.sun.com/cgi-bin/bugreport... 
+    sun.cpu.endian=little 
+    sun.io.unicode.encoding=UnicodeLittle 
+    sun.desktop=windows 
+    sun.cpu.isalist=amd64
+    
+*** java
+*** -server
+    -server
+    -Xms100M
+    -Xmx200M
+    -XX:PermSize=32m
+    -XX:MaxPermSize=256m
+    -XX:MaxDirectMemorySize=128m
+*** -jar
+*** javac 
+** Java线程
+*** Thread
+*** Runnable
+*** ThreadLocal
+** Java并发
+*** ReentrantLock
+*** ConcurrentHashMap
+    原理，区别于HashTable的Entry数组(Entry<K,V>[] table)，ConcurrentHashMap的数据存放在Segment数组中(Segment<K,V>[] segments)
+    其中每个segment包含一个HashEntry数组(HashEntry<K,V>[] table)，也就是说ConcurrentHashMap是由多个小hashmap构成的。
+    这样的优点是访问数据时，不需要对整个对象进行加锁，只需要对相应的segament加锁，这样就提高的效率
+*** CopyOnWriteArrayList
+    原理，更新时先lock一个重入锁ReentrantLock，然后将原有数组复制一份新的数组上进行更新，再将引用指向新的数组,然后unlock
+    在更新过程中如果有线程进行读操作，先查看锁状态，如果是lock则是再原有列表上操作的，不会出现数据不一致
+    因此，使用时要避免频繁更新
+** 设计模式
+   面向接口编程，而不是实现；优先使用组合，而不是继承
+*** 原则
+    1. 单一职责原则
+       一个类应该只负责一个职责
+    2. 里氏替换原则
+       继承时，子类可以扩展父类的功能，但不能改变父类原有的功能，即子类可以实现父类的抽象方法，但是不应该覆盖父类的非抽象方法
+    3. 依赖倒置原则
+       高层模块不应该依赖低层模块，二者都应该依赖其抽象；抽象不应该依赖细节；细节应该依赖抽象
+    4. 接口隔离原则
+       客户端不应该依赖它不需要的接口；一个类对另一个类的依赖应该建立在最小的接口上
+    5. 迪米特法则
+       一个对象应该对其他对象保持最少的了解。低耦合，高内聚
+    6. 开闭原则
+       一个软件实体如类、模块和函数应该对扩展开放，对修改关闭。
+*** 设计模式表格
+
+|      | 创建型           | 结构型        | 行为型                  |
+|------+------------------+---------------+-------------------------|
+| 类   | Factory Method   | Adapter(类)   | Interpreter           |
+|      |                  |               | Template Method         |
+|------+------------------+---------------+-------------------------|
+| 对象 | Abstract Factory | Adapter(对象) | Chain of Responsibility |
+|      | Builder          | Bridge        | Command                 |
+|      | Prototype        | Composite     | Iterator                |
+|      | Singleton        | Decorator     | Mediator                |
+|      |                  | Facade        | Memento                 |
+|      |                  | Flyweight     | Observer                |
+|      |                  | Proxy         | State                   |
+|      |                  |               | Strategy                |
+|      |                  |               | Visitor                 |
+*** 设计模式详细
+    1. (Factory Method)工厂方法模式
+       spring ioc
+       spring BeanFactory
+    2. (Abstract Factory)抽象工厂模式
+    3. (Prototype)原型模式
+       spring ioc
+    4. (Builder)构造器模式
+       android AlertDialog
+       gson GsonBuilder
+    5. (Singleton)单例模式
+       spring ioc容器级别提供了单例的效果
+    6. (Adapter)适配器模式
+       android ListView 
+       swing JTable
+    7. (Bridge)桥接模式
+    8. (Composite)组合模式
+       android View树
+       swing JComponet树
+    9. (Decorator)装饰器模式
+       jdk io库
+    10. (Facade)门面模式
+    11. (Flyweight)享元模式
+    12. (Proxy)代理模式
+       spring aop动态代理
+    13. (Interpreter)解释器模式
+    14. (Tempalte Method)模板方法模式
+        andriod BaseAdapter
+    15. (Chain of Responsibility)责任链模式
+        java ee Filter
+    16. (Command)命令模式
+        springmvc DispacterServlet
+        struts
+    17. (Iterator)迭代器模式
+    18. (Mediaotr)中介者模式
+    19. (Observer)观察者模式
+        spring ContextLoaderListener
+    20. (State)状态机模式
+    21. (Strategy)策略模式
+        hibernate Dialect
+    22. (Visitor)访问者模式
+* 高级
+** JVM
+*** JVM简述
+JVM是Java虚拟机的简称，它是Java语言的跨平台特性实现的关键。一般的高级语言如果要在不同的平台上运行，至少需要编译成不同的目标代码。而引入Java语言虚拟机后，Java语言在不同平台上运行时不需要重新编译。Java语言使用Java虚拟机屏蔽了与具体平台相关的信息，使得Java语言编译程序只需生成在Java虚拟机上运行的目标代码（字节码），就可以在多种平台上不加修改地运行。Java虚拟机在执行字节码时，把字节码解释成具体平台上的机器指令执行。这就是Java的能够“一次编译，到处运行”的原因。
+
+*** JVM生命周期
+JVM的唯一用途就是执行一个Java程序，当一个Java程序启动（main方法），一个JVM实例（在操作系统层面上是一个java进程）就诞生了；当程序关闭退出，这个虚拟机实例也就随之消亡。
+
+*** JVM内存结构
+JVM运行时包含几块区域：方法区、堆、Java栈、PC寄存器和本地方法栈，其中方法区和堆是线程共享的，而Java栈和PC寄存器则是每个线程独有的。
+
+*** 堆和栈的区别
+1、堆储存类的实例，栈储存基本类型、引用类型
+2、堆是线程共享的，即堆的内容可以被多个线程访问；而栈是独享的，其他线程无法访问。
+3、栈解决程序的运行问题，即程序如何执行，或者说如何处理数据；堆解决的是数据存储的问题，即数据怎么放、放在哪儿。
+
+*** 为什么要把堆和栈区分出来呢？栈中不是也可以存储数据吗？
+1、从软件设计的角度看，栈代表了处理逻辑，而堆代表了数据。这样分开，使得处理逻辑更为清晰。分而治之的思想。这种隔离、模块化的思想在软件设计的方方面面都有体现。
+2、堆与栈的分离，使得堆中的内容可以被多个栈共享（也可以理解为多个线程访问同一个对象）。这种共享的收益是很多的。一方面这种共享提供了一种有效的数据交互方式(如：共享内存)，另一方面，堆中的共享常量和缓存可以被所有栈访问，节省了空间。
+3、栈因为运行时的需要，比如保存系统运行的上下文，需要进行地址段的划分。由于栈只能向上增长，因此就会限制住栈存储内容的能力。而堆不同，堆中的对象是可以根据需要动态增长的，因此栈和堆的拆分，使得动态增长成为可能，相应栈中只需记录堆中的一个地址即可。
+4、面向对象就是堆和栈的完美结合。其实，面向对象方式的程序与以前结构化的程序在执行上没有任何区别。但是，面向对象的引入，使得对待问题的思考方式发生了改变，而更接近于自然方式的思考。当我们把对象拆开，你会发现，对象的属性其实就是数据，存放在堆中；而对象的行为（方法），就是运行逻辑，放在栈中。我们在编写对象的时候，其实即编写了数据结构，也编写的处理数据的逻辑。不得不承认，面向对象的设计，确实很美。
+
+*** Java中的参数传递时传值呢？还是传引用？
+1、不要试图与C进行类比，Java中没有指针的概念。
+2、程序运行永远都是在栈中进行的，因而参数传递时，只存在传递基本类型和对象引用的问题。不会直接传对象本身。
+
+*** Java对象的大小
+1、在Java中，一个空Object对象的大小是8byte，这是堆上的大小，加上栈上对象引用的4byte（64位上是8byte），总共是12byte。
+2、需要注意的是基本类型的包装类，基本类型是不存在于堆上的，但是包装类型需要堆空间，一个int的包装类Integer占用的空间至少为：对象引用（4） + 空Object（8）=12byte，JVM分配内存以8的整数倍来进行，就是16byte，比单纯使用基本类型大了4倍。因此程序中尽量少使用包装类型。
+
+*** Java对象引用类型
+对象引用类型分为强引用、软引用、弱引用和虚引用。
+1、强引用:就是我们一般声明对象是时虚拟机生成的引用，强引用环境下，垃圾回收时需要严格判断当前对象是否被强引用，如果被强引用，则不会被垃圾回收
+2、软引用:软引用一般被做为缓存来使用。与强引用的区别是，软引用在垃圾回收时，虚拟机会根据当前系统的剩余内存来决定是否对软引用进行回收。如果剩余内存比较紧张，则虚拟机会回收软引用所引用的空间；如果剩余内存相对富裕，则不会进行回收。换句话说，虚拟机在发生OutOfMemory时，肯定是没有软引用存在的。
+3、弱引用:弱引用与软引用类似，都是作为缓存来使用。但与软引用不同，弱引用在进行垃圾回收时，是一定会被回收掉的，因此其生命周期只存在于一个垃圾回收周期内。
+弱引用最常见的用处是在集合类中，尤其在哈希表中。哈希表的接口允许使用任何Java对象作为键来使用。当一个键值对被放入到哈希表中之后，哈希表对象本身就有了对这些键和值对象的引用。如果这种引用是强引用的话，那么只要哈希表对象本身还存活，其中所包含的键和值对象是不会被回收的。如果某个存活时间很长的哈希表中包含的键值对很多，最终就有可能消耗掉JVM中全部的内存
+4、虚引用:虚引用get方法永远返回null，它的唯一作用是追踪对象何时被添加到回收队列中，需要和ReferenceQueue引用队列配合使用，虚引用会可以在其引用对象被回收之后自动添加到引用队列中，我们可以知道那些对象将要被回收。
+
+*** JVM垃圾回收算法
+1、引用计数
+2、标记-清除
+3、复制
+4、标记-整理
+5、分代收集
+*** ClassLoader
+** Jdk高级工具
+*** jstat
+   观察GC情况，如：
+   jstat -gcutil pid 2000
+   查看heap情况，如查看存活对象列表：
+   jmap -histo:live pid |grep com.company |less 
+   或者dump内存用来分析：
+   jmap -dump:file=test.bin pid
+*** jhat
+   分析dump的堆文件，可以用jhat:
+   jhat test.bin
+   分析完成后可以用浏览器查看堆的情况。这个工具的分析结果还比较原始，你还可以用Eclipse MAT插件进行图形化分析，或者IBM的Heap Analyzer.
+*** jvisualvm
+    JVM自带的性能分析和监控工具，怎么用？请自己看文档。
+*** jconsole
+    运行java程序时添加系统变量:
+    -Dcom.sun.management.jmxremote.port=1090
+    -Dcom.sun.management.jmxremote.ssl=false
+    -Dcom.sun.management.jmxremote.authenticate=false
+    然后打开jconsole，监听本地端口
+*** jstack
+   分析线程堆栈，当cpu被java程序消耗的比较多的时候，可以使用jstack工具来分析jvm进程
+   jstack -F [进程pid] | grep -A 100 [线程pid]
+** Java调优
+*** -server
+    以server模式启动
