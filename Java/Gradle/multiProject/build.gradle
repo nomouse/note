@@ -6,19 +6,18 @@ subprojects {
         maven{
         	url "http://localhost:8081/nexus/content/groups/public"
         }
-    }
-
-    version = '1.0'
-    
-    jar {
-        manifest.attributes provider: 'common'
+		mavenCentral()
     }
     
     compileJava {
-		//sourceCompatibility=1.7
-		//targetCompatibility=1.7
+		sourceCompatibility=1.7
+		targetCompatibility=1.7
 		options*.encoding="UTF-8" 
 	}
+
+	javadoc {
+        options.encoding = "UTF-8"
+    }
 	
 	tasks.withType(JavaCompile) {  
     	options.encoding = "UTF-8"  

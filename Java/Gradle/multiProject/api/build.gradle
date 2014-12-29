@@ -2,9 +2,7 @@ apply plugin: 'war'
 apply plugin: 'jetty'
 
 dependencies {
-        compile project(':lianxi-core')
-        
-        //compile fileTree(dir:'${rootProject.name}/lianxi-core/build/libs', include:['*.jar'])
+        compile project(':core')
         
         compile("org.springframework:spring-web:${springVersion}")
         
