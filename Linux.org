@@ -347,20 +347,28 @@ endscript
 第一行指定脚本对 /var/log messages 有效
 花括号外的/var/log messages
 ** ssh 远程
-一、Linux下安装启动SSH服务端
-ssh服务端状态：service sshd status
-如果没有此服务，安装：yum install openssh-server
-安装完成后启动：service openssh start
-
-二、Linux下安装使用SSH客户端
-是否安装ssh：ssh -version
-没有的话安装：yum install openssh-clients
-登录远程机器：ssh root@192.168.0.38
-
-三、使用dsa实现客户端不输入密码直接登录远程服务器
-1、在客户端的~/.ssh目录下生成dsa私钥和公钥（安全起见要输入密码passphrase，默认私钥id_dsa和公钥id_dsa.pub）：ssh-keygen -t dsa
-2、将客户端的公钥复制到服务器的~/.ssh目录下，执行命令：cat id_dsa.pub > authorized_key2，如果都是linux的话,scp ~/.ssh/id_dsa.pub root@192.168.0.11:.ssh/authorized_keys2
-3、在客户端执行：ssh-agent sh -c 'ssh-add < /dev/null && bash'
+*** Linux下安装启动SSH服务端
+    ssh服务端状态：service sshd status
+    如果没有此服务，安装：yum install openssh-server
+    安装完成后启动：service openssh start
+*** Linux下安装使用SSH客户端
+    是否安装ssh：ssh -version
+    没有的话安装：yum install openssh-clients
+    登录远程机器：ssh root@192.168.0.38
+*** 使用ssh-agent实现客户端不输入密码直接登录远程服务器
+     1. 在客户端的~/.ssh目录下生成dsa私钥和公钥（安全起见要输入密码passphrase，默认私钥id_dsa和公钥id_dsa.pub）：ssh-keygen -t dsa
+     2. 将客户端的公钥复制到服务器的~/.ssh目录下，执行命令：cat id_dsa.pub > authorized_key2，
+        如果都是linux的话,scp ~/.ssh/id_dsa.pub root@192.168.0.11:.ssh/authorized_keys2
+        或者: cat ~/.ssh/id_dsa.pub | ssh user@remote.machine.com 'cat >> .ssh/authorized_keys'
+     3. 在客户端执行：ssh-agent sh -c 'ssh-add < /dev/null && bash'
+*** 使用keychain
+     1. keychain官网下载安装包http://www.funtoo.org/Keychain， 解压到任意目录，执行:install -m0755 keychain /usr/bin
+     2. 命令行输入: eval $(keychain --eval --agents ssh -Q --quiet id_dsa)
+     3. 在/etc/profile.d下新建keychain.sh，内容:
+        #!/bin/bash
+        /usr/bin/keychain -Q -q --nogui ~/.ssh/id_dsa
+        source $HOME/.keychain/$HOSTNAME-sh
+        更改此脚本权限 chomod +x /etc/profile.d/keychain.sh
 ** vmstat 监控CPU
    vmstat命令是最常见的Linux/Unix监控工具，可以展现给定时间间隔的服务器的状态值,包括服务器的CPU使用率，内存使用，虚拟内存交换情况,IO读写情况。这个命令是我查看Linux/Unix最喜爱的命令，一个是Linux/Unix都支持，二是相比top，我可以看到整个机器的CPU,内存,IO的使用情况，而不是单单看到各个进程的CPU使用率和内存使用率(使用场景不一样)。
    
@@ -437,7 +445,7 @@ ssh服务端状态：service sshd status
 ** ethx 
    配置eth0的IP地址， 同时激活该设备
    eth0 192.168.1.10 netmask 255.255.255.0 up
-** DNS 配置DNS服务器
+** DNS配置
    配置DNS vi /etc/resolv.conf
    添加内容:
    　　nameserver 202.96.134.133
@@ -445,13 +453,9 @@ ssh服务端状态：service sshd status
    　　nameserver 202.96.128.166
    查看DNS
    　　less /etc/resolv.conf
-   
-   (二)配置网络，单网卡单ip
-   
-   （1）RedHat系列
-   
+** 单网卡单ip
+*** RedHat系列
    vi /etc/sysconfig/network-scripts/ifcfg-eth[x]文件([x]为使用的网卡)
-   
    静态配置
    # xxxxxxx(网卡名称，不用改)
    DEVICE=eth0
@@ -467,7 +471,6 @@ ssh服务端状态：service sshd status
    DNS1=x.x.x.x(域名服务器地址)
    DNS2=x.x.x.x
    注意：ONBOOT一定要设置为yes，否则可能出现下述症状，eth0未弹出：
-   
    动态配置
    # xxxxxxx(网卡名称，不用改)
    DEVICE=eth0
@@ -475,20 +478,14 @@ ssh服务端状态：service sshd status
    TYPE=ether
    HWADDR=xx:xx:xx:xx:xx:xx (网卡mac地址，不用改)
    ONBOOT=yes(开机自启动)
-   
-   
-   （2）Ubuntu系列
-   
+*** Ubuntu系列
    vi /etc/network/interfaces
-   
    # The loopback network interface (配置环回口)
    　　auto lo # 开机自动激lo接口
    　　iface lo inet loopback # 配置lo接口为环回口
    　　# The primary network interface #配置主网络接口
-   
    　　auto eth0 #开机自动激活eth0接口
    　　iface eth0 inet dhcp #配置eth0接口为DHCP自动获取
-   
    #或者配置eth0为静态地址
    　　# The primary network interface (配置主网络接口)
    　　auto eth0 #开机自动激活eth0接口
@@ -498,22 +495,12 @@ ssh服务端状态：service sshd status
    　　Netmask 255.255.255.0
    　　network 192.168.1.0
    　　broadcast 192.168.1.255
-   
-   
-   
-   5、配置网络，单网卡多ip
-   
+** 单网卡多ip
    直接用命令行，各系统通用，但是是暂时性的
    ifconfig eth0:0 192.168.0.1 netmask 255.255.255.0 up
-   
-   
-   
-   （1）RadHat系列
-   
-   
+*** RadHat系列
    仿照/etc/sysconfig/network-scripts/ifcfg-eth0增加一文件根据网络虚拟接口的名字进行命名
    例如ifcfg-eth0:0或者ifcfg-eth0:1等等
-   
    #下边看下ifcfg-eth0:0文件里面的配置信息
    DEVICE=eth0:0 #网络虚拟接口eth0:0
    ONBOOT=yes #启动的时候激活
@@ -522,13 +509,9 @@ ssh服务端状态：service sshd status
    NETMASK=255.255.255.0 #子网掩码
    其他配置文件类似。
    重启网络服务
-   
    service network restart
-   
-   （2）Ubuntu系列
-   
+*** Ubuntu系列
    直接在/etc/network/interfaces文件里添加内容
-   
    auto eth0:0
    iface eth0:0 inet static
    name Ethernet Lan card
@@ -537,22 +520,13 @@ ssh服务端状态：service sshd status
    network 192.168.0.0
    broadcast 192.168.0.255
    #gateway 192.168.0.254
-   
-   
-   
-   (三)高级
+** 高级
    确定网口位置---工具ethtool
-   
    (1)ethtool DEVNAME   查看相应设备名称对应的设备信息 example：ethtool eth0
-   
    最后一行会显示Link detected: yes/no
-   
    (2)ethtool -p DEVNAME   查看相应设备名称对应的设备位置  example: ethtool –p eth0
-   
    回车后与eth0 相对应的网卡接口旁边的指示灯就会闪烁，这样你就能很快确定eth0 网口的位置啦。（按下Ctrl+C 结束命令，停止闪烁）
-   
    管理网络连接的方案：
-   
    （1）/etc/network/interfaces（/etc/init.d/networking）
    （2）Network-Manager
    两套方案是冲突的，不能同时共存。
@@ -562,9 +536,6 @@ ssh服务端状态：service sshd status
    他们两个为了避免冲突，又能共享配置，就有了下面的解决方案：
    1、当Network-Manager发现/etc/network/interfaces被改动的时候，则关闭自己（显示为未托管），除非managed设置成真。
    2、当managed设置成真时，/etc/network/interfaces，则不生效。
-   
-   
-   
    如果想在命令行下配置网络，可能需要关闭NetworkManager服务，打开network服务，以root权限执行
    chkconfig --level 2345 NetworkManager off
    chkconfig --level 2345 network on
