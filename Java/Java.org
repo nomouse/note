@@ -32,103 +32,10 @@
 ** Java枚举
 ** JavaIO
 * 中级
-** JDK
-*** PATH
-*** JAVA_HOME
-*** JAVA_TOOL_OPTIONS 
-      在所有JDK命令前添加一些系统变量，比如:JAVA_TOOL_OPTIONS=-Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=US
-*** CLASS_PATH
-*** -D系统变量
-    file.encoding=UTF-8
-    sun.jnu.encoding=UTF-8
-    jdbc.drivers=com.mysql.jdbc.Driver:org.postgresql.Driver:org.apache.derby.jdbc.EmbeddedDriver
-    java.ext.dirs=E:\workspace_indigo\tigase-server\jars
-    java.home=D:/Java
-    sun.boot.library.path=C:\Program Files\Java\jre1.5.0_08\bin 
-    java.vm.version=1.5.0_08-b03 
-    java.vm.vendor=Sun Microsystems Inc. 
-    java.vendor.url=http://java.sun.com/ 
-    path.separator=; 
-    java.vm.name=Java HotSpot(TM) Client VM 
-    file.encoding.pkg=sun.io 
-    user.country=CN 
-    sun.os.patch.level=Service Pack 2 
-    java.vm.specification.name=Java Virtual Machine Specification 
-    user.dir=D:\wapSearchLogService 
-    java.runtime.version=1.5.0_08-b03 
-    java.awt.graphicsenv=sun.awt.Win32GraphicsEnvironment 
-    java.endorsed.dirs=C:\Program Files\Java\jre1.5.0_08\lib... 
-    os.arch=x86 
-    java.io.tmpdir=C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\ 
-    line.separator= 
-    java.vm.specification.vendor=Sun Microsystems Inc. 
-    user.variant= 
-    os.name=Windows XP 
-    sun.jnu.encoding=GBK 
-    java.library.path=C:\Program Files\Java\jre1.5.0_08\bin... 
-    java.specification.name=Java Platform API Specification 
-    java.class.version=49.0 
-    sun.management.compiler=HotSpot Client Compiler 
-    os.version=5.1 
-    user.home=C:\Documents and Settings\Administrator 
-    user.timezone=Asia/Shanghai 
-    java.awt.printerjob=sun.awt.windows.WPrinterJob 
-    file.encoding=GBK 
-    java.specification.version=1.5 
-    user.name=Administrator 
-    java.class.path=D:\wapSearchLogService\bin;D:\wapSear... 
-    java.vm.specification.version=1.0 
-    sun.arch.data.model=32 
-    java.home=C:\Program Files\Java\jre1.5.0_08 
-    java.specification.vendor=Sun Microsystems Inc. 
-    user.language=zh 
-    awt.toolkit=sun.awt.windows.WToolkit 
-    java.vm.info=mixed mode, sharing 
-    java.version=1.5.0_08 
-    java.ext.dirs=C:\Program Files\Java\jre1.5.0_08\lib... 
-    sun.boot.class.path=C:\Program Files\Java\jre1.5.0_08\lib... 
-    java.vendor=Sun Microsystems Inc. 
-    file.separator=\ 
-    java.vendor.url.bug=http://java.sun.com/cgi-bin/bugreport... 
-    sun.cpu.endian=little 
-    sun.io.unicode.encoding=UnicodeLittle 
-    sun.desktop=windows 
-    sun.cpu.isalist=amd64
-    
-*** java
-*** -server
-    -server
-    -Xms100M
-    -Xmx200M
-    -XX:PermSize=32m
-    -XX:MaxPermSize=256m
-    -XX:MaxDirectMemorySize=128m
-*** -jar
-*** javac 
 ** Java RMI
 *** 对象序列化
     Serialization(序列化)是将一个Java对象转化为字节流的过程，通常通过实现Serializable接口来实现序列化
-    序列化对象需要设置serialVersionUID，反序列化时会参照相应类中的这个值，如果不相等则抛出InvalidClassException
-** Java线程
-*** 线程和进程的区别
-1. 在引入线程的操作系统中，通常都是把进程作为分配资源的基本单位，而把线程作为独立运行和独立调度的基本单位。
-2. 进程在执行过程中拥有独立的内存单元，而多个线程共享内存，从而极大地提高了程序的运行效率
-3. 进程和线程的主要差别在于它们是不同的操作系统资源管理方式，进程有独立的地址空间，一个进程崩溃后，在保护模式下不会对其它进程产生影响，而线程只是一个进程中的不同执行路径。
-   线程有自己的堆栈和局部变量，但线程之间没有单独的地址空间，一个线程死掉就等于整个进程死掉，所以多进程的程序要比多线程的程序健壮，但在进程切换时，耗费资源较大，效率要差一些。
-   但对于一些要求同时进行并且又要共享某些变量的并发操作，只能用线程，不能用进程。
-*** Thread
-*** Runnable
-*** ThreadLocal
-** Java并发
-*** ReentrantLock
-*** ConcurrentHashMap
-    原理，区别于HashTable的Entry数组(Entry<K,V>[] table)，ConcurrentHashMap的数据存放在Segment数组中(Segment<K,V>[] segments)
-    其中每个segment包含一个HashEntry数组(HashEntry<K,V>[] table)，也就是说ConcurrentHashMap是由多个小hashmap构成的。
-    这样的优点是访问数据时，不需要对整个对象进行加锁，只需要对相应的segament加锁，这样就提高的效率
-*** CopyOnWriteArrayList
-    原理，更新时先lock一个重入锁ReentrantLock，然后将原有数组复制一份新的数组上进行更新，再将引用指向新的数组,然后unlock
-    在更新过程中如果有线程进行读操作，先查看锁状态，如果是lock则是再原有列表上操作的，不会出现数据不一致
-    因此，使用时要避免频繁更新
+    序列化对象需要设置serialVersionUID，用于标识序列化对象版本，反序列化时会参照相应类中的这个值，如果不相等则抛出InvalidClassException
 ** 设计模式
    面向接口编程，而不是实现；优先使用组合，而不是继承
 *** 原则
@@ -207,6 +114,98 @@
     22. (Strategy)策略模式
         hibernate Dialect
     23. (Visitor)访问者模式
+** Java线程和并发
+*** 线程和进程的区别
+1. 在引入线程的操作系统中，通常都是把进程作为分配资源的基本单位，而把线程作为独立运行和独立调度的基本单位。
+2. 进程在执行过程中拥有独立的内存单元，而多个线程共享内存，从而极大地提高了程序的运行效率
+3. 进程和线程的主要差别在于它们是不同的操作系统资源管理方式，进程有独立的地址空间，一个进程崩溃后，在保护模式下不会对其它进程产生影响，而线程只是一个进程中的不同执行路径。
+   线程有自己的堆栈和局部变量，但线程之间没有单独的地址空间，一个线程死掉就等于整个进程死掉，所以多进程的程序要比多线程的程序健壮，但在进程切换时，耗费资源较大，效率要差一些。
+   但对于一些要求同时进行并且又要共享某些变量的并发操作，只能用线程，不能用进程。
+*** Thread
+*** Runnable
+*** ThreadLocal
+*** ReentrantLock
+*** ConcurrentHashMap
+    原理，区别于HashTable的Entry数组(Entry<K,V>[] table)，ConcurrentHashMap的数据存放在Segment数组中(Segment<K,V>[] segments)
+    其中每个segment包含一个HashEntry数组(HashEntry<K,V>[] table)，也就是说ConcurrentHashMap是由多个小hashmap构成的。
+    这样的优点是访问数据时，不需要对整个对象进行加锁，只需要对相应的segament加锁，这样就提高的效率
+*** CopyOnWriteArrayList
+    原理，更新时先lock一个重入锁ReentrantLock，然后将原有数组复制一份新的数组上进行更新，再将引用指向新的数组,然后unlock
+    在更新过程中如果有线程进行读操作，先查看锁状态，如果是lock则是再原有列表上操作的，不会出现数据不一致
+    因此，使用时要避免频繁更新
+** JDK
+*** PATH
+*** JAVA_HOME
+*** JAVA_TOOL_OPTIONS 
+      在所有JDK命令前添加一些系统变量，比如:JAVA_TOOL_OPTIONS=-Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=US
+*** CLASS_PATH
+*** -D系统变量
+    file.encoding=UTF-8
+    sun.jnu.encoding=UTF-8
+    jdbc.drivers=com.mysql.jdbc.Driver:org.postgresql.Driver:org.apache.derby.jdbc.EmbeddedDriver
+    java.ext.dirs=E:\workspace_indigo\tigase-server\jars
+    java.home=D:/Java
+    sun.boot.library.path=C:\Program Files\Java\jre1.5.0_08\bin 
+    java.vm.version=1.5.0_08-b03 
+    java.vm.vendor=Sun Microsystems Inc. 
+    java.vendor.url=http://java.sun.com/ 
+    path.separator=; 
+    java.vm.name=Java HotSpot(TM) Client VM 
+    file.encoding.pkg=sun.io 
+    user.country=CN 
+    sun.os.patch.level=Service Pack 2 
+    java.vm.specification.name=Java Virtual Machine Specification 
+    user.dir=D:\wapSearchLogService 
+    java.runtime.version=1.5.0_08-b03 
+    java.awt.graphicsenv=sun.awt.Win32GraphicsEnvironment 
+    java.endorsed.dirs=C:\Program Files\Java\jre1.5.0_08\lib... 
+    os.arch=x86 
+    java.io.tmpdir=C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\ 
+    line.separator= 
+    java.vm.specification.vendor=Sun Microsystems Inc. 
+    user.variant= 
+    os.name=Windows XP 
+    sun.jnu.encoding=GBK 
+    java.library.path=C:\Program Files\Java\jre1.5.0_08\bin... 
+    java.specification.name=Java Platform API Specification 
+    java.class.version=49.0 
+    sun.management.compiler=HotSpot Client Compiler 
+    os.version=5.1 
+    user.home=C:\Documents and Settings\Administrator 
+    user.timezone=Asia/Shanghai 
+    java.awt.printerjob=sun.awt.windows.WPrinterJob 
+    file.encoding=GBK 
+    java.specification.version=1.5 
+    user.name=Administrator 
+    java.class.path=D:\wapSearchLogService\bin;D:\wapSear... 
+    java.vm.specification.version=1.0 
+    sun.arch.data.model=32 
+    java.home=C:\Program Files\Java\jre1.5.0_08 
+    java.specification.vendor=Sun Microsystems Inc. 
+    user.language=zh 
+    awt.toolkit=sun.awt.windows.WToolkit 
+    java.vm.info=mixed mode, sharing 
+    java.version=1.5.0_08 
+    java.ext.dirs=C:\Program Files\Java\jre1.5.0_08\lib... 
+    sun.boot.class.path=C:\Program Files\Java\jre1.5.0_08\lib... 
+    java.vendor=Sun Microsystems Inc. 
+    file.separator=\ 
+    java.vendor.url.bug=http://java.sun.com/cgi-bin/bugreport... 
+    sun.cpu.endian=little 
+    sun.io.unicode.encoding=UnicodeLittle 
+    sun.desktop=windows 
+    sun.cpu.isalist=amd64
+    
+*** java
+*** -server
+    -server
+    -Xms100M
+    -Xmx200M
+    -XX:PermSize=32m
+    -XX:MaxPermSize=256m
+    -XX:MaxDirectMemorySize=128m
+*** -jar
+*** javac 
 ** JVM
 *** JVM简述
 JVM是Java虚拟机的简称，它是Java语言的跨平台特性实现的关键。一般的高级语言如果要在不同的平台上运行，至少需要编译成不同的目标代码。而引入Java语言虚拟机后，Java语言在不同平台上运行时不需要重新编译。Java语言使用Java虚拟机屏蔽了与具体平台相关的信息，使得Java语言编译程序只需生成在Java虚拟机上运行的目标代码（字节码），就可以在多种平台上不加修改地运行。Java虚拟机在执行字节码时，把字节码解释成具体平台上的机器指令执行。这就是Java的能够“一次编译，到处运行”的原因。
@@ -251,7 +250,29 @@ JVM运行时包含几块区域：方法区、堆、Java栈、PC寄存器和本�
 4、标记-整理
 5、分代收集
 *** Java类加载器
-    ClassLoader用来加载Java字节码文件（.class）到Java虚拟机中运行
+   1. 类加载器的作用
+      ClassLoader用来加载Java字节码文件（.class）到Java虚拟机中运行，它使得Java类可以被动态加载到 Java 虚拟机中并执行。
+      java.lang.ClassLoader类的基本职责就是根据一个指定的类的名称，找到或者生成其对应的字节代码，
+      然后从这些字节代码中定义出一个 Java 类，即 java.lang.Class类的一个实例。
+      除此之外，ClassLoader还负责加载 Java 应用所需的资源，如图像文件和配置文件等。
+   2. 系统提供的类加载器
+      引导类加载器（bootstrap class loader）：它用来加载 Java 的核心库，是用原生代码来实现的，并不继承自 java.lang.ClassLoader。
+      扩展类加载器（extensions class loader）：它用来加载 Java 的扩展库。Java 虚拟机的实现会提供一个扩展库目录。该类加载器在此目录里面查找并加载 Java 类。
+      系统类加载器（system class loader）：它根据 Java 应用的类路径（CLASSPATH）来加载 Java 类。一般来说，Java 应用的类都是由它来完成加载的。可以通过 ClassLoader.getSystemClassLoader()来获取它。
+   3. 类加载器的代理模式
+      类加载器在尝试自己去查找某个类的字节代码并定义它时，会先代理给其父类加载器，由父类加载器先去尝试加载这个类，依次类推。
+      在介绍代理模式背后的动机之前，首先需要说明一下 Java 虚拟机是如何判定两个 Java 类是相同的。
+      Java 虚拟机不仅要看类的全名是否相同，还要看加载此类的类加载器是否一样。只有两者都相同的情况，才认为两个类是相同的。
+      即便是同样的字节代码，被不同的类加载器加载之后所得到的类，也是不同的。
+      了解了这一点之后，就可以理解代理模式的设计动机了。代理模式是为了保证 Java 核心库的类型安全。
+      所有 Java 应用都至少需要引用 java.lang.Object类，也就是说在运行的时候，
+      java.lang.Object这个类需要被加载到 Java 虚拟机中。
+      如果这个加载过程由 Java 应用自己的类加载器来完成的话，很可能就存在多个版本的 java.lang.Object类，
+      而且这些类之间是不兼容的。
+      通过代理模式，对于 Java 核心库的类的加载工作由引导类加载器来统一完成，保证了 Java 应用所使用的都是同一个版本的 Java 核心库的类，是互相兼容的。
+   4. 类加载器于Web容器
+   5. OSGI
+
 *** Java对象初始化
 
 * 高级
