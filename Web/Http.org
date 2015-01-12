@@ -1,0 +1,5 @@
+* http
+** why http has headers
+   In simple terms physical systems using electrons, photons or electronmagnet waves need some way of marking the start of the data and end of data.
+   Within the start and end headers they carry additional information such as lenght and a mechanism to detect any corruption of the data.
+   For non physical system IP TCP HTTP the headers contain information (metadata) about the data.
