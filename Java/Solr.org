@@ -1,15 +1,23 @@
 * 基础
 ** 概述
+   Solr是一个独立的企业级搜索应用服务器，它对外提供类似于Web-service的API接口。用户可以通过http请求，向搜索引擎服务器提交一定格式的XML文件，生成索引；也可以通过Http Get操作提出查找请求，并得到XML格式的返回结果。
 ** 安装
+*** $solr_home
+    solr根目录，下面通常包含以下几个文件夹：
+    1. conf/
+       包含solrconfig.xml和schema.xml
+    2. data/
+       索引存放位置
+    3. lib/
+       可选，放置一些插件的相关包
 *** jetty
+    项目lib位于$solr_home/example/solr-webapp/webapp/WEB-INF/lib
     在example下运行：
     java -jar start.jar，会在http://localhost:8983/solr 启动一个Solr实例
-
 *** tomcat
     安装solr-4.7.2版需要JDK6，最新的4.10.2需要JDK7以上,tomcat需要配置Connection URIEncoding="UTF-8"
 
     linux bash:
-
     tar -zxf solr-4.7.2.tgz
     solr_home=./solr-4.7.2
     tar -zvxf ${solr_version}.tgz -C /opt
@@ -26,8 +34,17 @@
     eof
 
     service tomcat restart
+*** IK Analyzer安装
+    1. 对于solr-4.7.2版本，使用IK Analyzer 2012FF_hf1版本
+    2. 将IKAnalyzer2012FF_u1.jar复制到solr web项目的lib下
+    3. 将IKAnalyzer.cfg.xml和stopword.dic复制到$solr_home/conf下
+    4. 在schema.xml中/schema/types下添加以下内容
+       <fieldType name="text_ik" class="solr.TextField">
+         <analyzer class="org.wltea.analyzer.lucene.IKAnalyzer"/>
+       </fieldType>
 
 ** 配置
+
 
 ** 增删改查
 * 熟练
