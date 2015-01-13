@@ -1,4 +1,8 @@
 * 系统管理
+** 时间
+   ntpdate time.nist.gov  将Internet时间同步到系统时间
+   hwclock                显示BIOS时间
+   hwclock -w             将当前系统时间同步到BIOS时间
 ** ps  显示当前正在运行的进程
    -e 显示所有进程
    -f 输出所有信息
@@ -8,8 +12,12 @@
 ** top 显示任务管理器，查看各个进程的CPU和内存占用率
    进入top后按shirt+h切换到查看线程占用
 ** df  显示当前的磁盘空间
-   -h 用M或者G为单位来显示
+   -h 用M或者G为单位来显示，1024M = 1G
+   -H 用M或者G为单位来显示，1000M = 1G
    -l 列出本地磁盘信息
+   -T 显示文件系统类型
+   例子：
+   df -TH 显示系统现有磁盘使用情况
 ** du  显示文件或者文件夹的磁盘空间
    -h 用M或者G为单位来显示
    --max-depth=1 查看文件夹最大深度
@@ -70,6 +78,20 @@
    -R 递归执行
 
 * 高级工具
+** fdisk硬盘分区
+*** 硬盘常识
+    IDE硬盘在LINUX中的设备名一般为/dev/hda,/dev/hdb,/dev/hdc...
+    SCSI硬盘在LINUX中的设备名一般为/dev/sda,/dev/sdb,/dev/sdc...
+    一个硬盘最多分为4个主分区，这是由硬盘引导区MBR决定的，扩展分区只能由一个，在扩展分区上可以任意划分逻辑分区
+*** 分区过程
+    1. 查看硬盘是否安装正常,fdisk -l
+    2. 当硬盘小于2T时，可以用fdiks，否则采用parted
+    3. 格式化分区，mkfs.ext4 /dev/sdb1
+    4. 手动挂载分区 mkdir /data，mount /dev/sdb1 /data
+    5. 自动挂载分区 修改/etc/fstab，添加如下一行:
+       /dev/sdb5   /sdb5  ext4   defaults    0  0
+** lvm逻辑卷管理
+*** 概念
 ** cron 定时任务调度
 *** crond服务
      cron 是一个可以用来根据时间、日期、月份、星期的组合来调度对重复任务的执行的守护进程。
@@ -340,17 +362,17 @@ endscript
     没有的话安装：yum install openssh-clients
     登录远程机器：ssh root@192.168.0.38
 *** 使用ssh-agent实现客户端不输入密码直接登录远程服务器
-     1. 在客户端的~/.ssh目录下生成dsa私钥和公钥（安全起见要输入密码passphrase，默认私钥id_dsa和公钥id_dsa.pub）：ssh-keygen -t dsa
-     2. 将客户端的公钥复制到服务器的~/.ssh目录下，执行命令：cat id_dsa.pub > authorized_key2，
-        如果都是linux的话,scp ~/.ssh/id_dsa.pub root@192.168.0.11:.ssh/authorized_keys2
-        或者: cat ~/.ssh/id_dsa.pub | ssh user@remote.machine.com 'cat >> .ssh/authorized_keys'
+     1. 在客户端的~/.ssh目录下生成rsa私钥和公钥（安全起见要输入密码passphrase，默认私钥id_dsa和公钥id_rsa.pub）：ssh-keygen -t rsa
+     2. 将客户端的公钥复制到服务器的~/.ssh目录下，执行命令：cat id_rsa.pub > authorized_key，
+        如果都是linux的话,scp ~/.ssh/id_rsa.pub root@192.168.0.11:.ssh/authorized_keys
+        或者: cat ~/.ssh/id_rsa.pub | ssh user@remote.machine.com 'cat >> .ssh/authorized_keys'
      3. 在客户端执行：ssh-agent sh -c 'ssh-add < /dev/null && bash'
 *** 使用keychain
      1. keychain官网下载安装包http://www.funtoo.org/Keychain， 解压到任意目录，执行:install -m0755 keychain /usr/bin
-     2. 命令行输入: eval $(keychain --eval --agents ssh -Q --quiet id_dsa)
+     2. 命令行输入: eval $(keychain --eval --agents ssh -Q --quiet id_rsa)
      3. 在/etc/profile.d下新建keychain.sh，内容:
         #!/bin/bash
-        /usr/bin/keychain -Q -q --nogui ~/.ssh/id_dsa
+        /usr/bin/keychain ~/.ssh/id_rsa ~/.ssh/id_rsa
         source $HOME/.keychain/$HOSTNAME-sh
         更改此脚本权限 chomod +x /etc/profile.d/keychain.sh
 ** vmstat 监控CPU

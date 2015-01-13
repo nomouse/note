@@ -1,2 +1,2 @@
-* Slf4j
+* Slf4
 * Logback

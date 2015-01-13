@@ -1,4 +1,5 @@
 * 安装配置
+** 安装
 ** 启动服务
 *** windows下DOS命令窗口输入指令：
     查看服务是否启动：net help services
@@ -8,16 +9,29 @@
     查看服务状态：service mysqld status
     启动mysql服务：service mysqld start
     停止mysql服务：service mysqld stop
-** 登录
-   mysql -u[这里输入用户名] -p[这里输密码]
-** 忘记管理员密码
+* 基本操作
+** 修改root密码
+   mysqladmin -u root -p[oldpassword] password [newpassword]，root没有设置密码的话-p[oldpassword]可以省略
+** 数据库相关操作
+*** 登录
+    mysql -u[user] -p[password]
+    例子： mysql -uroot -p123456
+*** 数据库管理
+    show databases          查看所有数据库
+    create database [db]      创建数据库
+    use [db]                  切换数据库
+    show tables             查看当前数据库中所有的表
+    grant all on [db].[table] to [user]@[ip] identified by '[password]'    创建用户并赋予权限
+    例子：grant all on db.* to db@172.17.100.156 identified by '123456'
+    意思是让db用户可以在ip地址为172.17.100.156的主机上拥有db数据库下的所有表的所有访问权限
+    revoke all privileges on db.users from db@172.17.100.156               移除权限
+** 忘记密码
    先停止mysql服务
    然后输入：mysqld --skip-grant-tables，此时mysqld服务会被启动
    在命令行输入：mysql -uroot，以不用密码的方式登录root
    输入：update mysql.user set password=PASSWORD('[这里输入你的新密码]') where user='root'
    输入：flush privileges
    退出，重启mysql服务，用新密码即可登录
-   
 * 编码问题
 ** mysql5.5
 *** windows
@@ -51,18 +65,10 @@
     重启mysql服务，注意创建表的时候要使用utf8格式，如下：
     ALTER database db DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci
 
-* 基本操作
-    show databases               查看所有数据库
-    create database db      创建数据库
-    use db                  切换数据库
-    show tables                  查看当前数据库中所有的表
-    grant all on [数据库名+表名也可以*.*]  to [用户名]@[ip地址] identified by '[密码]'
-    例如：grant all on db.* to db@172.17.100.156 identified by '123456' 
-    上述语句的意思：
-    让db用户可以在ip地址为172.17.100.156的主机上拥有db数据库下的所有表的所有访问权限
-    移除权限：
-    revoke all privileges on db.users from db@172.17.100.156
-* 数据库容灾
-    备份数据库:mysqldump -hlocalhost -P3306 -uroot -p123456 dbname --default-character-set=utf8 | gzip > /data/dbname.sql.gz
-    恢复数据库:gunzip < /data/dbname.sql.gz | mysql -uroot -p123456 dbname
+* 高级
+** 数据库分析
+   show processlist        查看数据库session
+** 数据库备份
+   备份数据库:mysqldump -hlocalhost -P3306 -uroot -p123456 dbname --default-character-set=utf8 | gzip > /data/dbname.sql.gz
+   恢复数据库:gunzip < /data/dbname.sql.gz | mysql -uroot -p123456 dbname
 
