@@ -21,7 +21,7 @@
     create database [db]      创建数据库
     use [db]                  切换数据库
     show tables             查看当前数据库中所有的表
-    grant all on [db].[table] to [user]@[ip] identified by '[password]'    创建用户并赋予权限
+    grant all on [db].[table] to '[user]'@'[ip]' identified by '[password]'    创建用户并赋予权限
     例子：grant all on db.* to db@172.17.100.156 identified by '123456'
     意思是让db用户可以在ip地址为172.17.100.156的主机上拥有db数据库下的所有表的所有访问权限
     revoke all privileges on db.users from db@172.17.100.156               移除权限
