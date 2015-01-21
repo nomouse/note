@@ -1,2 +1,26 @@
 * Slf4
 * Logback
+  日志系统对比System.out的首要优点就是，它可以让我们自由的控制信息的输出
+** Logger
+   日志对象，每一个日志对象可能包含多个输出目标Appender，比如输出到文件或者控制台，甚至数据库
+** Appender
+   日志流的输出目标
+** Layout
+   日志的格式
+* Logback access
+  此模块用于记录web容器的所有请求相应信息
+** tomcat配置
+   http://logback.qos.ch/access.html
+   1. 将logback-core和logback-access包放入$CATALINA_HOME/libs下
+   2. 修改$CATALINA_HOME/conf/server.xml，在<Engine>或者<Host>添加以下语句:
+      <Valve className="ch.qos.logback.access.tomcat.LogbackValve"/>
+   3. 将logback-access.xml文件放入$CATALINA_HOME/conf下:
+   4. 在web.xml添加filter:
+      <filter>
+      <filter-name>TeeFilter</filter-name>
+      <filter-class>ch.qos.logback.access.servlet.TeeFilter</filter-class>
+      </filter>
+      <filter-mapping>
+      <filter-name>TeeFilter</filter-name>
+      <url-pattern>/*</url-pattern>
+      </filter-mapping>

@@ -1,10 +1,9 @@
-* 全文
-** 安装配置
-*** 环境变量
+* 安装配置
+** 环境变量
     GRADLE_HOME
     GRADLE_USER_HOME
-** 依赖管理
-*** Maven地址
+* 依赖管理
+** Maven地址
     Apache        https://repository.apache.org/snapshots/
     Maven Central https://repo1.maven.org/maven2/
     Codehaus     https://nexus.codehaus.org/snapshots/
@@ -12,15 +11,30 @@
     JCenter https://jcenter.bintray.com/
 	Clojars https://clojars.org/repo/
 	ibiblio http://mirrors.ibiblio.org/maven2/
-** Java基础
-   aplay plugin: 'java'
-*** 命令
+* 基础
+** 命令
     1. gradle
     2. gradle build
     3. gradle assemble
     4. gradle clean
-    5. gradle 
-** 高级 
+    5. gradle deps
+* 插件
+** Java
+    compileJava {
+        sourceCompatibility = 1.7
+        targetCompatibility = 1.7
+        options*.encoding = "UTF-8"
+    }
+
+    tasks.withType(JavaCompile) {
+        options.encoding = "UTF-8"
+    }
+
+    javadoc {
+        options.encoding = "UTF-8"
+    }
+** Android
+** War
 processResources {
     from('src/main/resources') {
         include '**/*'

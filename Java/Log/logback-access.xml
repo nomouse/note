@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <statusListener class="ch.qos.logback.core.status.OnConsoleStatusListener"/>
+
+    <filter class="ch.qos.logback.access.filter.CountingFilter">
+        <name>countingFilter</name>
+    </filter>
+
+    <appender name="accessFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>d:/tmp/logs/nomouse-access.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>/tmp/logs/nomouse-access.%d{yyyy-MM-dd}.log.zip</fileNamePattern>
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>combined</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%n%fullRequest%n%fullResponse%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="httpFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>/tmp/logs/nomouse-http.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>/tmp/logs/nomouse-http.%d{yyyy-MM-dd}.log.zip</fileNamePattern>
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>%n%fullRequest%n%fullResponse%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender-ref ref="accessFile"/>
+    <appender-ref ref="httpFile"/>
+    <appender-ref ref="console"/>
+
+</configuration>
