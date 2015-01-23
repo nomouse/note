@@ -77,6 +77,11 @@
 ** chmod 操作文件权限，777是全部权限
    -R 递归执行
 
+* Shell/Bash
+** pwd
+** date
+   `date +%Y%m%d-%H%M%S`
+   20150122-152059
 * 高级工具
 ** fdisk硬盘分区
 *** 硬盘常识
@@ -365,6 +370,7 @@ endscript
      1. 在客户端的~/.ssh目录下生成rsa私钥和公钥（安全起见要输入密码passphrase，默认私钥id_dsa和公钥id_rsa.pub）：ssh-keygen -t rsa
      2. 将客户端的公钥复制到服务器的~/.ssh目录下，执行命令：cat id_rsa.pub > authorized_key，
         如果都是linux的话,scp ~/.ssh/id_rsa.pub root@192.168.0.11:.ssh/authorized_keys
+        或者ssh-copy-id -i ~/.ssh/id_rsa.pub root@192.168.0.11
         或者: cat ~/.ssh/id_rsa.pub | ssh user@remote.machine.com 'cat >> .ssh/authorized_keys'
      3. 在客户端执行：ssh-agent sh -c 'ssh-add < /dev/null && bash'
 *** 使用keychain
