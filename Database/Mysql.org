@@ -1,5 +1,9 @@
 * 安装配置
 ** 安装
+   集群版地址:http://dev.mysql.com/get/file/mysql-cluster-gpl-7.3.7-linux-glibc2.5-x86_64.tar.gz
+   社区版地址:http://dev.mysql.com/get/file/mysql-gpl-5.5.39-linux-glibc2.5-x86_64.tar.gz
+   源码版地址:http://dev.mysql.com/get/file/mysql-5.5.39.tar.gz
+   其它地址:http://ftp.kaist.ac.kr/mysql/Downloads/
 ** 启动服务
 *** windows下DOS命令窗口输入指令：
     查看服务是否启动：net help services
@@ -71,4 +75,10 @@
 ** 数据库备份
    备份数据库:mysqldump -hlocalhost -P3306 -uroot -p123456 dbname --default-character-set=utf8 | gzip > /data/dbname.sql.gz
    恢复数据库:gunzip < /data/dbname.sql.gz | mysql -uroot -p123456 dbname
+
+* 数据库HA
+  Mysql HA(High Avalible)数据库高可用，有多种方案可以选择
+** Mysql ndb集群
+** Myslq 主从
+
 
