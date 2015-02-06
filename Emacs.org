@@ -1,25 +1,23 @@
-* Introduction
-* Install and Config
-* Shortcut keys
-** Basic
+* 快捷键
+** 基础
 *** C-x C-f Find a file(Open or New)
 *** C-x C-s Save current file 
 *** C-x C-c Quit 
 *** C-x C-w Save as
-** Important
+*** M-x recover-file 恢复上次崩溃的文件
+** 重要
 *** C-g     Quit current command
 *** C-x u   Undo last command
-** Help
+** 帮助
 *** C-h f   Show function 
 *** C-h v   Show variables
 *** C-h k   Show shortcut keys
-** Search
+** 搜索
 *** C-s     Search below
 *** C-r     Search above
-** Advanced
+** 高级
 *** M-x linum-mode  Show or Hide line numbers 
 *** C-x k           Close buffer
-
 
 * Org mode
 ** Structure

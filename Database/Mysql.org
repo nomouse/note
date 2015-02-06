@@ -70,6 +70,16 @@
     ALTER database db DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci
 
 * 高级
+** 事务
+   mysql的autocommit（自动提交）默认是开启，其对mysql的性能有一定影响，举个例子来说，如果你插入了1000条数据，mysql会commit1000次的，如果我们把autocommit关闭掉，通过程序来控制，只要一次commit就可以了。
+   另外mysql事务只有innodb引擎支持，设置myisam引擎是不支持事务的。
+*** 手动设置autocommit
+    select @@autocommit;    查看mysql autocommit设置0为关闭，1为开启
+    set autocommit=0;       设置autocommit;
+*** 修改配置文件
+    修改/etc/my.cnf，在[mysqld]节点下添加:
+    init_connect='SET autocommit=0' 
+    需要注意的是连接mysql用户的权限不能大于启动mysql的用户的权限，不然init_connect='SET autocommit=0'根本不会启作用，也不会报任何错误
 ** 数据库分析
    show processlist        查看数据库session
 ** 数据库备份

@@ -1,3 +1,37 @@
-* 全文
-** 安装
-** 基本
+* 安装
+* 配置
+* 数据结构
+   1. string字符串
+   2. list链表
+   3. hash哈希表
+   4. set集合
+   5. sorted set有序集合
+* 基本命令
+** key相关
+*** del
+*** exists
+*** keys
+*** expire
+** string
+*** get
+*** set
+*** setex
+*** setnx
+*** mset
+*** incr
+*** incrby
+** list
+*** lpush
+*** lpop
+*** lrange
+** hash
+*** hset
+*** hget
+*** hgetall
+*** hmget
+*** hmset
+** set
+** sorted set
+* 高级
+** RDB
+** AOF
