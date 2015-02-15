@@ -1,4 +1,4 @@
-
+* 配置
     <!-- 类配置
     <context-param>
         <param-name>contextClass</param-name>
@@ -12,4 +12,7 @@
         <param-value>com.lianxi.resource.Config</param-value>
     </context-param>
     -->
+* 高级
+** 跨域
+   CORS
 

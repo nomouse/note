@@ -1,8 +1,28 @@
-* 全文
-** 安装配置
-*** windows
+* 安装
+** windows
 	bin目录下添加setenv.bat，内容如下:
 	set "CATALINA_OPTS=%CATALINA_OPTS% -Dspring.profiles.active=development"
-*** linux
+** linux
 	bin目录下添加setenv.sh，内容如下:
 	CATALINA_OPTS="$CATALINA_OPTS -Dspring.profiles.active=development"	
+* 配置
+* 项目配置
+** 过滤静态资源
+   <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>*.png</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>*.js</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>*.css</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>*.html</url-pattern>
+    </servlet-mapping>
+
+
