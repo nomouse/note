@@ -16,3 +16,7 @@
 ** 跨域
    CORS
 
+** Api文档集成
+   使用swagger与spring-mvc生成api文档
+   1. https://github.com/swagger-api/swagger-ui 下载swwager ui
+   2. https://github.com/martypitt/swagger-springmvc 集成spring-mvc 

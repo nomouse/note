@@ -1,8 +1,26 @@
 * 系统管理
-** 时间
-   ntpdate time.nist.gov  将Internet时间同步到系统时间
-   hwclock                显示BIOS时间
-   hwclock -w             将当前系统时间同步到BIOS时间
+** 查看系统信息
+   cat /etc/issue
+   uname -a
+   free -m 内存大小M
+   cat /proc/cpuinfo CPU信息
+   cat /proc/cpuinfo | grep name | cut -f2 -d: | uniq -c  CPU多少逻辑核心
+   cat /proc/cpuinfo | grep physical | uniq -c  CPU多少物理核心
+   getconf LONG_BIT 服务器运行在64位还是32位核心下
+   dmidecode | grep "Product Name" 机器型号
+   dmesg | grep -i eth 网卡信息
+   ethtool eth0 查看网络带宽
+** ntpdate 时间同步
+    ntpdate time.nist.gov  将Internet时间同步到系统时间
+*** 时间服务器
+    ntp.fudan.edu.cn
+*** 服务器时间同步
+    yum install -y ntp
+    ntpdate -u pool.ntp.org
+    date
+** hwclock 修改BIO时间
+    hwclock                显示BIOS时间
+    hwclock -w             将当前系统时间同步到BIOS时间
 ** ps  显示当前正在运行的进程
    -e 显示所有进程
    -f 输出所有信息
@@ -110,6 +128,7 @@
      检查是否安装和运行：service crond status
      启动：service crond start
      停止：service crond stop
+     查看定时任务执行情况: tail -f /var/log/cron
 *** crontab命令
      查看root用户的个人定时任务：crontab -u root -l
      编辑当前用户的个人定时任务：crontab -e 
@@ -154,7 +173,8 @@
      正斜线（/）可以用来指定间隔频率。在范围后加上 /<integer> 意味着在范围内可以跳过 integer。譬如，0-59/2 可以用来在分钟字段定义每两分钟。间隔频率值还可以和星号一起使用。例如，*/3 的值可以用在月份字段中表示每三个月运行一次任务。 
      开头为井号（#）的行是注释，不会被处理。
      
-     如你在 /etc/crontab 文件中所见，它使用 run-parts 脚本来执行 /etc/cron.hourly、/etc/cron.daily、/etc/cron.weekly 和 /etc/cron.monthly 目录中的脚本，这些脚本被相应地每小时、每日、每周、或每月执行。这些目录中的文件应该是 shell 脚本。
+     如你在 /etc/crontab 文件中所见，它使用 run-parts 脚本来执行 /etc/cron.hourly、/etc/cron.daily、/etc/cron.weekly 和 /etc/cron.monthly 目录中的脚本，这些脚本被相应地每小时、每日、每周、或每月执行。
+     这些目录中的文件应该是 shell 脚本。
      
      如果某 cron 任务需要根据调度来执行，而不是每小时、每日、每周、或每月地执行，它可以被添加到 /etc/cron.d 目录中。该目录中的所有文件使用和 /etc/crontab 中一样的语法。范例请参见下例。
      
@@ -164,9 +184,11 @@
      # run custom script thee first day of every month at 4:10AM
      10 4 1 * * /root/scripts/backup.sh 
      
-   根用户以外的用户可以使用 crontab 工具来配置 cron 任务。所有用户定义的 crontab 都被保存在 /var/spool/cron 目录中，并使用创建它们的用户身份来执行。要以某用户身份创建一个 crontab 项目，登录为该用户，然后键入 crontab -e 命令，使用由 VISUAL 或 EDITOR 环境变量指定的编辑器来编辑该用户的 crontab。该文件使用的格式和 /etc/crontab 相同。当对 crontab 所做的改变被保存后，该 crontab 文件就会根据该用户名被保存，并写入文件 /var/spool/cron/username 中。
-   
-   cron 守护进程每分钟都检查 /etc/crontab 文件、etc/cron.d/ 目录、以及 /var/spool/cron 目录中的改变。如果发现了改变，它们就会被载入内存。这样，当某个 crontab 文件改变后就不必重新启动守护进程了。
+     根用户以外的用户可以使用 crontab 工具来配置 cron 任务。所有用户定义的 crontab 都被保存在 /var/spool/cron 目录中，并使用创建它们的用户身份来执行。
+     要以某用户身份创建一个 crontab 项目，登录为该用户，然后键入 crontab -e 命令，使用由 VISUAL 或 EDITOR 环境变量指定的编辑器来编辑该用户的 crontab。该文件使用的格式和 /etc/crontab 相同。
+     当对 crontab 所做的改变被保存后，该 crontab 文件就会根据该用户名被保存，并写入文件 /var/spool/cron/username 中。
+     
+     cron 守护进程每分钟都检查 /etc/crontab 文件、etc/cron.d/ 目录、以及 /var/spool/cron 目录中的改变。如果发现了改变，它们就会被载入内存。这样，当某个 crontab 文件改变后就不必重新启动守护进程了。
 ** sed 按行检索文本文件并且进行文本修改
 命令格式：sed [OPTION] '[COMMAND]' [FILE]
 	
@@ -236,7 +258,7 @@ tabootext [+] list 让logrotate 不转储指定扩展名的文件，缺省的扩
 size size 当日志文件到达指定的大小时才转储，Size 可以指定 bytes (缺省)以及KB (sizek)或者MB (sizem).
 二、缺省配置 logrotate
 
-logrotate 缺省的配置募?/etc/logrotate.conf。
+logrotate 缺省的配置:/etc/logrotate.conf。
 Red Hat Linux 缺省安装的文件内容是：
 
 # see "man logrotate" for details
@@ -471,12 +493,16 @@ endscript
        echo 00 > /etc/pki/CA/serial
     8. 
 * 网络配置
-** ifconfig 显示网卡信息
-   激活设备
-   ifconfig eth0 up
-   禁用设备
-   ifconfig eth0 down
-** iptables
+** ifconfig 查询设定网卡与网络配置
+   ifconfig 查看网卡信息
+   /etc/sysconfig/network-script/ifcfg-eth0  此文件代表网卡eth0的配置文件
+   ifconfig eth0 up 激活eth0网卡
+   ifconfig eth0 down 禁用eth0网卡
+   service network restart 重启网络服务
+
+   ifconfig eth0:1 192.168.0.10 broadcast 192.168.0.255  Mask:255.255.255.0 添加虚拟ip
+   route add host 192.168.0.10 dev eth0:1 添加路由
+** iptables 防火墙
 *** 防火墙配置文件
     /etc/sysconfig/iptables
     默认如下：
