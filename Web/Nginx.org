@@ -1,0 +1,220 @@
+* 安装
+* 配置文件
+** 完整
+#运行用户组用户名
+user www www;
+#进程数，一般和CPU核心数匹配
+worker_processes  auto;
+
+error_log  logs/error.log;
+
+pid        logs/nginx.pid;
+
+worker_rlimit_nofile 51200;
+
+events {
+        use epoll;
+        #允许最大连接数
+        worker_connections  51200;
+        multi_accept on;
+}
+
+http {
+        include       mime.types;
+        default_type  application/octet-stream;
+
+        server_names_hash_bucket_size 128;
+        client_header_buffer_size 32k;
+        large_client_header_buffers 4 32k;
+        client_max_body_size 100m;
+
+        sendfile       on;
+        tcp_nopush     on;
+
+        keepalive_timeout  60;
+
+        tcp_nodelay on;
+
+        fastcgi_connect_timeout 300;
+        fastcgi_send_timeout 300;
+        fastcgi_read_timeout 300;
+        fastcgi_buffer_size 64k;
+        fastcgi_buffers 4 64k;
+        fastcgi_busy_buffers_size 128k;
+        fastcgi_temp_file_write_size 256k;
+
+        gzip  on;
+        gzip_min_length  1k;
+        gzip_buffers     4 8k;
+        gzip_comp_level 2;
+        gzip_types       text/plain application/x-javascript text/css application/xml;
+        gzip_vary on;
+        gzip_proxied        expired no-cache no-store private auth;
+        gzip_disable        "MSIE [1-6]\.";
+
+        server_tokens off;
+        log_format    access    '$remote_addr - $remote_user [$time_local] "$request" '
+                '$status $body_bytes_sent "$http_referer" '
+                '"$http_user_agent" $http_x_forwarded_for';
+
+        error_page   500 502 503 504  /50x.html;
+
+        client_body_buffer_size  512k;
+        proxy_connect_timeout    5;
+        proxy_read_timeout       60;
+        proxy_send_timeout       5;
+        proxy_buffer_size        16k;
+        proxy_buffers            4 64k;
+        proxy_busy_buffers_size 128k;
+        proxy_temp_file_write_size 128k;
+
+        proxy_temp_path   /opt/lianxi/temp;
+        proxy_cache_path  /opt/lianxi/cache levels=1:2 keys_zone=cache_one:200m inactive=1d max_size=30g;
+
+################################Load balance start
+#upstream tomcat{
+#   ip_hash;
+#	server 192.168.0.100 weight=1;
+#	server 192.168.0.101 weight=1;
+#}
+################################ Load balance end
+
+        server {
+
+                listen       80;
+                server_name  localhost;
+
+                root /opt/lianxi/www;
+
+                access_log    logs/access.log    access;
+
+                location /{
+                        index index.php  index.html index.htm;
+                        proxy_headers_hash_max_size 51200;
+                        proxy_headers_hash_bucket_size 6400;
+                        proxy_set_header Host  $host;
+                        proxy_set_header X-Forwarded-For $remote_addr;
+                        proxy_set_header   X-Forwarded-For $proxy_add_x_forwarded_for;
+                        proxy_pass http://tomcat
+                }
+
+                location ~ /purge(/.*){
+                        allow            127.0.0.1;
+                        deny            all;
+                        proxy_cache_purge    cache_one   $host$1$is_args$args;
+                }
+
+                location ~ \.(php)?$ {
+                        try_files $uri =404;
+                        fastcgi_pass   127.0.0.1:9000;
+                        fastcgi_index  index.php;
+                        fastcgi_param  SCRIPT_FILENAME    $document_root$fastcgi_script_name;
+                        include        fastcgi_params;
+                }
+
+                location ~ .*\.(gif|jpg|jpeg|png|bmp|swf|mp3)$ {
+
+                        proxy_next_upstream http_502 http_504 error timeout invalid_header;
+                        proxy_cache cache_one;
+                        proxy_cache_valid  200 304 12h;
+                        proxy_cache_key $host$uri$is_args$args;
+
+                        try_files $uri =404
+                        expires      1d;
+                }
+
+                location ~ .*\.(js|css)?$ {
+                        expires      1h;
+                }
+
+                location /nginx_status {
+                        stub_status on;
+                        access_log   off;
+                }
+        }
+
+
+  server {
+        listen       88;
+        server_name  localhost;
+
+        charset utf-8;
+        root /opt/lianxi/files/;
+         index index.php  index.html index.htm;
+        location / {
+            #proxy_pass    node1;
+             if ($request_filename !~* /(index\.php|avatars|crossdomain\.html)) {
+                   rewrite ^/(.*)$ /index.php/$1 last;
+                   break;
+                }
+
+        }
+
+        location ~ [^/]\.php(/|$) {
+            root /opt/lianxi/www/imgserver/;
+            fastcgi_pass   127.0.0.1:9000;
+            fastcgi_index  index.php;
+            fastcgi_param  SCRIPT_FILENAME    $document_root$fastcgi_script_name;
+            fastcgi_split_path_info ^(.+?\.php)(/.*)$;
+            set $path_info $fastcgi_path_info;
+            fastcgi_param PATH_INFO       $path_info;
+            try_files $fastcgi_script_name =404;
+            include        fastcgi_params;
+        }
+
+        location ~ .*\.(gif|jpg|jpeg|png|bmp)$ {
+            if (!-e $request_filename){
+               rewrite ^/(.*)/(.*).jpg$   http://192.168.100.37:88/show/$2 break;
+            }
+
+            expires      30d;
+       }
+
+       location ~ .*\.(amr|3gp|aac|swf|mp3|mp4|apk|ipa|txt)$ {
+             expires      30d;
+       }
+
+
+       location ~ .*\.(js|css)?$ {
+             expires      1h;
+       }
+
+            location /Nginxstatus {
+                 stub_status on;
+                 access_log   off;
+            }
+
+
+        error_page   500 502 503 504  /50x.html;
+    }
+
+
+
+
+#include vhost/*.conf;
+
+
+
+# HTTPS server
+#
+#server {
+#    listen       443;
+#    server_name  localhost;
+
+#    ssl                  on;
+#    ssl_certificate      cert.pem;
+#    ssl_certificate_key  cert.key;
+
+#    ssl_session_timeout  5m;
+
+#    ssl_protocols  SSLv2 SSLv3 TLSv1;
+#    ssl_ciphers  HIGH:!aNULL:!MD5;
+#    ssl_prefer_server_ciphers   on;
+
+#    location / {
+#        root   html;
+#        index  index.html index.htm;
+#    }
+#}
+
+}

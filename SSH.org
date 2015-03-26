@@ -1,0 +1,55 @@
+* ssh
+** Linux下安装启动SSH服务端
+    ssh服务端状态：service sshd status
+    如果没有此服务，安装：yum install openssh-server
+    安装完成后启动：service openssh start
+** Linux下安装使用SSH客户端
+    是否安装ssh：ssh -version
+    没有的话安装：yum install openssh-clients
+    登录远程机器：ssh root@192.168.0.38
+** 工具
+*** ssh-keygen
+   ssh-keygen -t rsa 生成rsa密钥对
+   ssh-keygen -l -f id_rsa.pub 检查公钥是否有效
+*** ssh-copy-id
+** 高级
+*** 使用ssh-agent实现客户端不输入密码直接登录远程服务器
+     1. 在客户端的~/.ssh目录下生成rsa私钥和公钥（安全起见要输入密码passphrase，默认私钥id_dsa和公钥id_rsa.pub）：ssh-keygen -t rsa
+     2. 将客户端的公钥复制到服务器的~/.ssh目录下，执行命令：cat id_rsa.pub > authorized_key，
+        如果都是linux的话,scp ~/.ssh/id_rsa.pub root@192.168.0.11:.ssh/authorized_keys
+        或者ssh-copy-id -i ~/.ssh/id_rsa.pub root@192.168.0.11
+        或者: cat ~/.ssh/id_rsa.pub | ssh user@remote.machine.com 'cat >> .ssh/authorized_keys'
+     3. 在客户端执行：ssh-agent sh -c 'ssh-add < /dev/null && bash'
+*** 使用keychain
+     1. keychain官网下载安装包http://www.funtoo.org/Keychain， 解压到任意目录，执行:install -m0755 keychain /usr/bin
+     2. 命令行输入: eval $(keychain --eval --agents ssh -Q --quiet id_rsa)
+     3. 在/etc/profile.d下新建keychain.sh，内容:
+        #!/bin/bash
+        /usr/bin/keychain ~/.ssh/id_rsa ~/.ssh/id_rsa
+        source $HOME/.keychain/$HOSTNAME-sh
+        更改此脚本权限 chomod +x /etc/profile.d/keychain.sh
+* openssl
+*** https生成自签名证书
+    1. 生成根证书所用的密钥
+       openssl genrsa -des3 -out ca.key 1024
+    2. 去除密钥的密码
+       openssl rsa -in ca.key -out ca.key
+    3. 生成根证书并自签
+       openssl req -new -x509 -key ca.key -out ca.crt
+       Common Name这里要填要安装这个证书的机器的主机名或者域名
+       成功后可以将ca.crt这个证书导入客户端的根级信任域，就可以不受限制的访问被此证书认证过的https网站了
+    4. 生成WEB服务器密钥
+       openssl genrsa -des3 -out server.key 1024
+    5. 去除密钥密码
+       openssl rsa -in server.key -out server.key
+    6. 生成WEB服务器证书
+       openssl req -new -key server.key -out server.csr
+    7. 用根证书对此WEB服务器的证书进行认证
+       openssl ca -in server.csr -out server.crt -cert ca.crt -keyfile ca.key
+       出现错误的话需要执行以下语句:
+       mkdir -p /etc/pki/CA/newcerts
+       touch /etc/pki/CA/index.txt
+       touch /etc/pki/CA/serial
+       echo 00 > /etc/pki/CA/serial
+       1. 
+
