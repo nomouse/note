@@ -74,13 +74,24 @@
    -f 强行移动
 ** tar 解压缩工具
    命令：tar [OPTION]... [FILE]
+   -x 代表解压缩
+   -c 代表压缩
+   -t 代表查看内容，三者同时只能存在其一
+   -r 在压缩包中追加文件
+   -u 更新压缩包中的文件
+
    z 代表gzip文件
+   j 代表bzip2压缩
+
    v 解压缩过程中显示文件
-   x 代表解压缩 c代表压缩 t代表查看内容，三者同时只能存在其一
+
    f 代表需要操作哪个文件，后面必须立即接文件
    -C [dir] 改变工作目录，例如将一个压缩文件解压为另外一个文件夹，必须放置在末尾
+
    例子：
-   tar -zvxf jdk-1.6.tar.gz -C /opt/nomouse
+   tar -zvxf jdk-1.6.tar.gz -C /opt/nomouse 解压gzip格式
+   tar -jxf jdk.tar.bz2 解压bz2格式
+   tar -czf jdk.tar.gz /opt/jdk1.6 生成压缩文件
 ** find 查找文件或者文件夹
    find [PATH] -name [NAME] -type d
    -name [文件名]查找相应文件夹

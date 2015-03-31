@@ -7,21 +7,24 @@
    1. 下载[[http://git-scm.com/download]] 中的git客户端进行安装
    2. 配置
 * 常用命令
-
-git add [文件]
-	添加文件或文件夹到版本控制
-git commit [文件]
-	提交修改
-git remote add origin git@github.com:nomouse/note.get
-	建立远程仓库
-git clone [地址]
-	将远程仓库迁入当前文件夹
-git branch -va
-	查看当前分支
-git branch [分支名]
-	切换分支
-git checkout -b [分支名]
-	当前远程分支为基础创建本地新分支
+** git init
+   初始化本地git仓库
+** git clone
+   将远程仓库迁入当前文件夹
+** git add
+   添加文件或文件夹当前分支
+** git commit
+   提交修改
+   remote add origin git@github.com:nomouse/note.get
+   建立远程仓库
+** git branch -va
+   查看当前分支
+** git branch
+** git branch -va
+   切换分支
+** git checkout
+   git checkout -b [分支名]
+   当前远程分支为基础创建本地新分支
 
 * 服务器搭建
 ** gitolite服务端
