@@ -42,7 +42,6 @@
        <fieldType name="text_ik" class="solr.TextField">
          <analyzer class="org.wltea.analyzer.lucene.IKAnalyzer"/>
        </fieldType>
-
 ** 配置
 ** 增删
 ** 查询语法

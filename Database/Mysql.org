@@ -4,40 +4,7 @@
    社区版地址:http://dev.mysql.com/get/file/mysql-gpl-5.5.39-linux-glibc2.5-x86_64.tar.gz
    源码版地址:http://dev.mysql.com/get/file/mysql-5.5.39.tar.gz
    其它地址:http://ftp.kaist.ac.kr/mysql/Downloads/
-** 启动服务
-*** windows下DOS命令窗口输入指令：
-    查看服务是否启动：net help services
-    启动mysql服务：net start mysql
-    停止mysql服务：net stop mysql
-*** linux下在bash下，输入指令：
-    查看服务状态：service mysqld status
-    启动mysql服务：service mysqld start
-    停止mysql服务：service mysqld stop
-* 基本操作
-** 修改root密码
-   mysqladmin -u root -p[oldpassword] password [newpassword]，root没有设置密码的话-p[oldpassword]可以省略
-** 数据库相关操作
-*** 登录
-    mysql -u[user] -p[password]
-    例子： mysql -uroot -p123456
-*** 数据库管理
-    show databases          查看所有数据库
-    create database [db]      创建数据库
-    use [db]                  切换数据库
-    show tables             查看当前数据库中所有的表
-    grant all on [db].[table] to '[user]'@'[ip]' identified by '[password]'    创建用户并赋予权限
-    例子：grant all on db.* to db@172.17.100.156 identified by '123456'
-    意思是让db用户可以在ip地址为172.17.100.156的主机上拥有db数据库下的所有表的所有访问权限
-    revoke all privileges on db.users from db@172.17.100.156               移除权限
-** 忘记密码
-   先停止mysql服务
-   然后输入：mysqld --skip-grant-tables，此时mysqld服务会被启动
-   在命令行输入：mysql -uroot，以不用密码的方式登录root
-   输入：update mysql.user set password=PASSWORD('[这里输入你的新密码]') where user='root'
-   输入：flush privileges
-   退出，重启mysql服务，用新密码即可登录
-* 编码问题
-** mysql5.5
+** 编码设置
 *** windows
     修改Mysql安装目录下my.ini文件，
     [client]
@@ -69,6 +36,38 @@
     重启mysql服务，注意创建表的时候要使用utf8格式，如下：
     ALTER database db DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci
 
+** 启动服务
+*** windows下DOS命令窗口输入指令：
+    查看服务是否启动：net help services
+    启动mysql服务：net start mysql
+    停止mysql服务：net stop mysql
+*** linux下在bash下，输入指令：
+    查看服务状态：service mysqld status
+    启动mysql服务：service mysqld start
+    停止mysql服务：service mysqld stop
+* 基本操作
+** 修改root密码
+   mysqladmin -u root -p[oldpassword] password [newpassword]，root没有设置密码的话-p[oldpassword]可以省略
+** 数据库相关操作
+*** 登录
+    mysql -u[user] -p[password]
+    例子： mysql -uroot -p123456
+*** 数据库管理
+    show databases          查看所有数据库
+    create database [db]      创建数据库
+    use [db]                  切换数据库
+    show tables             查看当前数据库中所有的表
+    grant all on [db].[table] to `[user]`@`[ip]` identified by '[password]'    创建用户并赋予权限
+    例子：grant all on db.* to `db`@`%` identified by '123456'
+    意思是让db用户可以在ip地址任意的主机上拥有db数据库下的所有表的所有访问权限
+    revoke all privileges on db.users from db@172.17.100.156               移除权限
+** 忘记密码
+   先停止mysql服务
+   然后输入：mysqld --skip-grant-tables，此时mysqld服务会被启动
+   在命令行输入：mysql -uroot，以不用密码的方式登录root
+   输入：update mysql.user set password=PASSWORD('[这里输入你的新密码]') where user='root'
+   输入：flush privileges
+   退出，重启mysql服务，用新密码即可登录
 * 高级
 ** 事务
    mysql的autocommit（自动提交）默认是开启，其对mysql的性能有一定影响，举个例子来说，如果你插入了1000条数据，mysql会commit1000次的，如果我们把autocommit关闭掉，通过程序来控制，只要一次commit就可以了。
@@ -83,12 +82,200 @@
 ** 数据库分析
    show processlist        查看数据库session
 ** 数据库备份
-   备份数据库:mysqldump -hlocalhost -P3306 -uroot -p123456 dbname --default-character-set=utf8 | gzip > /data/dbname.sql.gz
-   恢复数据库:gunzip < /data/dbname.sql.gz | mysql -uroot -p123456 dbname
-
+   备份数据库:
+   mysqldump -h 192.168.0.105 -P3306 -uroot -plianxi2015! dbname --default-character-set=utf8 | gzip > /data/dbname.sql.gz
+   mysqldump -h 192.168.0.105 -P3306 -uroot -plianxi2015! dbname > /opt/dbname.db
+   恢复数据库:
+   mysql -h localhost -u root -plianxi2015! queen < /opt/queen.db
+   gunzip < /data/dbname.sql.gz | mysql -uroot -p123456 dbname
 * 数据库HA
   Mysql HA(High Avalible)数据库高可用，有多种方案可以选择
 ** Mysql ndb集群
 ** Myslq 主从
+   主服务器192.168.0.105
+   从服务器192.168.0.106
+   1. 主服务器
+   修改/etc/my.cnf
+   [mysqld]
+   log-bin=mysql-bin
+   server-id=1
+   登陆mysql 
+   mysql -h 192.168.0.105 -P3306 -u szlianxi -pszlianxi123456;
+   show master status;
+   grant replication slave on *.* to `rep`@`%` identified by 'rep';
+   flush privileges;
 
+   备份数据
+   flush tables with read lock;
+   mysqldump -h 192.168.0.105 -P3306 -uroot -plianxi2015! queen > /opt/queen.db
+   unlock tables;
 
+   |------------------+----------+--------------+------------------|
+   | File             | Position | Binlog_Do_DB | Binlog_Ignore_DB |
+   |------------------+----------+--------------+------------------|
+   | mysql-bin.000008 |  9469507 |              |                  |
+   |------------------+----------+--------------+------------------|
+   2. 从服务器
+   修改/etc/my.cnf
+   [mysqld]
+   log-bin=mysql-bin
+   server-id=2
+   恢复数据
+   mysql -h 192.168.0.106 -P3306 -u szlianxi -pszlianxi123456 < /opt/queen.db
+   登陆mysql 
+   mysql -h 192.168.0.106 -P3306 -u szlianxi -pszlianxi123456;
+   CHANGE MASTER TO MASTER_HOST='192.168.0.105',MASTER_PORT=3306,MASTER_USER='szlianxi',MASTER_PASSWORD='szlianxi123456',master_log_file='mysql-bin.000008',master_log_pos=9469507
+   slave start;
+   show slave status\G:
+   *************************** 1. row ***************************
+               Slave_IO_State: Waiting for master to send event
+                  Master_Host: 192.168.0.105
+                  Master_User: rep
+                  Master_Port: 3306
+                Connect_Retry: 60
+              Master_Log_File: mysql-bin.000008
+          Read_Master_Log_Pos: 9469939
+               Relay_Log_File: TixaSNS8-relay-bin.000002
+                Relay_Log_Pos: 466
+        Relay_Master_Log_File: mysql-bin.000008
+             Slave_IO_Running: Yes
+            Slave_SQL_Running: Yes
+              Replicate_Do_DB: 
+          Replicate_Ignore_DB: 
+           Replicate_Do_Table: 
+       Replicate_Ignore_Table: 
+      Replicate_Wild_Do_Table: 
+  Replicate_Wild_Ignore_Table: 
+                   Last_Errno: 0
+                   Last_Error: 
+                 Skip_Counter: 0
+          Exec_Master_Log_Pos: 9469939
+              Relay_Log_Space: 625
+              Until_Condition: None
+               Until_Log_File: 
+                Until_Log_Pos: 0
+           Master_SSL_Allowed: No
+           Master_SSL_CA_File: 
+           Master_SSL_CA_Path: 
+              Master_SSL_Cert: 
+            Master_SSL_Cipher: 
+               Master_SSL_Key: 
+        Seconds_Behind_Master: 0
+Master_SSL_Verify_Server_Cert: No
+                Last_IO_Errno: 0
+                Last_IO_Error: 
+               Last_SQL_Errno: 0
+               Last_SQL_Error: 
+  Replicate_Ignore_Server_Ids: 
+             Master_Server_Id: 1
+
+             出现以下说明成功:
+             Slave_IO_Running: Yes
+             Slave_SQL_Running: Yes
+* 其它
+  赶集网mysql开发36军规
+  写在前面的话：
+  总是在灾难发生后，才想起容灾的重要性；
+  总是在吃过亏后，才记得曾经有人提醒过。
+  （一）核心军规
+  （1）不在数据库做运算：cpu计算务必移至业务层
+  （2）控制单表数据量：单表记录控制在1000w
+  （3）控制列数量：字段数控制在20以内
+  （4）平衡范式与冗余：为提高效率牺牲范式设计，冗余数据
+  （5）拒绝3B：拒绝大sql，大事物，大批量
+  （二）字段类军规
+  （6）用好数值类型
+  tinyint(1Byte)
+  smallint(2Byte)
+  mediumint(3Byte)
+  int(4Byte)
+  bigint(8Byte)
+  bad case：int(1)/int(11)
+  （7）字符转化为数字
+  用int而不是char(15)存储ip
+  （8）优先使用enum或set
+  例如：`sex` enum (‘F’, ‘M’)
+  （9）避免使用NULL字段
+  NULL字段很难查询优化
+  NULL字段的索引需要额外空间
+  NULL字段的复合索引无效
+  bad case：
+  `name` char(32) default null
+  `age` int not null
+  good case：
+  `age` int not null default 0
+  （10）少用text/blob
+  varchar的性能会比text高很多
+  实在避免不了blob，请拆表
+  （11）不在数据库里存图片：是否需要解释？
+  （三）索引类军规
+  （12）谨慎合理使用索引
+  改善查询、减慢更新
+  索引一定不是越多越好（能不加就不加，要加的一定得加）
+  覆盖记录条数过多不适合建索引，例如“性别”
+  （13）字符字段必须建前缀索引
+  （14）不在索引做列运算
+  bad case：
+  select id where age +1 = 10;
+  （15）innodb主键推荐使用自增列（SK：博主不认可）
+  主键建立聚簇索引
+  主键不应该被修改
+  字符串不应该做主键
+  如果不指定主键，innodb会使用唯一且非空值索引代替
+  （16）不用外键
+  请由程序保证约束
+  （四）sql类军规
+  （17）sql语句尽可能简单
+  一条sql只能在一个cpu运算
+  大语句拆小语句，减少锁时间
+  一条大sql可以堵死整个库
+  （18）简单的事务
+  事务时间尽可能短
+  bad case：
+  上传图片事务
+  （19）避免使用trig/func
+  触发器、函数不用
+  客户端程序取而代之
+  （20）不用select *
+  消耗cpu，io，内存，带宽
+  这种程序不具有扩展性
+  （21）OR改写为IN()
+  or的效率是n级别
+  in的消息时log(n)级别
+  in的个数建议控制在200以内
+  select id from t where phone=’159′ or phone=’136′;
+  =>
+  select id from t where phone in (’159′, ’136′);
+  （22）OR改写为UNION
+  mysql的索引合并很弱智
+  select id from t where phone = ’159′ or name = ‘john’;
+  =>
+  select id from t where phone=’159′
+  union
+  select id from t where name=’jonh’
+  （23）避免负向%
+  （24）慎用count(*)
+  （25）同上
+  （26）limit高效分页
+  limit越大，效率越低
+  select id from t limit 10000, 10;
+  =>
+  select id from t where id > 10000 limit 10;
+  （27）使用union all替代union
+  union有去重开销
+  （28）少用连接join
+  （29）使用group by
+  分组
+  自动排序
+  （30）请使用同类型比较
+  （31）使用load data导数据
+  load data比insert快约20倍；
+  （32）打散批量更新
+  （33）新能分析工具
+  show profile;
+  mysqlsla;
+  mysqldumpslow;
+  explain;
+  show slow log;
+  show processlist;
+  show query_response_time(percona)
