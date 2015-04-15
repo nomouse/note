@@ -92,6 +92,7 @@
   Mysql HA(High Avalible)数据库高可用，有多种方案可以选择
 ** Mysql ndb集群
 ** Myslq 主从
+*** 配置
    主服务器192.168.0.105
    从服务器192.168.0.106
    1. 主服务器
@@ -121,7 +122,7 @@
    log-bin=mysql-bin
    server-id=2
    恢复数据
-   mysql -h 192.168.0.106 -P3306 -u szlianxi -pszlianxi123456 < /opt/queen.db
+   mysql -h 192.168.0.106 -P3306 -u szlianxi -pszlianxi123456 queen < /opt/queen.db
    登陆mysql 
    mysql -h 192.168.0.106 -P3306 -u szlianxi -pszlianxi123456;
    CHANGE MASTER TO MASTER_HOST='192.168.0.105',MASTER_PORT=3306,MASTER_USER='szlianxi',MASTER_PASSWORD='szlianxi123456',master_log_file='mysql-bin.000008',master_log_pos=9469507
@@ -172,6 +173,11 @@ Master_SSL_Verify_Server_Cert: No
              出现以下说明成功:
              Slave_IO_Running: Yes
              Slave_SQL_Running: Yes
+*** 主从不同步时方案
+    1. 忽略错误，继续同步
+       set global sql_slave_skip_counter =1;
+       跳过多条event
+    2. 重新做主从，完全同步
 * 其它
   赶集网mysql开发36军规
   写在前面的话：

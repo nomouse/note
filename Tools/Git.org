@@ -6,26 +6,51 @@
 * 客户端安装配置
    1. 下载[[http://git-scm.com/download]] 中的git客户端进行安装
    2. 配置
-* 常用命令
-** git init
-   初始化本地git仓库
-** git clone
-   将远程仓库迁入当前文件夹
-** git add
-   添加文件或文件夹当前分支
-** git commit
-   提交修改
-   remote add origin git@github.com:nomouse/note.get
+* 基础
+** init
+   git init 初始化本地git仓库
    建立远程仓库
-** git branch -va
-   查看当前分支
-** git branch
-** git branch -va
-   切换分支
-** git checkout
-   git checkout -b [分支名]
-   当前远程分支为基础创建本地新分支
+** remote
+   git remote -v
+** clone
+   git clone git@192.168.100.37:code   将远程仓库迁入当前文件夹
+** add
+   git add  添加文件或文件夹当前分支
+** commit
+   git commit -m "123" 提交修改
+** push
+   git push -u origin test 将本地新分支推到远程
+   git push
+** branch
+   git branch -va 查看当前分支
+** checkout
+   git checkout test 切换为本地分支test
+   git checkout -b [分支名] 当前远程分支为基础创建本地新分支
+** merge
+   合并分支
 
+* 应用
+** 仓库操作
+   git init 新建本地仓库
+   git clone git@github.com:nomouse/nomouse-java.git 签出远程仓库到本地
+   git remote -v 查看远程仓库
+   git remote rename nomouse nomouse1 重命名
+   git remote rm nomouse 删除远程仓库
+** 查看分支
+   git status 获取当前git状态
+   git branch 获取本地分支
+   git branch -va 获取所有分支
+** 提交
+   git rm test.txt 删除text.txt文件
+   git add test.txt 添加test.txt文件
+   git commit -m "update test.txt" 提交
+   git commit -a -m "sdf" 省略git add
+   git diff 查看差别
+   git push 推到远程
+** 回滚
+   git log
+   git checkout test.txt 回滚test.txt文件
+   git reset -hard 12sdfafsf 回滚提交的版本
 * 服务器搭建
 ** gitolite服务端
 *** 服务器需求

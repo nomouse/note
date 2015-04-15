@@ -125,8 +125,10 @@
    broadcast 192.168.0.255
    #gateway 192.168.0.254
 * 高级
-** ethtool
-   确定网口位置---工具ethtool
+** dig DNS查询
+** tracert 路由追踪
+** ethtool 确定网口位置
+   ---工具ethtool
    (1)ethtool DEVNAME   查看相应设备名称对应的设备信息 example：ethtool eth0
    最后一行会显示Link detected: yes/no
    (2)ethtool -p DEVNAME   查看相应设备名称对应的设备位置  example: ethtool –p eth0

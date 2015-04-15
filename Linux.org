@@ -124,6 +124,11 @@
    `date +%Y%m%d-%H%M%S`
    20150122-152059
 * 高级工具
+** selinux 内核安全
+   /etc/selinux/config
+   getenforce 查询当前状态
+   setenforce 0 关闭
+   setenforce 1 开启
 ** iftop 检测网络带宽使用
 ** fdisk 硬盘分区
 *** 硬盘常识
@@ -630,8 +635,10 @@ endscript
    wt 等待IO CPU时间。
 ** rsync 文件同步
 *** 搭建rsyncd服务
-   yum install rsync
-   sed -i '/^disable = yes/c\disable = no' /etc/xinetd/rsync
+yum -y install rsync
+yum -y install xinetd
+
+sed -i '/^disable = yes/c\disable = no' /etc/xinetd/rsync
 
 cat > /etc/rsyncd.conf<<EOF
 uid = root
@@ -644,25 +651,37 @@ log file  = /var/log/rsyncd.log
 pid file  = /var/run/rsyncd.pid
 lock file = /var/run/rsyncd.lock
 [install]
-path = /opt/install
-hosts allow = all
+path = /opt/installl
+hosts allow = *
 uid = root
 gid = root
 read only = false
 auth users = root
-secrets file = /etc/rsyncd.secrets
+secrets file = /etc/rsyncd.server
 EOF
 
-cat > /etc/rsyncd.secrets<<EOF
-root:root
+cat > /etc/rsyncd.server<<EOF
+root:123456
 EOF
 
-    chmod 600 /etc/rsyncd.secret
-    rsync --daemon --config=/etc/rsyncd.conf
-    netstat -naoltp|grep 873
+cat > /etc/rsyncd.client<<EOF
+123456
+EOF
 
-    rsync -vzrtopg --delete --progress --password-file=/etc/rsync.secrets /opt/install root@192.168.100.38::install
+chmod 600 /etc/rsyncd.client
+chmod 600 /etc/rsyncd.client
 
+#rsync --daemon --config=/etc/rsyncd.conf
+chkconfig --add rsync
+chkconfig rsync on
+netstat -naoltp|grep 873
+
+service xinetd restart
+
+*** 使用rsync客户单进行同步
+    rsync -vzrtopg --delete --progress --password-file=/etc/rsyncd.secrets root@192.168.100.38::install /opt/install
+    rsync -avzP root@192.168.100.38::install /opt/install 从远程主机同步到本地目录
+    rsync -avzP /opt/install/ root@192.168.100.38::install 将本地目录推到远程目录
 * 一些杂项
 ** 命令行显示-bash-3.2#
    cp /etc/skel/.{bash_profile,bashrc} ~
