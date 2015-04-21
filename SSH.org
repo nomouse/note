@@ -1,4 +1,4 @@
-* ssh
+* 安装
 ** Linux下安装启动SSH服务端
     ssh服务端状态：service sshd status
     如果没有此服务，安装：yum install openssh-server
@@ -7,24 +7,25 @@
     是否安装ssh：ssh -version
     没有的话安装：yum install openssh-clients
     登录远程机器：ssh root@192.168.0.38
-** 工具
-*** ssh-keygen
+* 命令
+** ssh-keygen
    ssh-keygen -t rsa 生成rsa密钥对
    ssh-keygen -l -f id_rsa.pub 检查公钥是否有效
-*** ssh-copy-id
-** 高级
-*** ssh服务无效的办法
+** ssh-copy-id
+   ssh-copy-id -i ~/.ssh/id_rsa.pub root@192.168.100.37
+* 高级
+** ssh服务无效的办法
     1. ssh -v root@192.168.100.38  测试ssh服务
     2. ~/.ssh 目录的权限
     3. /etc/ssh/ssh_config
-*** 使用ssh-agent实现客户端不输入密码直接登录远程服务器
+** 使用ssh-agent实现客户端不输入密码直接登录远程服务器
      1. 在客户端的~/.ssh目录下生成rsa私钥和公钥（安全起见要输入密码passphrase，默认私钥id_dsa和公钥id_rsa.pub）：ssh-keygen -t rsa
      2. 将客户端的公钥复制到服务器的~/.ssh目录下，执行命令：cat id_rsa.pub > authorized_key，
         如果都是linux的话,scp ~/.ssh/id_rsa.pub root@192.168.0.11:.ssh/authorized_keys
         或者ssh-copy-id -i ~/.ssh/id_rsa.pub root@192.168.0.11
         或者: cat ~/.ssh/id_rsa.pub | ssh user@remote.machine.com 'cat >> .ssh/authorized_keys'
      3. 在客户端执行：ssh-agent sh -c 'ssh-add < /dev/null && bash'
-*** 使用keychain
+** 使用keychain
      1. keychain官网下载安装包http://www.funtoo.org/Keychain， 解压到任意目录，执行:install -m0755 keychain /usr/bin
      2. 命令行输入: eval $(keychain --eval --agents ssh -Q --quiet id_rsa)
      3. 在/etc/profile.d下新建keychain.sh，内容:

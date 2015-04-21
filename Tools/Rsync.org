@@ -1,0 +1,4 @@
+* 安装
+* 使用
+  rsync -avzP /cygdrive/d/install/ root@118.194.44.98::install
+  rsync -avzP --delete /cygdrive/d/install/ root@118.194.44.98::install

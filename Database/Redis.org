@@ -31,6 +31,8 @@
 *** hmget
 *** hmset
 ** set
+*** sadd
+*** sdiff
 ** sorted set
 * 高级
 ** RDB

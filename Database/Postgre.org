@@ -1,0 +1,7 @@
+﻿* 安装配置
+** 配置
+   1. 修改postgresql.conf
+      listen_addresses = 'localhost'改为listen_addresses = '*'
+   2. 修改pg_hda.conf
+      添加host    all         all         0.0.0.0/0       trust
+* 基础
