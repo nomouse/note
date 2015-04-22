@@ -254,7 +254,7 @@ location ~* \.(gif|jpg|jpeg)$ {
 -e和!-e用来判断是否存在文件或目录
 -x和!-x用来判断文件是否可执行
 
-last 相当于Apache里的[L]标记，表示完成rewrite，呵呵这应该是最常用的
+last 相当于Apache里的[L]标记，表示完成rewrite.
 break 终止匹配, 不再匹配后面的规则
 redirect 返回302临时重定向 地址栏会显示跳转后的地址
 permanent 返回301永久重定向 地址栏会显示跳转后的地址
@@ -282,3 +282,17 @@ $server_addr
 $server_name
 $server_port
 $uri
+* cors跨域
+map $http_origin $cors_header {
+    default "";
+    "~^https?://[^/]+\.example\.com(:[0-9]+)?$" "$http_origin";
+}
+
+server {
+    ...
+    location / {
+        add_header Access-Control-Allow-Origin $cors_header;
+        try_files $uri $uri/ /index.php;
+    }
+    ...
+ }
