@@ -8,7 +8,7 @@
     JCenter https://jcenter.bintray.com/
     Clojars https://clojars.org/repo/
     ibiblio http://mirrors.ibiblio.org/maven2/
-
+    jfrog http://oss.jfrog.org/artifactory/oss-snapshot-local/
 * 命令
   mvn -e
   mvn -U

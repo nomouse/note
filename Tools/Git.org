@@ -4,8 +4,13 @@
   1、在无网络的情况下也可以正常提交、回滚
   2、分支功能更强大
 * 客户端安装配置
-   1. 下载[[http://git-scm.com/download]] 中的git客户端进行安装
-   2. 配置
+** 下载地址
+   [[http://git-scm.com/download]]
+** 配置
+   git config --global -l 查看当前所有全局配置
+   git config --global gui.encoding utf-8 设置git gui的编码为utf-8
+   git config --global i18n.commitencoding utf-8 设置git提交文件格式为utf-8
+   git config --global i18n.logoutputencoding utf-8 设置git输入日志格式为utf-8
 * 基础
 ** init
    git init 初始化本地git仓库
@@ -27,7 +32,7 @@
    git checkout test 切换为本地分支test
    git checkout -b [分支名] 当前远程分支为基础创建本地新分支
 ** merge
-   合并分支
+   git merge --ff-none 合并分支
 
 * 应用
 ** 仓库操作

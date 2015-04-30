@@ -7,6 +7,7 @@
    日志流的输出目标
 ** Layout
    日志的格式
+** 基本配置格式
 * Logback access
   此模块用于记录web容器的所有请求相应信息
 ** tomcat配置
