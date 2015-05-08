@@ -143,11 +143,15 @@
    例子：
    tail 10 /etc/profile 显示最后10行
 * 用户管理
+** 组
+** 用户
+   groupadd www
+   useradd -g www www
 ** /etc/group 所有组
 ** /etc/shadow 所有用户密码
 ** /etc/passwd 所有用户
 ** passwd 修改密码
-
+   passwd www
 ** chmod 操作文件权限，777是全部权限
    -R 递归执行
 
