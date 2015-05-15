@@ -1,0 +1,18 @@
+a1.sources = r1
+a1.sources.r1.type = exec
+a1.sources.r1.command = tail -F /logs/queen/http.log
+a1.sources.r1.channels = c1
+
+a1.channels = c1
+a1.channels.c1.type = memory
+
+a1.sinks = k1
+a1.sinks.k1.type = elasticsearch
+a1.sinks.k1.hostNames = 127.0.0.1:9300
+a1.sinks.k1.indexName = logstash
+a1.sinks.k1.indexType = bar_type
+a1.sinks.k1.clusterName = elasticsearch
+a1.sinks.k1.batchSize = 500
+a1.sinks.k1.ttl = 5d
+a1.sinks.k1.serializer = org.apache.flume.sink.elasticsearch.ElasticSearchDynamicSerializer
+a1.sinks.k1.channel = c1
