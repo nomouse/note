@@ -1,0 +1,60 @@
+buildscript {
+    repositories {
+        maven {
+            url "http://localhost:8081/nexus/content/groups/public"
+        }
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:1.+'
+    }
+}
+
+apply plugin: 'android-library'
+apply plugin: 'maven'
+
+android {
+    compileSdkVersion 21
+    buildToolsVersion "21.1.2"
+
+    sourceSets {
+        main {
+            manifest.srcFile 'AndroidManifest.xml'
+            java.srcDirs = ['src']
+            resources.srcDirs = ['src']
+            aidl.srcDirs = ['src']
+            renderscript.srcDirs = ['src']
+            res.srcDirs = ['res']
+            assets.srcDirs = ['assets']
+        }
+    }
+
+    packagingOptions {
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+}
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+}
+
+uploadArchives {
+    repositories.mavenDeployer {
+        name = 'mavenCentralReleaseDeployer'
+        repository(url: "http://localhost:8081/nexus/content/repositories/releases") {
+            authentication(userName: "xxx", password: "xxx")
+        }
+        snapshotRepository(url: "http://localhost:8081/nexus/content/repositories/snapshots") {
+            authentication(userName: "xxx", password: "xxx")
+        }
+        pom.version = "1.0.0-SNAPSHOT"
+        pom.artifactId = "library"
+        pom.groupId = "com.github.chrisbanes.pulltorefresh"
+        pom.name = "pulltorefresh"
+        pom.packaging = 'aar'
+    }
+}

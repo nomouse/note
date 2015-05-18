@@ -1,0 +1,2 @@
+include ':nomouse-android-core'
+include ':nomouse-android-demo'
