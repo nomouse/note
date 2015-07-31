@@ -1,7 +1,7 @@
-* 基础
 ** 概述
    Solr是一个独立的企业级搜索应用服务器，它对外提供类似于Web-service的API接口。用户可以通过http请求，向搜索引擎服务器提交一定格式的XML文件，生成索引；也可以通过Http Get操作提出查找请求，并得到XML格式的返回结果。
-** 安装
+   与传统数据库对比,table对应solr中的core,row对应solr的document,colomn对应solr的field
+** 安装配置
 *** $solr_home
     solr根目录，下面通常包含以下几个文件夹：
     1. conf/
@@ -42,9 +42,11 @@
        <fieldType name="text_ik" class="solr.TextField">
          <analyzer class="org.wltea.analyzer.lucene.IKAnalyzer"/>
        </fieldType>
-** 配置
-** 增删
-** 查询语法
-
-* 熟练
-* 精通
+** 基础
+*** 先删除id,再插入document
+    http://192.168.100.38:8983/solr/user/update?wt=json&commit=true&stream.body={"add":{"doc":{"id":"169117","gender":2,"updateTime":100,"scene":"1"}}}
+*** 只更新提交的field
+    http://192.168.100.38:8983/solr/user/update?wt=json&commit=true&stream.body={"add":{"doc":{"id":"169117","gender":{"set":1},"updateTime":{"set":200},"scene":{"set":"2"}}}}
+*** 删除
+    http://192.168.100.38:8983/solr/user/update?wt=json&commit=true&stream.body={"delete":{"query":"*:*"}}
+    http://192.168.100.38:8983/solr/user/update?wt=json&commit=true&stream.body={"delete":{"query":"id:169117"}}

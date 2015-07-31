@@ -22,6 +22,12 @@ export PATH=$JAVA_HOME\bin;$ANT_HOME\bin;$MAVEN_HOME\bin;$GRADLE_HOME\bin;$CATAL
 ** JDK常用类
 *** String
 *** equre和hashCode
+*** hashCode算法
+    String类的hashCode算法
+    比如String str="abcd"
+    算法为:
+    (('a'*31+'b')*31+'c')*31+'d' = 2987074
+    这个算法的优点在于越早的字符权重越高,而且临近的字母的hash值也临近,可以加快索引的速度
 ** Java基本类型和包装类型
 *** Integer
 *** Long

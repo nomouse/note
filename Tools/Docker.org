@@ -15,7 +15,24 @@
 ** docker ps
 * 常用镜像
 ** redis
-   docker run -p 6379:6379 --name my-redis -d redis
+docker run --name=redis1 -d \
+  --publish 6379:6380 \
+  redis:3.0
 ** gitlab
-   docker run --name='gitlab' -it --rm -e 'GITLAB_PORT=10080' -e 'GITLAB_SSH_PORT=10022' -p 10022:22 -p 10080:80 -v /var/run/docker.sock:/run/docker.sock -v $(which docker):/bin/docker sameersbn/gitlab:7.10.1
+docker run --name=postgresql-gitlab -d \
+  --env='DB_NAME=gitlabhq_production'\
+  --env='DB_USER=gitlab' --env='DB_PASS=password'\
+  --volume=/srv/docker/gitlab/postgresql:/var/lib/postgresql \
+  sameersbn/postgresql:9.4
+
+docker run --name=redis-gitlab -d \
+  --volume=/srv/docker/gitlab/redis:/var/lib/redis \
+  sameersbn/redis:latest
+
+docker run --name='gitlab' -d \
+  --link=postgresql-gitlab:postgresql --link=redis-gitlab:redisio \
+  --publish=10022:22 --publish=10080:80 \
+  --env='GITLAB_PORT=10080' --env='GITLAB_SSH_PORT=10022'\
+  --volume=/srv/docker/gitlab/gitlab:/home/git/data \
+sameersbn/gitlab:7.11.4
 **

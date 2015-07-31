@@ -1,25 +1,40 @@
-* Search Expression
-|         | mysql                                         | mongodb                                    | solr                                         | redis |
-|---------+-----------------------------------------------+--------------------------------------------+----------------------------------------------+-------|
-| find    | select * from users                           | db.users.find()                            | q=*:*&fl=*                                   |       |
-|         | select a,b from users                         | db.users.find({},{a:true,b:true})          | q=*:*&fl=a,b                                 |       |
-|         | select a,b from users where id=99             | db.users.find({id:99},{a:1,b:1})           | q=id:99&fl=a,b                               |       |
-|         | select * from users where age>3 and age<=9    | db.users.find({age:{$gt:3,$lt:9}})         | fq=age:[4 TO 9]                              |       |
-|         | select * from users where age>3               | db.users.find({age:{$gt:3}})               | fq=age:{3 TO *]                              |       |
-|         | select * from users where age<3               | db.users.find({age:{$lt:9}})               | fq=age:[* TO 3}                              |       |
-|---------+-----------------------------------------------+--------------------------------------------+----------------------------------------------+-------|
-| where   | select * from users where id=99 and name='s1' | db.users.find({id:99,name:'s1'})           | q=id:99,name:'s1'                            |       |
-|         | select * from users where id=99 or name='s1'  | db.users.find({$or:[{id:99},{name:'s1'}]}) | q=id:99 OR name:'s1'                         |       |
-|         | select * from users where name like '%s1%'    | db.users.find({name:'/s1/'})               | q=*:*&fq=name:'*s1*'                         |       |
-|         | select * from users where name like '%s1'     | db.users.find({name:'/^s1/'})              | q=*:*&fq=name:'*s1'                          |       |
-|         | select * from users where name like 's_1'     | db.users.find({name:'/s?1/'})              | q=*:*&fq=name:'s?1'                          |       |
-|         |                                               |                                            |                                              |       |
-|---------+-----------------------------------------------+--------------------------------------------+----------------------------------------------+-------|
-| order   | select * from users order by age desc         | db.users.find().sort({age:-1})             | fl=*&sort=age desc                           |       |
-|         | select * from users order by age acs          | db.users.find().sort({age:1})              | fl=*&sort=age asc                            |       |
-|---------+-----------------------------------------------+--------------------------------------------+----------------------------------------------+-------|
-| page    | select * from users limits 11,10              | db.users.find().limit(10).skip(10)         | start=9&rows=10                              |       |
-|---------+-----------------------------------------------+--------------------------------------------+----------------------------------------------+-------|
-| andvace |                                               |                                            | fq={!geofilt}&sfield=pt&pt=45.15,-93.85&d=50 |       |
-|         |                                               |                                            |`                                             |       |
-|---------+-----------------------------------------------+--------------------------------------------+----------------------------------------------+-------|
+* 数据引擎查询比对
+|         | mysql                                         | mongodb                                    | solr                                                   | redis |
+|---------+-----------------------------------------------+--------------------------------------------+--------------------------------------------------------+-------|
+| find    | select * from users                           | db.users.find()                            | select?q=*:*&fl=*                                      |       |
+|         | select a,b from users                         | db.users.find({},{a:true,b:true})          | select?q=*:*&fl=a,b                                    |       |
+|         | select a,b from users where id=99             | db.users.find({id:99},{a:1,b:1})           | select?q=id:99&fl=a,b                                  |       |
+|         | select * from users where age>3 and age<=9    | db.users.find({age:{$gt:3,$lt:9}})         | select?fq=age:[4 TO 9]                                 |       |
+|         | select * from users where age>3               | db.users.find({age:{$gt:3}})               | select?fq=age:{3 TO *]                                 |       |
+|         | select * from users where age<3               | db.users.find({age:{$lt:9}})               | select?fq=age:[* TO 3}                                 |       |
+|---------+-----------------------------------------------+--------------------------------------------+--------------------------------------------------------+-------|
+| where   | select * from users where id=99 and name='s1' | db.users.find({id:99,name:'s1'})           | select?q=id:99,name:'s1'                               |       |
+|         | select * from users where id=99 or name='s1'  | db.users.find({$or:[{id:99},{name:'s1'}]}) | select?q=id:99 OR name:'s1'                            |       |
+|         | select * from users where name like '%s1%'    | db.users.find({name:'/s1/'})               | select?q=*:*&fq=name:'*s1*'                            |       |
+|         | select * from users where name like '%s1'     | db.users.find({name:'/^s1/'})              | select?q=*:*&fq=name:'*s1'                             |       |
+|         | select * from users where name like 's_1'     | db.users.find({name:'/s?1/'})              | select?q=*:*&fq=name:'s?1'                             |       |
+|         |                                               |                                            |                                                        |       |
+|---------+-----------------------------------------------+--------------------------------------------+--------------------------------------------------------+-------|
+| order   | select * from users order by age desc         | db.users.find().sort({age:-1})             | select?fl=*&sort=age desc                              |       |
+|         | select * from users order by age acs          | db.users.find().sort({age:1})              | select?fl=*&sort=age asc                               |       |
+|---------+-----------------------------------------------+--------------------------------------------+--------------------------------------------------------+-------|
+| page    | select * from users limits 11,10              | db.users.find().limit(10).skip(10)         | select?start=9&rows=10                                 |       |
+|---------+-----------------------------------------------+--------------------------------------------+--------------------------------------------------------+-------|
+| andvace |                                               |                                            | select?fq={!geofilt}&sfield=pt&pt=45.15,-93.85&d=50    |       |
+|         |                                               |                                            |                                                        |       |
+|---------+-----------------------------------------------+--------------------------------------------+--------------------------------------------------------+-------|
+| update  | delete users;                                 |                                            | update?stream.body=<delete><query>*:*</query></delete> |       |
+|         |                                               |                                            | &commit=true                                           |       |
+|         | update users set name="wuch" where id=1       |                                            | update?                                                |       |
+|---------+-----------------------------------------------+--------------------------------------------+--------------------------------------------------------+-------|
+
+* 数据库字段对比
+|-------------+--------+-----------+-------+----------+-----+------+----------------------+---------------------|
+|             | Oracle | SqlServer | Mysql | Postgres | DB2 | byte |                range |                  to |
+|-------------+--------+-----------+-------+----------+-----+------+----------------------+---------------------|
+| tinyint     |        | y         | y     |          |     |    1 |                 -128 |                 127 |
+| smallint    |        | y         | y     | y        | y   |    2 |               -32768 |               32767 |
+| mediumint   |        |           | y     |          |     |    3 |             -8388608 |             8388607 |
+| int/integer |        | y         | y     | y        | y   |    4 |          -2147486648 |          2147483647 |
+| binint      |        | y         | y     | y        | y   |    8 | -9233372036854775808 | 9233372036854775807 |
+|-------------+--------+-----------+-------+----------+-----+------+----------------------+---------------------|
