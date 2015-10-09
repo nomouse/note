@@ -44,15 +44,15 @@
        </fieldType>
 ** 基础
 *** 先删除id,再插入document
-http://192.168.100.38:8983/solr/user/update?wt=json&commit=true&stream.body={"add":{"doc":{"id":"169117","gender":2,"updateTime":100,"scene":"1"}}}
+    http://192.168.100.38:8983/solr/user/update?wt=json&commit=true&stream.body={"add":{"doc":{"id":"169117","gender":2,"updateTime":100,"scene":"1"}}}
 *** 只更新提交的field
-http://192.168.100.38:8983/solr/user/update?wt=json&commit=true&stream.body={"add":{"doc":{"id":"169117","gender":{"set":1},"updateTime":{"set":200},"scene":{"set":"2"}}}}
+    http://192.168.100.38:8983/solr/user/update?wt=json&commit=true&stream.body={"add":{"doc":{"id":"169117","gender":{"set":1},"updateTime":{"set":200},"scene":{"set":"2"}}}}
 *** 删除
-http://192.168.100.38:8983/solr/user/update?wt=json&commit=true&stream.body={"delete":{"query":"*:*"}}
-http://192.168.100.38:8983/solr/user/update?wt=json&commit=true&stream.body={"delete":{"query":"id:169117"}}
+    http://192.168.100.38:8983/solr/user/update?wt=json&commit=true&stream.body={"delete":{"query":"*:*"}}
+    http://192.168.100.38:8983/solr/user/update?wt=json&commit=true&stream.body={"delete":{"query":"id:169117"}}
 *** 查询
-http://192.168.100.38:8983/solr/user/update?wt=json&q=*:*
-http://192.168.100.38:8983/solr/user/update?wt=json&q=*:*
+    http://192.168.100.38:8983/solr/user/update?wt=json&q=*:*
+    http://192.168.100.38:8983/solr/user/update?wt=json&q=*:*
 
 
 

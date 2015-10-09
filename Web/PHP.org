@@ -1,0 +1,140 @@
+* 概述
+* windows下安装
+** 安装apache
+   使用默认配置安装httpd-2.2.25-win32-x86-no_ssl.msi，安装路劲为
+D:/www/apache-2.2.4
+   完成后访问http://localhost 显示It works!安装成功
+** 安装php
+   将php-5.4.45-Win32-VC9-x86.zip(apache使用ts即thread safe版)解压到
+D:/www/php-5.4.45-Win32-VC9-x86
+** 配置apache
+   修改D:/www/apache-2.2.4/conf/httpd.conf
+1. 让Apache可以解析php文件，找到
+<IfModule unixd_module>
+在上面添加
+LoadModule php5_module "D:/www/php-5.4.45-Win32-VC9-x86/php5apache2_4.dll"
+PHPIniDir "D:/www/php-5.4.45-Win32-VC9-x86"
+AddType application/x-httpd-php .php .html .htm
+2. 找到
+DirectoryIndex index.html
+修改为
+DirectoryIndex index.php index.html
+3. 修改Apache站点目录，找到
+DocumentRoot "D:/www/apache-2.4.4/htdocs"
+<Directory "D:/www/apache-2.4.4/htdocs">
+修改为
+DocumentRoot "D:/www/php"
+<Directory "D:/www/php">
+** 配置php
+   将D:/www/php-5.4.45-Win32-VC9-x86/php.ini-development改名为php.ini并修改
+1. 设置PHP扩展包的具体目录，找到
+; On windows:
+; extension_dir = "ext"
+    修改为
+; On windows:
+extension_dir = "D:/www/php-5.4.45-Win32-VC9-x86/ext"
+2. 开启相应的库功能
+;extension=php_bz2.dll
+;extension=php_curl.dll
+;extension=php_fileinfo.dll
+;extension=php_gd2.dll
+;extension=php_gettext.dll
+;extension=php_gmp.dll
+;extension=php_intl.dll
+;extension=php_imap.dll
+;extension=php_interbase.dll
+;extension=php_ldap.dll
+;extension=php_mbstring.dll
+;extension=php_exif.dll      ; Must be after mbstring as it depends on it
+;extension=php_mysql.dll
+;extension=php_mysqli.dll
+;extension=php_oci8.dll      ; Use with Oracle 10gR2 Instant Client
+;extension=php_oci8_11g.dll  ; Use with Oracle 11gR2 Instant Client
+;extension=php_openssl.dll
+;extension=php_pdo_firebird.dll
+;extension=php_pdo_mysql.dll
+;extension=php_pdo_oci.dll
+;extension=php_pdo_odbc.dll
+;extension=php_pdo_pgsql.dll
+;extension=php_pdo_sqlite.dll
+;extension=php_pgsql.dll
+;extension=php_pspell.dll
+;extension=php_shmop.dll
+
+; The MIBS data available in the PHP distribution must be installed. 
+; See http://www.php.net/manual/en/snmp.installation.php 
+;extension=php_snmp.dll
+
+;extension=php_soap.dll
+;extension=php_sockets.dll
+;extension=php_sqlite3.dll
+;extension=php_sybase_ct.dll
+;extension=php_tidy.dll
+extension=php_xmlrpc.dll
+;extension=php_xsl.dll
+修改为
+;extension=php_bz2.dll
+extension=php_curl.dll
+;extension=php_fileinfo.dll
+extension=php_gd2.dll
+;extension=php_gettext.dll
+;extension=php_gmp.dll
+;extension=php_intl.dll
+;extension=php_imap.dll
+;extension=php_interbase.dll
+;extension=php_ldap.dll
+extension=php_mbstring.dll
+;extension=php_exif.dll      ; Must be after mbstring as it depends on it
+extension=php_mysql.dll
+;extension=php_mysqli.dll
+;extension=php_oci8.dll      ; Use with Oracle 10gR2 Instant Client
+;extension=php_oci8_11g.dll  ; Use with Oracle 11gR2 Instant Client
+;extension=php_openssl.dll
+;extension=php_pdo_firebird.dll
+;extension=php_pdo_mysql.dll
+;extension=php_pdo_oci.dll
+;extension=php_pdo_odbc.dll
+;extension=php_pdo_pgsql.dll
+;extension=php_pdo_sqlite.dll
+;extension=php_pgsql.dll
+;extension=php_pspell.dll
+;extension=php_shmop.dll
+
+; The MIBS data available in the PHP distribution must be installed. 
+; See http://www.php.net/manual/en/snmp.installation.php 
+;extension=php_snmp.dll
+
+;extension=php_soap.dll
+;extension=php_sockets.dll
+;extension=php_sqlite3.dll
+;extension=php_sybase_ct.dll
+;extension=php_tidy.dll
+extension=php_xmlrpc.dll
+;extension=php_xsl.dll
+3. 设置时区,找到
+;date.timezone =
+修改为
+date.timezone = Asia/Shanghai
+
+** 设置xdebug
+* linux下安装
+** nginx版
+*** 开启服务
+    需要启动php-fpm,具体地址默认在
+    启动php: /usr/local/php/sbin/php-fpm
+    配置文件: /usr/local/php/etc/php-fpm.conf
+    php相关配置在：/usr/local/php/etc/php.ini
+*** 上传文件配置
+    修改php.ini中的
+    max_execution_time = 300
+    max_input_time = 60
+    memory_limit= 128M
+    file_uploads = On
+    upload_max_filesize = 50M
+    max_file_uploads = 20
+    修改php-fpm.conf中的
+    pm = dynamic
+    pm.max_children = 24
+    pm.start_servers = 16
+    pm.min_spare_servers = 12
+    pm.max_spare_servers = 24

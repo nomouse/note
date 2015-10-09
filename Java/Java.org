@@ -339,11 +339,29 @@ JVM运行时包含几块区域：方法区、堆、Java栈、PC寄存器和本�
     -Dcom.sun.management.jmxremote.authenticate=false
     然后打开jconsole，监听本地端口
 *** jstack
-   分析线程堆栈，当cpu被java程序消耗的比较多的时候，可以使用jstack工具来分析jvm进程
+
+    分析线程堆栈，当cpu被java程序消耗的比较多的时候，可以使用jstack工具来分析jvm进程
+   top查找哪个线程cpu占用率高，
+   然后shirt+h查找哪个线程cpu占用率高
+   PSuu -MP [进程pid] -o THREAD,tid,time，列出进程下线程占用列表
+   python>>hex(线程pid)得到线程16进制
    jstack -F [进程pid] | grep -A 100 [线程pid]
-** Java调优
-*** -server
-    以server模式启动
+** Java相关调优
+*** 高CPU占用
+    Java应用CPU占用过高，除了确实是计算密集型应用外，通常原因是因为死循环，利用linux下的系统工具和jdk工具可以帮助查找问题
+    1. 运行top命令,发现进程43945的java程序CPU达到200%
+    2. 运行ps -mp 43945 -o THREAD,tid,time(或者top后shirt+h也可以)，查看那个线程占用CPU过多,发现44011,45885两个线程
+    3. 运行printf "%x\n" 44011，得到线程的16进制:abeb
+    4. 运行jstack 43945 |grep abeb -A 100，查看线程dump堆栈信息
+*** 高内存占用
+    Java应用内存占用过高,通常表现在下面两种异常:
+    1. java.lang.OutOfMemoryError: PermGen space
+    2. java.lang.OutOfMemoryError: Java heap space
+
+    问题查找步骤:
+    1. 运行top命令,发现进程43945的java程序CPU达到200%
+    2. 运行jmap -histo:live 43945，查看当前Java进程创建的活跃对象数目和占用内存大小
+    3. 运行jmap -dump:live,format=b,file=dump.txt 43945导出内存占用情况
 * 招聘
 ** Java技术经理要求
    1. JAVA基础扎实：精通多线程编程，掌握常用的设计模式；熟悉JVM，包括内存模型、类加载机制以及性能优化；

@@ -1,29 +1,14 @@
 * 安装配置
-** 脚本如下
-yum -y install rsync
-yum -y install xinetd
-
-sed -i '/^disable = yes/c\disable = no' /etc/xinetd.d/rsync
-
-cp -rf rsyncd.conf /etc/rsyncd.conf
-
-cat > /etc/rsyncd.server<<EOF
-root:123456
-EOF
-
-cat > /etc/rsyncd.client<<EOF
-123456
-EOF
-
-chmod 600 /etc/rsyncd.server
-chmod 600 /etc/rsyncd.client
-
-chkconfig --add rsync
-chkconfig rsync on
-
-service xinetd restart
-netstat -naoltp|grep 873
-
+  centos6.5
+** 包需求
+   nfs-utils rpcbind
+** 端口需求
+   nfs协议端口2049
+   rpc协议端口111
+   LOCKD_TCPPORT=30001 #TCP锁使用端口
+   LOCKD_UDPPORT=30002 #UDP锁使用端口
+   MOUNTD_PORT=30003 #挂载使用端口
+   STATD_PORT=30004 #状态使用端口
 * 基本操作
 ** 查看远程主机有几个同步目录
    rsync --list-only root@192.168.0.98::

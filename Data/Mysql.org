@@ -8,9 +8,9 @@
 *** windows
     修改Mysql安装目录下my.ini文件，
     [client]
-    default-character-set=utf8mb4
+    default-character-set=utf8
     [mysqld]
-    character-set-server=utf8mb4
+    character-set-server=utf8
     collation-server=utf8_unicode_ci
     skip-character-set-client-handshake
 *** linux
@@ -52,14 +52,22 @@
     mysql -u[user] -p[password]
     例子： mysql -uroot -p123456
 *** 数据库管理
-    show databases          查看所有数据库
-    create database [db]      创建数据库
-    use [db]                  切换数据库
-    show tables             查看当前数据库中所有的表
-    grant all on [db].[table] to `[user]`@`[ip]` identified by '[password]'    创建用户并赋予权限
-    例子：grant all on db.* to `db`@`%` identified by '123456'
-    意思是让db用户可以在ip地址任意的主机上拥有db数据库下的所有表的所有访问权限
-    revoke all privileges on db.users from db@172.17.100.156               移除权限
+    查看所有数据库
+    show databases
+    创建数据库
+    create database [db]
+    切换数据库
+    use [db]
+    查看当前数据库中所有的表
+    show tables
+    创建用户并赋予权限
+    grant all on [db].[table] to `[user]`@`[ip]` identified by '[password]'
+    刷新数据库权限
+    flush privileges
+    例子1:让db用户可以在ip地址任意的主机上拥有db数据库下的所有表的所有访问权限
+    grant all on db.* to `db`@`%` identified by '123456'
+    例子2:移除权限
+    revoke all privileges on db.users from db@172.17.100.156
 ** 忘记密码
    先停止mysql服务
    然后输入：mysqld --skip-grant-tables，此时mysqld服务会被启动
