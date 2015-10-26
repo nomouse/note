@@ -1,8 +1,0 @@
-Android中的Looper , Handler , Message的关系
-
-
-
-
-AsyncTask的原理和缺陷
-基于线程池+Hander
-在3.0以前，最大支持128个线程的并发，10个任务的等待。在3.0以后，无论有多少任务，都会在其内部单线程执行；

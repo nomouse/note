@@ -1,0 +1,53 @@
+* 安装
+  1. https://nodejs.org/en/ 下载node.js安装
+  2. 安装npm，git clone --recursive git://github.com/isaacs/npm.git，然后进入npm目录执行node cli.js install npm -gf
+  3. 使用npm安装其他软件，比如npm install grunt
+
+* angular2
+** 安装
+   1. 使用npm安装包依赖
+      npm install -g tsd
+      tsd install angular2 es6-promise rx rx-lite
+   2. 签出angular quickstart项目
+      git clone https://github.com/angular/quickstart.git hello2ng2
+   3. 进入hello2ng2目录
+      npm install -g gulp
+      npm install
+      gulp
+   4. index.html:
+<html>
+<head>
+<title>Angular 2 Hello World!</title>
+<script src="/dist/es6-shim.js"></script>
+</head>
+<body>
+<my-app></my-app>
+<script>
+// Rewrite the paths to load the files
+System.paths = {
+'angular2/*': '/angular2/*.js', // Angular
+'rtts_assert/*': '/rtts_assert/*.js', // Runtime assertions
+'app': 'app.es6' // The my-app component
+};
+// Kick off the application
+System.import('app');
+</script>
+</body>
+</html>
+   5. app.es6
+import {Component, Template, bootstrap} from 'angular2/angular2';
+// Annotation section
+@Component({
+selector: 'my-app'
+})
+@Template({
+inline: '<h1>Hello {{ name }}</h1>'
+})
+// Component controller
+class MyAppComponent {
+constructor() {
+this.name = 'World!';
+}
+}
+bootstrap(MyAppComponent);
+   6. 放入http服务器查看

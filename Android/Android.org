@@ -1,0 +1,116 @@
+* 安装
+** linux下安装
+   因为adt的程序是基于swt的32位程序，而现在用的unbuntu或者centos一般都是64位的，所以需要安装32位兼容包
+   如果出现错误那就是因为adb是32位的，要装ia32-libs。ubuntu下面是sudo apt-get install ia32-libs
+   可是centos不行，centos是不能安装deb的，不过你可以解压deb后使用。
+   在命令中打入
+yum install glibc.i686
+   什么？你的不行吗？ 对，可能有的在打入这个命令时候没有glibc.i686。那怎么办呢，接下来复制下面这个长命令，然后输入执行：
+yum install alsa-lib-devel.i686 alsa-lib-devel audiofile-devel.i686 audiofile-devel cups-devel.i686 cups-devel dbus-devel.i686 dbus-devel fontconfig-devel.i686 fontconfig-devel freetype.i686 freetype-devel.i686 freetype-devel giflib-devel.i686 giflib-devel lcms-devel.i686 lcms-devel libICE-devel.i686 libICE-devel libjpeg-turbo-devel.i686 libjpeg-turbo-devel libpng-devel.i686 libpng-devel libSM-devel.i686 libSM-devel libusb-devel.i686 libusb-devel libX11-devel.i686 libX11-devel libXau-devel.i686 libXau-devel libXcomposite-devel.i686 libXcomposite-devel libXcursor-devel.i686 libXcursor-devel libXext-devel.i686 libXext-devel libXi-devel.i686 libXi-devel libXinerama-devel.i686 libXinerama-devel libxml2-devel.i686 libxml2-devel libXrandr-devel.i686 libXrandr-devel libXrender-devel.i686 libXrender-devel libxslt-devel.i686 libxslt-devel libXt-devel.i686 libXt-devel libXv-devel.i686 libXv-devel libXxf86vm-devel.i686 libXxf86vm-devel mesa-libGL-devel.i686 mesa-libGL-devel mesa-libGLU-devel.i686 mesa-libGLU-devel ncurses-devel.i686 ncurses-devel openldap-devel.i686 openldap-devel openssl-devel.i686 openssl-devel zlib-devel.i686 pkgconfig sane-backends-devel.i686 sane-backends-devel xorg-x11-proto-devel glibc-devel.i686 prelink fontforge flex bison libstdc++-devel.i686 pulseaudio-libs-devel.i686 gnutls-devel.i686 libgphoto2-devel.i686 openal-soft-devel openal-soft-devel.i686 isdn4k-utils-devel.i686 gsm-devel.i686 samba-winbind libv4l-devel.i686 cups-devel.i686 libtiff-devel.i686 gstreamer-devel.i686 gstreamer-plugins-base-devel.i686 gettext-devel.i686 libmpg123-devel.i686
+* 系统组件
+** Activity
+   Activity概述
+   字面意思为活动，可以从两方面来理解：从用户的角度看，Activity为用户提供了一个与之交互的画面，用来完成某一项任务。从软件系统的角度来看，每一个Activity都是一个相对独立的组件，它通常包含多个视图控件，并且通过这些控件与用户进行交互，来驱动整个程序的运行。
+*** Activity生命周期
+    常用
+    onCreate
+    onStart
+    onPause
+    onResume
+    onStop
+    onDestory
+    特殊
+    onActivityResult
+    onConfigurationChanged
+    onAttachWindow
+*** Task
+   Task可以看作一个Activity栈，在默认情况下，当前Activity开始时，新的Activity推入栈顶并获取焦点，上一个Activity仍然在栈中，当用户按下返回键时，当前Activity弹出栈并销毁，上一个Activity恢复。
+   Task管理
+*** Activity Manifest属性：
+   alwaysRetainTaskState:
+   如果Task 中根Activity 的此属性设为 "true" ，则默认的清理方式不会进行.即使过了很长一段时间,Task 中所有的Activity也还会保留在栈中.
+   clearTaskOnLaunch:
+   如果Task 中根Activity 的此属性设为 "true"，则只要用户离开并再次返回该 Task,栈就会被清理至根Activity。也就是说，正好与alwaysRetainTaskState相反.用户每次返回Task时看到的都是初始状态,即使只是离开一会儿.
+   finishOnTaskLaunch
+   此属性类似于clearTaskOnLaunch,只是它只对一个 Activity有效,不是整个Task.这能让任何一个Activity 消失,包括 根Activity.如果Activity 的此属性设为 "true"，则只会保留Task中当前session所涉及的内容.如果用户离开后再返回Task,它就不存在.
+*** Intent Flag常量:
+   FLAG_ACTIVITY_NEW_TASK
+   在新的Task 中启动Activity.如果要启动的Activity 已经运行于某个Task 中,则那个Task 将调入前台中,最后保存的状态也将会恢复,Activity 将在onNewIntent()中接收到这个新 intent.
+   这个模式与前一章节所描述述的"singleTask"launchMode模式相同.
+   FLAG_ACTIVITY_SINGLE_TOP
+   如果要启动的Activity 就是当前Activity（位于Back Stack 顶）,则已存在的实例将接收到一个onNewIntent()调用,而不是创建一个Activity 的新实例.
+   这个模式与前一章节所述的 "singleTop"launchMode模式相同.
+   FLAG_ACTIVITY_CLEAR_TOP
+   如果要启动的Activity 已经在当前Task中运行,则不再启动一个新的实例，且所有在其上面的Activity 将被销毁，然后通过onNewIntent()传入 intent 并恢复Activity（不在栈顶）的运行.
+   此种模式在launchMode中没有对应的属性值.
+*** Activity四种launchMode
+   1. standard(默认)
+   "每次访问实例化新的Activity",系统在启动Activity 的Task 中创建一个新的Activity 实例,并且把 intent 传送路径指向它.该Activity 可以被实例化多次,各个实例可以属于不同的Task，一个Task 中也可以存在多个实例
+   2. singleTop
+   "每次访问,看栈顶元素目标对象,是则返回,不再实例化,否则,还是实例化新的Activity." 如果Activity的一个实例已经存在于当前Task的栈顶，该系统就会使用onNewIntent()方法通过intent 传递给已有实例，而不是创建一个新的Activity 实例.Activity 可以被实例化多次,各个实例可以属于不同的Task,一个Task中可以存在多个实例(但只有Back Stack的Activity 实例不是该Activity 的）
+   应用：
+   3. singleTask
+   "保证activity实例化一次,单任务,由此所开启的活动和本活动位于同一task中" 系统将创建一个新的Task，并把Activity 实例作为根放入其中.但是，如果Activity 已经在其它Task 中存在实例，则系统会通过调用其实例的onNewIntent() 方法把 intent传给已有实例,而不是再创建一个新实例. 此 activity 同一时刻只能存在一个实例
+   应用：
+   4. singleInstance
+   "保证Activity实例化一次,单实例,由此所开启的Activity在新的task中,和本活动id不一致." 除了系统不会把其它Activity 放入当前实例所在的 Task 之外，其它均与"singleTask"相同,Activity 总是它所在Task 的唯一成员；它所启动的任何Activity 都会放入其它Task 中
+*** Activity其他
+Home操作
+相当于intent中放入FLAG_ACTIVITY_NEW_TASK|FLAG_ACTIVITY_RESET_IF_NEEDED
+
+** Service
+Service概述
+字面意思为服务，可以从两方面来理解：从用户的角度看，Service为用户提供一个需要长时间运行的，并且大多数时间不需要和用户直接交互的任务，从软件系统的角度来看，Service为其他程序提供功能性支持。
+
+** Broadcast
+
+** ContentProvider
+
+** Intent
+   Intent在安卓中作为组件之间传输信息的媒介
+** Manifest
+** 线程
+   Android中的Looper , Handler , Message的关系
+   AsyncTask的原理和缺陷
+   基于线程池+Hander
+   在3.0以前，最大支持128个线程的并发，10个任务的等待。在3.0以后，无论有多少任务，都会在其内部单线程执行；
+* 资源
+* UI
+** LinearLayout
+   1. weight，通常会将weight所在的组件的height或者width设置为0再去
+   2. 父布局用gravity来标识子控件位置，子控件也可以通过layout_gravity来标识自己在父布局的位置
+** RelativeLayout
+   1. 子布局中可以使用android:layout_centerInParent="true"、android:layout_centerVertical="true"、android:layout_centerHorizontal="true"三个属性来标识绝对居中、垂直居中和水平居中，而不是使用layout_gravity,父布局使用gravity没有意义
+** FrameLayout
+   1. 子布局中通过使用layout_gravity来标识相对父布局的位置,父布局使用gravity没有意义
+** GridView
+   1. 直接在GridView中设置 android:gravity="center"这个属性是不起作用的。要在你adapter中的布局文件中设置android:layout_gravity="center"才有效。
+   2. android:listSelector="@drawable/bg"//该属性很重要，如果不设置的话，GridView控件会自带自己的选中样式(黄色边框)，如图所示：做项目一般是不需要这个的。所以解决办法是将GridView的android:listSelector属性设置为和Activity背景相同即可。
+   3. 配置
+   android:verticalSpacing="10dp"  //行间距
+   android:horizontalSpacing="10dip"  //列间距
+   android:numColumns="3"  //列数
+   android:stretchMode="columnWidth"  //列可扩展
+   以上列数为3，若想在高分辨率中列数设置为4怎么办呢。首先，需要在属性中设置列为可扩展android:stretchMode="columnWidth"。然后在代码中做个判断：
+   if(Metrics.heightPixels == 1280 && Metrics.widthPixels == 800){
+   gridview.setNumColumns(4);
+   }
+   这样GridView的列数是可以随分辨率不同而做更多的设置。
+   4. Grid Item居中，要在子布局的根节点中设置layout_gravity=center
+** ImageView
+*** ScaleType
+    1. ScaleType.CENTER：：图片大小为原始大小，如果图片大小大于ImageView控件，则截取图片中间部分，若小于，则直接将图片居中显示。
+    2. ScaleType.CENTER_CROP：将图片等比例缩放，让图像的短边与ImageView的边长度相同，即不能留有空白，缩放后截取中间部分进行显示。
+    3. ScaleType.CENTER_INSIDE：将图片大小大于ImageView的图片进行等比例缩小，直到整幅图能够居中显示在ImageView中，小于ImageView的图片不变，直接居中显示。
+    4. ScaleType.FIT_CENTER：ImageView的默认状态，大图等比例缩小，使整幅图能够居中显示在ImageView中，小图等比例放大，同样要整体居中显示在ImageView中。
+    5. ScaleType.FIT_END：缩放方式同FIT_CENTER，只是将图片显示在右方或下方，而不是居中。
+    6. ScaleType.FIT_START：缩放方式同FIT_CENTER，只是将图片显示在左方或上方，而不是居中。
+    7. ScaleType.FIT_XY：将图片非等比例缩放到大小与ImageView相同。
+    8. ScaleType.MATRIX：是根据一个3x3的矩阵对其中图片进行缩放
+* 动画和图像
+** View Animation（Tween Animation）补间动画
+   给出两个关键帧，通过一些算法将给定属性值在给定的时间内在两个关键帧间渐变。包含4种效果：<alpha>透明度,<scale>缩放,<translate>位移,<rotate>反转，此动画不会改变View的实际属性，即View的外型发生
+** Drawable Animation（Frame Animation）帧动画
+   就像GIF图片，通过一系列Drawable依次显示来模拟动画的效果。
+** Property Animation 属性动画
+   与View Animation的最大区别是属性动画会改变View的实际属性。
