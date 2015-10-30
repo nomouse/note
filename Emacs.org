@@ -1,3 +1,5 @@
+* 资源
+  http://ftp.gnu.org/gnu
 * 快捷键
 ** 基础
 *** C-x C-f Find a file(Open or New)
@@ -5,6 +7,8 @@
 *** C-x C-c Quit
 *** C-x C-w Save as
 *** C-x C-q Switch read-only mode
+*** C-x k   关闭buffer
+*** C-x b   打开buffer
 *** M-x recover-file 恢复上次崩溃的文件
 ** 重要
 *** C-g     Quit current command
@@ -19,6 +23,7 @@
 ** 高级
 *** M-x linum-mode  Show or Hide line numbers
 *** C-x k           Close buffer
+*** M-x packages-list-packages  List packages
 * Org mode
 ** Structure
 *** TAB     cycling

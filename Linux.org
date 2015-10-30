@@ -134,11 +134,17 @@
    rpm -ivh mysql-5.5.39-x86_64.rpm
    rpm -e --nodeps mysql-lib
 ** find 全文检索
-   find [PATH] -name [NAME]
+*** 用法
+    find [PATH] -name [NAME]
+*** 例子
+    查找/usr目录下名字以nginx开头的文件
+    find /usr -name nginx*
 ** ls 显示当前目录下文件夹
+*** 用法
    -h 文件大小可读
    -a 显示所有文件和文件夹
    -o 显示文件的除组信息外的详细信息
+*** 例子
 ** ll 以目录形式显示目录下文件夹
 ** cd 进入某个目录
    cd .. 进入上一层目录

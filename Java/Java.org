@@ -20,6 +20,17 @@ unix:
 export PATH=$JAVA_HOME\bin;$ANT_HOME\bin;$MAVEN_HOME\bin;$GRADLE_HOME\bin;$CATALINA_HOME\bin;$ANDROID_HOME\tools;$ANDROID_HOME\platform-tools:$PATH
 
 ** JDK常用类
+*** Object
+   1. hashCode
+     一般是通过将该对象的内部地址转换成一个整数来实现的
+   2. equarls
+     默认2个对象是否指向同一个引用，用hashCode方法实现
+   3. toString
+     默认该字符串由类名（对象是该类的一个实例）、at 标记符“@”和此对象哈希码的无符号十六进制表示组成。
+   4. wait notify notifyAll
+    wait指在其他线程调用此对象的 notify() 方法或 notifyAll() 方法，或者超过指定的时间量前，导致当前线程等待。
+    notify 唤醒在此对象监视器上等待的单个线程。如果所有线程都在此对象上等待，则会选择唤醒其中一个线程。选择是任意性的，并在对实现做出决定时发生。线程通过调用其中一个wait方法，在对象的监视器上等待。
+    wait notify与sleep的区别,见Java同步
 *** String
 *** StringBuilder
     StringBuilder扩容问题，StringBuilder底层是一个char数组，每次appand或者insert的时候，先检测char数组能不能承受下整个StringBuilder的字符串长度，如果不行则扩容
@@ -145,15 +156,25 @@ export PATH=$JAVA_HOME\bin;$ANT_HOME\bin;$MAVEN_HOME\bin;$GRADLE_HOME\bin;$CATAL
     22. (Strategy)策略模式
         hibernate Dialect
     23. (Visitor)访问者模式
-** Java线程
+** Java多线程
 *** 线程和进程的区别
    1. 在引入线程的操作系统中，通常都是把进程作为分配资源的基本单位，而把线程作为独立运行和独立调度的基本单位。
    2. 进程在执行过程中拥有独立的内存单元，而多个线程共享内存，从而极大地提高了程序的运行效率
    3. 进程和线程的主要差别在于它们是不同的操作系统资源管理方式，进程有独立的地址空间，一个进程崩溃后，在保护模式下不会对其它进程产生影响，而线程只是一个进程中的不同执行路径。
     线程有自己的堆栈和局部变量，但线程之间没有单独的地址空间，一个线程死掉就等于整个进程死掉，所以多进程的程序要比多线程的程序健壮，但在进程切换时，耗费资源较大，效率要差一些。
     但对于一些要求同时进行并且又要共享某些变量的并发操作，只能用线程，不能用进程。
-*** Thread
-*** Runnable
+*** 如何实现线程
+    1. Thread
+    2. Runnable
+    3. sleep
+       sleep是Thread的静态方法，通常使用Thread.currentThread.sleep()来使用，作用是让线程休眠制定的时间，在时间到达时恢复，也就是说sleep将在接到时间到达事件事恢复线程执行，也可以强行调用具体线程实例的interrupted方法强行中断
+*** 如何实现多线程同步
+    1. synchronized
+       两种使用方式，同步方法和同步块。
+    2. lock
+    3. wait nofify
+       wait是Object的方法，也就是说可以对任意一个对象调用wait方法，调用wait方法将会将调用者的线程挂起，直到其他线程调用同一个对象的notify方法才会重新激活调用者，需要配合同步块或方法实现
+       在使用wait和nofity之前都必须首先获得相关的锁，而wait()被调用后，会释放之前进行同步块所获取到的锁。
 *** ThreadLocal
 *** ReentrantLock
 *** ConcurrentHashMap
@@ -164,7 +185,6 @@ export PATH=$JAVA_HOME\bin;$ANT_HOME\bin;$MAVEN_HOME\bin;$GRADLE_HOME\bin;$CATAL
     原理，更新时先lock一个重入锁ReentrantLock，然后将原有数组复制一份新的数组上进行更新，再将引用指向新的数组,然后unlock
     在更新过程中如果有线程进行读操作，先查看锁状态，如果是lock则是再原有列表上操作的，不会出现数据不一致
     因此，使用时要避免频繁更新
-** Java并发
 *** 并发的三个问题
    1. 原子性
       原子性：即一个操作或者多个操作 要么全部执行并且执行的过程不会被任何因素打断，要么就都不执行。
@@ -172,10 +192,8 @@ export PATH=$JAVA_HOME\bin;$ANT_HOME\bin;$MAVEN_HOME\bin;$GRADLE_HOME\bin;$CATAL
       可见性是指当多个线程访问同一个变量时，一个线程修改了这个变量的值，其他线程能够立即看得到修改的值。
    3. 有序性
       有序性：即程序执行的顺序按照代码的先后顺序执行。
-*** synchronized
-    同步块
 *** volitile
-    用volatile修饰的变量，线程在每次使用变量的时候，都会读取变量修改后的最新值 
+    用volatile修饰的变量，线程在每次使用变量的时候，都会读取变量修改后的最新值
 ** JavaNIO
    JavaNIO实际上是Java New IO，来区别于以前的Java IO，一般也称之为Java非阻塞式IO
 *** 阻塞式IO
