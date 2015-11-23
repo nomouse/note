@@ -15,8 +15,84 @@
 * 高级
 ** 跨域
    CORS
-
 ** Api文档集成
    使用swagger与spring-mvc生成api文档
    1. https://github.com/swagger-api/swagger-ui 下载swwager ui
-   2. https://github.com/martypitt/swagger-springmvc 集成spring-mvc 
+   2. https://github.com/martypitt/swagger-springmvc 集成spring-mvc
+** 事务管理
+*** 数据库事务
+数据库事务(Database Transaction) ，是指作为单个逻辑工作单元执行的一系列操作，要么完全地执行，要么完全地不执行。 
+事务处理可以确保除非事务性单元内的所有操作都成功完成，否则不会永久更新面向数据的资源。
+通过将一组相关操作组合为一个要么全部成功要么全部失败的单元，可以简化错误恢复并使应用程序更加可靠。
+一个逻辑工作单元要成为事务，必须满足所谓的ACID（原子性、一致性、隔离性和持久性）属性。事务是数据库运行中的一个逻辑工作单位，由DBMS中的事务管理子系统负责事务的处理。
+*** 数据库并发问题
+    数据库是要被广大客户所共享访问的，那么在数据库操作过程中很可能出现以下几种不确定情况。
+    1. 更新丢失
+    两个事务都同时更新一行数据，一个事务对数据的更新把另一个事务对数据的更新覆盖了。这是因为系统没有执行任何的锁操作，因此并发事务并没有被隔离开来。
+    2. 脏读
+    一个事务读取到了另一个事务未提交的数据操作结果。这是相当危险的，因为很可能所有的操作都被回滚
+    3. 不可重复读
+    不可重复读（Non-repeatable Reads）：一个事务对同一行数据重复读取两次，但是却得到了不同的结果。
+包括以下情况：
+（1） 虚读：事务T1读取某一数据后，事务T2对其做了修改，当事务T1再次读该数据时得到与前一次不同的值。
+（2） 幻读（Phantom Reads）：事务在操作过程中进行两次查询，第二次查询的结果包含了第一次查询中未出现的数据或者缺少了第一次查询中出现的数据（这里并不要求两次查询的SQL语句相同）。
+     这是因为在两次查询过程中有另外一个事务插入数据造成的。
+*** 事务隔离级别
+    在数据库操作中，为了有效保证并发读取数据的正确性，提出的事务隔离级别。
+1. 未授权读取
+也称为读未提交（Read Uncommitted）：允许脏读取，但不允许更新丢失。如果一个事务已经开始写数据，则另外一个事务则不允许同时进行写操作，但允许其他事务读此行数据。该隔离级别可以通过“排他写锁”实现。
+2. 授权读取
+也称为读提交（Read Committed）：允许不可重复读取，但不允许脏读取。这可以通过“瞬间共享读锁”和“排他写锁”实现。读取数据的事务允许其他事务继续访问该行数据，但是未提交的写事务将会禁止其他事务访问该行。
+3. 可重复读取（Repeatable Read）
+可重复读取（Repeatable Read）：禁止不可重复读取和脏读取，但是有时可能出现幻影数据。这可以通过“共享读锁”和“排他写锁”实现。读取数据的事务将会禁止写事务（但允许读事务），写事务则禁止任何其他事务。
+4. 序列化（Serializable）
+序列化（Serializable）：提供严格的事务隔离。它要求事务序列化执行，事务只能一个接着一个地执行，但不能并发执行。如果仅仅通过“行级锁”是无法实现事务序列化的，必须通过其他机制保证新插入的数据不会被刚执行查询操作的事务访问到。
+
+隔离级别越高，越能保证数据的完整性和一致性，但是对并发性能的影响也越大。对于多数应用程序，可以优先考虑把数据库系统的隔离级别设为Read Committed。
+它能够避免脏读取，而且具有较好的并发性能。尽管它会导致不可重复读、幻读和第二类丢失更新这些并发问题，在可能出现这类问题的个别场合，可以由应用程序采用悲观锁或乐观锁来控制。
+*** 数据库锁
+    1. 悲观锁
+       悲观锁，正如其名，具有强烈的独占和排他特性。它指的是对数据被外界（包括本系统当前的其他事务，以及来自外部系统的事务处理）修改持保守态度，因此，在整个数据处理过程中，将数据处于锁定状态。悲观锁的实现，往往依靠数据库提供的锁机制（也只有数据库层提供的锁机制才能真正保证数据访问的排他性，否则，即使在本系统中实现了加锁机制，也无法保证外部系统不会修改数据）。
+       一个典型的倚赖数据库的悲观锁调用：
+select * from account where name="Erica" for update
+这条 sql 语句锁定了 account 表中所有符合检索条件（ name="Erica" ）的记录。 本次事务提交之前（事务提交时会释放事务过程中的锁），外界无法修改这些记录。Hibernate 的悲观锁，也是基于数据库的锁机制实现。
+    2. 乐观锁
+       相对悲观锁而言，乐观锁机制采取了更加宽松的加锁机制。悲观锁大多数情况下依靠数据库的锁机制实现，以保证操作最大程度的独占性。但随之而来的就是数据库 性能的大量开销，特别是对长事务而言，这样的开销往往无法承受。
+乐观锁，大多是基于数据版本（ Version ）记录机制实现。何谓数据版本？即为数据增加一个版本标识，在基于数据库表的版本解决方案中，一般是通过为数据库表增加一个 “version” 字段来实现。读取出数据时，将此版本号一同读出，之后更新时，对此版本号加一。此时，将提交数据的版本数据与数据库表对应记录的当前版本信息进行比对，如果提交的数据版本号大于数据库表当前版本号，则予以更新，否则认为是过期数据。
+       需要注意的是，乐观锁机制往往基于系统中的数据存储逻辑，因此也具备一定的局限性，如在上例中，由于乐观锁机制是在我们的系统中实现，来自外部系统的用户余额更新操作不受我们系统的控制，因此可能会造成脏数据被更新到数据库中。在系统设计阶段，我们应该充分考虑到这些情况出现的可能性，并进行相应调整（如将乐观锁策略在数据库存储过程中实现，对外只开放基于此存储过程的数据更新途径，而不是将数据库表直接对外公开）。
+*** spring事务传播
+一、Propagation （事务的传播属性）
+Propagation ：　　key属性确定代理应该给哪个方法增加事务行为。这样的属性最重要的部份是传播行为。有以下选项可供使用：
+PROPAGATION_REQUIRED--支持当前事务，如果当前没有事务，就新建一个事务。这是最常见的选择。
+PROPAGATION_SUPPORTS--支持当前事务，如果当前没有事务，就以非事务方式执行。
+PROPAGATION_MANDATORY--支持当前事务，如果当前没有事务，就抛出异常。
+PROPAGATION_REQUIRES_NEW--新建事务，如果当前存在事务，把当前事务挂起。
+PROPAGATION_NOT_SUPPORTED--以非事务方式执行操作，如果当前存在事务，就把当前事务挂起。
+PROPAGATION_NEVER--以非事务方式执行，如果当前存在事务，则抛出异常。
+1： PROPAGATION_REQUIRED
+加入当前正要执行的事务不在另外一个事务里，那么就起一个新的事务
+比如说，ServiceB.methodB的事务级别定义为PROPAGATION_REQUIRED, 那么由于执行ServiceA.methodA的时候，
+ServiceA.methodA已经起了事务，这时调用ServiceB.methodB，ServiceB.methodB看到自己已经运行在ServiceA.methodA
+的事务内部，就不再起新的事务。而假如ServiceA.methodA运行的时候发现自己没有在事务中，他就会为自己分配一个事务。
+这样，在ServiceA.methodA或者在ServiceB.methodB内的任何地方出现异常，事务都会被回滚。即使ServiceB.methodB的事务已经被
+提交，但是ServiceA.methodA在接下来fail要回滚，ServiceB.methodB也要回滚
+2： PROPAGATION_SUPPORTS
+如果当前在事务中，即以事务的形式运行，如果当前不再一个事务中，那么就以非事务的形式运行
+3： PROPAGATION_MANDATORY
+必须在一个事务中运行。也就是说，他只能被一个父事务调用。否则，他就要抛出异常
+4： PROPAGATION_REQUIRES_NEW
+这个就比较绕口了。  比如我们设计ServiceA.methodA的事务级别为PROPAGATION_REQUIRED，ServiceB.methodB的事务级别为PROPAGATION_REQUIRES_NEW，
+那么当执行到ServiceB.methodB的时候，ServiceA.methodA所在的事务就会挂起，ServiceB.methodB会起一个新的事务，等待ServiceB.methodB的事务完成以后，
+他才继续执行。他与PROPAGATION_REQUIRED 的事务区别在于事务的回滚程度了。因为ServiceB.methodB是新起一个事务，那么就是存在
+两个不同的事务。如果ServiceB.methodB已经提交，那么ServiceA.methodA失败回滚，ServiceB.methodB是不会回滚的。如果ServiceB.methodB失败回滚，
+如果他抛出的异常被ServiceA.methodA捕获，ServiceA.methodA事务仍然可能提交。
+5： PROPAGATION_NOT_SUPPORTED
+当前不支持事务。比如ServiceA.methodA的事务级别是PROPAGATION_REQUIRED ，而ServiceB.methodB的事务级别是PROPAGATION_NOT_SUPPORTED ，
+那么当执行到ServiceB.methodB时，ServiceA.methodA的事务挂起，而他以非事务的状态运行完，再继续ServiceA.methodA的事务。
+6. PROPAGATION_NEVER
+不能在事务中运行。假设ServiceA.methodA的事务级别是PROPAGATION_REQUIRED，  而ServiceB.methodB的事务级别是PROPAGATION_NEVER ，
+那么ServiceB.methodB就要抛出异常了。
+7. PROPAGATION_NESTED
+理解Nested的关键是savepoint。他与PROPAGATION_REQUIRES_NEW的区别是，PROPAGATION_REQUIRES_NEW另起一个事务，将会与他的父事务相互独立，
+而Nested的事务和他的父事务是相依的，他的提交是要等和他的父事务一块提交的。也就是说，如果父事务最后回滚，他也要回滚的。
+而Nested事务的好处是他有一个savepoint。

@@ -18,6 +18,7 @@
     1. ssh -v root@192.168.100.38  测试ssh服务
     2. ~/.ssh 目录的权限
     3. /etc/ssh/ssh_config
+    4. /var/log/secure失败日志
 ** 使用ssh-agent实现客户端不输入密码直接登录远程服务器
      1. 在客户端的~/.ssh目录下生成rsa私钥和公钥（安全起见要输入密码passphrase，默认私钥id_dsa和公钥id_rsa.pub）：ssh-keygen -t rsa
      2. 将客户端的公钥复制到服务器的~/.ssh目录下，执行命令：cat id_rsa.pub > authorized_key，
@@ -30,8 +31,7 @@
      2. 命令行输入: eval $(keychain --eval --agents ssh -Q --quiet id_rsa)
      3. 在/etc/profile.d下新建keychain.sh，内容:
         #!/bin/bash
-        /usr/bin/keychain ~/.ssh/id_rsa ~/.ssh/id_rsa
-        source $HOME/.keychain/$HOSTNAME-sh
+        eval `keychain --eval --agents ssh --inherit any id_rsa`
         更改此脚本权限 chomod +x /etc/profile.d/keychain.sh
 * openssl
 *** https生成自签名证书

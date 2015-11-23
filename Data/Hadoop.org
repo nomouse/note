@@ -1,0 +1,30 @@
+* 安装
+* 配置
+  配置目录在$HADOOP_HOME/etc/hadoop
+** hadoop.env
+export JAVA_HOME=/usr/local/java/jdk1.7.0_65
+** core-site.xml
+<configuration>
+ <property>
+  <name>fs.defaultFS</name>
+  <value>hdfs://192.168.100.38:9000</value>
+ </property>
+ <property>
+  <name>io.file.buffer.size</name>
+  <value>131072</value>
+ </property>
+ <property>
+  <name>hadoop.tmp.dir</name>
+  <value>file:/home/spark/opt/hadoop-2.6.0/tmp</value>
+  <description>Abasefor other temporary directories.</description>
+ </property>
+ <property>
+  <name>hadoop.proxyuser.spark.hosts</name>
+  <value>*</value>
+ </property>
+ <property>
+  <name>hadoop.proxyuser.spark.groups</name>
+  <value>*</value>
+ </property>
+</configuration>
+

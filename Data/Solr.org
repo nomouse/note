@@ -1,7 +1,13 @@
-** 概述
+* 概述
+** Lucene
+   Lucene是一个开放源代码的全文检索引擎工具包，但它不是一个完整的全文检索引擎，而是一个全文检索引擎的架构，提供了完整的查询引擎和索引引擎，部分文本分析引擎。
+   Lucene的目的是为软件开发人员提供一个简单易用的工具包，以方便的在目标系统中实现全文检索的功能，或者是以此为基础建立起完整的全文检索引擎。
+   Lucene提供的功能包括:语法分析器，基于文档的索引生成和储存，查询实现(模糊、分组)
+** Solr
+   Solr基于Lucene实现，在此基础上实现了一套完整的搜索引擎，功能包括:文档操作http api
    Solr是一个独立的企业级搜索应用服务器，它对外提供类似于Web-service的API接口。用户可以通过http请求，向搜索引擎服务器提交一定格式的XML文件，生成索引；也可以通过Http Get操作提出查找请求，并得到XML格式的返回结果。
    与传统数据库对比,table对应solr中的core,row对应solr的document,colomn对应solr的field
-** 安装配置
+* 安装配置
 *** $solr_home
     solr根目录，下面通常包含以下几个文件夹：
     1. conf/
@@ -42,17 +48,93 @@
        <fieldType name="text_ik" class="solr.TextField">
          <analyzer class="org.wltea.analyzer.lucene.IKAnalyzer"/>
        </fieldType>
-** 基础
+* 基础
+** 增删改
 *** 先删除id,再插入document
-    http://192.168.100.38:8983/solr/user/update?wt=json&commit=true&stream.body={"add":{"doc":{"id":"169117","gender":2,"updateTime":100,"scene":"1"}}}
+    http://localhost:8983/solr/user/update?wt=json&commit=true&stream.body={"add":{"doc":{"id":"169117","gender":2,"updateTime":100,"scene":"1"}}}
 *** 只更新提交的field
     http://192.168.100.38:8983/solr/user/update?wt=json&commit=true&stream.body={"add":{"doc":{"id":"169117","gender":{"set":1},"updateTime":{"set":200},"scene":{"set":"2"}}}}
 *** 删除
     http://192.168.100.38:8983/solr/user/update?wt=json&commit=true&stream.body={"delete":{"query":"*:*"}}
     http://192.168.100.38:8983/solr/user/update?wt=json&commit=true&stream.body={"delete":{"query":"id:169117"}}
+** 查询
 *** 查询
     http://192.168.100.38:8983/solr/user/update?wt=json&q=*:*
     http://192.168.100.38:8983/solr/user/update?wt=json&q=*:*
+*** 地理位置查询
+    http://192.168.100.38:8983/solr/user/query?
+    q.alt=*:*&fl=id,updated,distance:geodist()&fq={!geofilt}&sfield=pt&pt=31.281609,120.73913&d=100&sort=geodist() asc
+*** 高级查询带权重
+    http://192.168.100.38:8983/solr/user/query?
+    defType=edismax&q.alt=*:*&fl=id,updated,distance:geodist(),score&fq={!geofilt}&sfield=pt&pt=31.281609,120.73913&d=100&sort=score asc&start=0&rows=200&bf=recip(ord(updated),1,1000,10)
 
+* SolrCloud
+** 概念
+*** collection数据集
+	一个collection代表一个文档集合，一个collection可以被分为多个shared分片，每个分片可以有多个replica复制，多个复制里边有一个为leader
+*** shared分片
+    collection的逻辑分片，类比数据库分库分表，将一个collection的所有文档通过路由算法切分到多个shared上
+*** replica复制
+	shard的冗余
+*** node节点
+	指一个jvm实例
+*** 分片路由方式
+	SolrCloud分片切分形式包括compositeId和implicit
+	1.compositeId
+	需要在第一次初始化SolrCloud的时候指定numShards即分片数量，此种方式插入Document时不需要指定shared，而通过SolrCloud内部机制去自动将Document路由至相应shared
+	2.implicit
+	第一次初始化不设置numShards参数，这样可以通过api的形式动态控制分片数量，此种方式插入Document时需要指定参数_router_=[sharedId]，即自己实现分片路由算法。
+*** 分布式一致性			
+	对于一个分布式搜索引擎来说，一致性，性能，以及分割容差是三个主要指标，其中一致性与读写性能是个矛盾的指标，以SolrCloud为例，SolrCloud选择了一致性而适当放弃了写的性能。SolrCloud具有replica时，当有数据建立索引，SolrCloud首先将数据update至leader shard，然后leadershard再将数据进行分发至各个replica shard，leader shard进行分发是个同步的过程，也就是说它会一直等到所以replica shard的数据update成功才会返回成功，中间一旦出现错误就视为失败，这样就充分保证了leader和replica的数据一致性，当然这也就降低了写的速度。这里需要说明的是，当replica是不上线状态时候，SolrCloud的leader是不会分发至这个replica shard的，关于shard 的状态在下文中将会具体介绍。至于为什么SolrCloud对弱一致性的零容忍态度，主要是避免索引的部分成功以及多个shard查询结果的不同。
+*** compositeId分片算法
+	建好的SolrCloud集群每一个shard都会有一个Hash区间，当Document进行update的时候，SolrCloud就会计算这个Document的Hash值，然后根据该值和shard的hash区间来判断这个document应该发往哪个shard，所以首先让我们先来学习下SolrCloud的hash算法。Solr使用document route组件来进行document的分发。目前Solr有两个DocRouter类的子类CompositeIdRouter(Solr默认采用的)类和ImplicitDocRouter类，当然我们也可以通过继承DocRouter来定制化我们的document route组件。
 
+    当Solr Shard建立时候，Solr会给每一个shard分配32bit的hash值的区间，比如SolrCloud有两个shard分别为A,B，那么A的hash值区间就为 80000000-ffffffff ，B的hash值区间为0-7fffffff  。默认的CompositeIdRouter hash策略会根据document ID计算出唯一的Hash值，并判断该值在那个shard的hash区间内。
 
+    SolrCloud对于Hash值的获取提出了以下几个要求：
+
+	hash计算速度必须快，因为hash计算是分布式建索引的第一步，SolrCloud不可能在这一不上花很多时间。
+	hash值必须能均匀的分布于每一个shard，如果有一个shard的document数量大于另一个shard，那么在查询的时候前一个shard所花的时间就会大于后一个，SolrCloud的查询是先分后汇总的过程，也就是说最后每一个shard查询完毕才算完毕，所以SolrCloud的查询速度是由最慢的shard的查询速度决定的。我们有理由让SolrCloud做好充分的负载均衡。
+	
+    基于以上两点，SolrCloud采用了MurmurHash 算法
+** 搭建
+   1. 安装zookeeper集群
+   2. 在机器A上面运行
+   bin/solr start -c -z 192.168.100.37:2181,192.168.100.38:2181 -d node1 -a "-DnumShards=2 -Dbootstrap_confdir=./solr/collection1/conf -Dcollection.configName=myconf"
+   bin/solr start -c -z 192.168.100.37:2181,192.168.100.38:2181 -d node2 -p 9983
+   3. 在机器B上面运行
+   bin/solr start -c -z 192.168.100.37:2181,192.168.100.38:2181 -d node1
+   4. 检查状态
+   bin/solr healthcheck -c collection1 -z 192.168.100.37:2181,192.168.100.38:2181
+** 相关管理命令
+/admin/collections?action=CREATE: create a collection
+/admin/collections?action=RELOAD: reload a collection
+/admin/collections?action=SPLITSHARD: split a shard into two new shards
+/admin/collections?action=CREATESHARD: create a new shard
+/admin/collections?action=DELETESHARD: delete an inactive shard
+/admin/collections?action=CREATEALIAS: create or modify an alias for a collection
+/admin/collections?action=DELETEALIAS: delete an alias for a collection
+/admin/collections?action=DELETE: delete a collection
+/admin/collections?action=DELETEREPLICA: delete a replica of a shard
+/admin/collections?action=ADDREPLICA: add a replica of a shard
+/admin/collections?action=CLUSTERPROP: Add/edit/delete a cluster-wide property 
+/admin/collections?action=MIGRATE: Migrate documents to another collection 
+/admin/collections?action=ADDROLE: Add a specific role to a node in the cluster 
+/admin/collections?action=REMOVEROLE: Remove an assigned role 
+/admin/collections?action=OVERSEERSTATUS: Get status and statistics of the overseer 
+/admin/collections?action=CLUSTERSTATUS: Get cluster status 
+/admin/collections?action=REQUESTSTATUS: Get the status of a previous asynchronous request 
+/admin/collections?action=LIST: List all collections 
+/admin/collections?action=ADDREPLICAPROP: Add an arbitrary property to a replica specified by collection/shard/replica 
+/admin/collections?action=DELETEREPLICAPROP: Delete an arbitrary property from a replica specified by collection/shard/replica 
+/admin/collections?action=BALANCESHARDUNIQUE: Distribute an arbitrary property, one per shard, across the nodes in a collection
+/admin/collections?action=REBALANCELEADERS:  Distribute leader role  based on the "preferredLeader" assignments
+
+* 原理
+** 全文索引原理
+   Lucene采用倒排序索引，基本的思想是把文本看成了多个关键词的集合，然后记录这些关键词出现的所有文档id、出现频率和出现序号。
+** Solr缓存
+filterCache
+documentCache
+queryResultCache
+fieldValueCache
