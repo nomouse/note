@@ -1,0 +1,5 @@
+项目名：安卓图片浏览工具
+项目描述：界面类似原生照片库，但是可以直接访问互联网上的图片资源，并提供本地缓存和多种视图模式（列表、网络）查看图片
+开发环境：Windows、Android SDK 5.0、Android Studio
+主要技术：Activity,Fragment,GridView,ListView,ImageView,使用Android-Universal-Image-Loader库下载和展示远程/本地图片
+责任描述：独立完成

@@ -1,10 +1,10 @@
 * 基础
 ** PATH
-JAVA_HOME=/Library/Java/JavaVirtualMachines/1.7.0_71.jdk/Contents/Home
+JAVA_HOME=$(/usr/libexec/java_home)
 JAVA_TOOL_OPTIONS=-Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=US
 
 ANT_HOME
-MAVEN_HOME
+M2_HOME
 GRADLE_HOME
 GRADLE_USER_HOME
 
@@ -15,9 +15,9 @@ CATALINA_HOME
 ANDROID_HOME
 
 windows:
-.;%JAVA_HOME%\bin;%ANT_HOME%\bin;%MAVEN_HOME%\bin;%GRADLE_HOME%\bin;%CATALINA_HOME%\bin;%ANDROID_HOME%\tools;%ANDROID_HOME%\platform-tools
+.;%JAVA_HOME%\bin;%ANT_HOME%\bin;%M2_HOME%\bin;%GRADLE_HOME%\bin;%CATALINA_HOME%\bin;%ANDROID_HOME%\tools;%ANDROID_HOME%\platform-tools
 unix:
-export PATH=$JAVA_HOME\bin;$ANT_HOME\bin;$MAVEN_HOME\bin;$GRADLE_HOME\bin;$CATALINA_HOME\bin;$ANDROID_HOME\tools;$ANDROID_HOME\platform-tools:$PATH
+export PATH=$JAVA_HOME\bin;$ANT_HOME\bin;$M2_HOME\bin;$GRADLE_HOME\bin;$CATALINA_HOME\bin;$ANDROID_HOME\tools;$ANDROID_HOME\platform-tools:$PATH
 
 ** JDK常用类
 *** Object

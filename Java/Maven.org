@@ -1,6 +1,12 @@
 * 安装配置
-**
-** Maven地址
+** 安装
+  1. 解压到任意目录
+  2. 配置PATH路径M2_HOME
+  3. 修改$M2_HOME/conf/setting.xml的localRepository节点，修改本地仓库路径
+** maven2找不到JAVA_HOME
+   vi ~/.mavenrc
+   export JAVA_HOME=$(/usr/libexec/java_home)
+* 公用仓库地址
     Apache https://repository.apache.org/snapshots/
     Maven Central https://repo1.maven.org/maven2/
     Codehaus    https://nexus.codehaus.org/snapshots/
@@ -9,10 +15,34 @@
     Clojars https://clojars.org/repo/
     ibiblio http://mirrors.ibiblio.org/maven2/
     jfrog http://oss.jfrog.org/artifactory/oss-snapshot-local/
-* 命令
+* 基本命令
   mvn -e
   mvn -U
   mvn clean
   mvn install
   mvn package
   mvn help:system -U
+  显示依赖树
+  mvn dependency:tree
+* 依赖管理
+** 排除重复依赖
+   比如需要排除cglib:cglib可以将scope改为provided，这样可以实现全局排除
+   <dependency>
+                        <groupId>cglib</groupId>
+                        <artifactId>cglib</artifactId>
+                        <version>2.1_3</version>
+                        <scope>provided</scope>
+   </dependency>
+   如果需要单个排除的化，如下
+   <dependency>
+                <groupId>com.alibaba.platform.shared</groupId>
+                <artifactId>buc.sso.client</artifactId>
+                <version>0.3.12</version>
+                <exclusions>
+                        <exclusion>
+                                <artifactId>codehaus.jackson.mapper</artifactId>
+                                <groupId>com.alibaba.external</groupId>
+                        </exclusion>
+                </exclusions>
+    </dependency>
+* 结构模版

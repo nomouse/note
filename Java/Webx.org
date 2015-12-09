@@ -1,0 +1,9 @@
+mvn archetype:generate \
+ -DgroupId=com.alibaba.webx \
+ -DartifactId=demo \
+ -Dversion=1.0 \
+ -Dpackage=com.alibaba.webx.demo \
+ -DarchetypeArtifactId=archetype-webx-quickstart \
+ -DarchetypeGroupId=com.alibaba.citrus.sample \
+ -DarchetypeVersion=1.8 \
+ -DinteractiveMode=false

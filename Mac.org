@@ -1,8 +1,33 @@
-* homebrew
+* homebrew包管理
+** 基本
+   安装
+   ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+   卸载
+   ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/uninstall)"
 ** 命令
    brew update
    brew search nginx
    brew install nginx
+* 命令行终端颜色
+export CLICOLOR=1
+export LSCOLORS=gxfxaxdxcxegedabagaca
+* iTerm2命令行终端
+  下载地址 http://www.iterm2.com/
+* coreutils
+  Mac OS X 是基于 FreeBSD 的，所以一些工具 ls, top 等都是 BSD 那一套，ls 不是 GNU ls，所以即使 Terminal/iTerm2 配置了颜色，但是在 Mac 上敲入 ls 命令也不会显示高亮，可以通过安装 coreutils 来解决.
+  brew install coreutils
+  如果不起作用可能是路径问题
+  vim /etc/profiles
+GNU_HOME=/usr/local/opt/coreutils/libexec
+export PATH="$GNU_HOME/gnubin:$PATH"
+export MANPATH="$GNU_HOME/gnuman:$MANPATH"
+
+* emacs
+** 基本
+   安装
+   brew install emacs --cocoa --with-gnutls
+   在mac launchpad中显示
+   ls -s /usr/local/Cellar/emacs/HEAD/emacs.app /Applications/
 * xcode
 ** 修改键位
    1. 首先找到Xcode中的自带的配置文件

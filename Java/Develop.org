@@ -1,0 +1,33 @@
+* JDK
+  jdk1.7
+* Eclipse
+  3.6+ 推荐Luna，因为包含了git、maven、mylyn等插件
+** svn插件subclipse
+   http://subclipse.tigris.org/
+** maven插件m2e
+** 命令行插件easyshell
+   http://pluginbox.sourceforge.net/
+** 任务管理插件mylyn
+** bug查找插件findbugs
+   http://findbugs.sourceforge.net/
+   http://findbugs.cs.umd.edu/eclipse/
+** 依赖分析插件JDepend4Eclipse
+   http://andrei.gmxhome.de/
+** 单元测试覆盖率报告插件elcemma
+   http://eclemma.org/
+   http://update.eclemma.org/
+** properties文件编辑工具
+   http://propedit.osdn.jp/index_en.html
+   http://propedit.osdn.jp/eclipse/updates/
+* Subversion
+  eclipse插件安装
+  svn客户端安装 http://subversion.tigris.org/getting.html
+  下载Subversion的 config文件，保存到下列路径．- 【注意】这一步必须完成！
+  unix用户：~/.subversion/config
+  windows用户：../document and settings/your_name/AppData/Subversion/config
+* Maven
+  下载Maven的setting.xml文件
+  保存到～/.m2目录下
+* Code
+  下载template和codestyle到本地 - 【注意】这一步必须完成！
+  导入到elcipse
