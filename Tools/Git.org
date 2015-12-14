@@ -35,6 +35,15 @@
    git merge --ff-none 合并分支
 
 * 应用
+** 本地初始化一个仓库到远程
+mkdir webxdemo
+cd webxdemo
+git init
+touch README.md
+git add README.md
+git commit -m "first commit"
+git remote add origin git@github.com:nomouse/webxdemo.git
+git push -u origin master
 ** 仓库操作
    git init 新建本地仓库
    git clone git@github.com:nomouse/nomouse-java.git 签出远程仓库到本地

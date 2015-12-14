@@ -17,6 +17,7 @@
     jfrog http://oss.jfrog.org/artifactory/oss-snapshot-local/
 * 基本命令
   mvn -e
+  打开错误日志
   mvn -U
   mvn clean
   mvn install
@@ -24,8 +25,17 @@
   mvn help:system -U
   显示依赖树
   mvn dependency:tree
-* 依赖管理
-** 排除重复依赖
+  显示实际产生的pom文件
+  mvn help:effective-pom -e
+* pom配置
+** 基本
+** 项目管理
+** 插件管理
+** 依赖管理
+   <dependencies>
+   <dependency>
+   <dependencyManagement>
+*** 排除重复依赖
    比如需要排除cglib:cglib可以将scope改为provided，这样可以实现全局排除
    <dependency>
                         <groupId>cglib</groupId>

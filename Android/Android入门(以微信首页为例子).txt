@@ -1,0 +1,11 @@
+一、概述
+1.从同学日常使用看移动应用现状，从移动互联网发展趋势看前景（通过数据或者图标），从技术关联引入开发兴趣（java和html5）
+2.介绍android信息，包括历史，版本发展和特点。
+3.从技术层面介绍android的整体框架结构。
+二、实际操作
+1.搭建android开发环境和模拟器。
+2.搭建最简单的android项目并运行，引入android基本要素，AndroidManifest文件、Activity、Fragment和布局xml文件。
+3.分析微信首页UI结构，实现简单的头部布局，引入Layout、TextView、Button等布局组件。
+4.实现较复杂的主体ListView组件，引入Adapter概念，简述android如何优化UI和内存资源。
+三、总结
+1.总结android开发步骤，android框架设计的亮点（比如Activity的设计理念）

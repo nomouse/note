@@ -13,4 +13,5 @@
 * 代码自动补全无效
 1. Eclipse下进入Windows ->Preperences ->General ->keys
 2. 把Word Completion的快捷键设置alt+/删掉！
-3. 把Content Assist的快捷键由ctrl+space改成alt+/
+3. 把Content Assist的快捷键由ctrl+space改成alt+.
+
