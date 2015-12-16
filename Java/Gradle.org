@@ -1,15 +1,33 @@
+* 概述
 * 安装配置
 ** 环境变量
-    GRADLE_HOME
-    GRADLE_USER_HOME
-* 依赖管理
-* 基础
-** 命令
+   GRADLE_OPTS  jvm运行参数，比如GRADLE_OPTS="-Dorg.gradle.daemon=true"
+   GRADLE_HOME  安装目录
+   GRADLE_USER_HOME  工作目录，下载的依赖会放在其中,默认是~/.gradle
+** 文件结钩
+   build.gradle      相当与maven的pom文件
+   gradle.properties 一些键值对属性
+   setting.gradle    管理多项目
+** 基础命令
     1. gradle
     2. gradle build
     3. gradle assemble
     4. gradle clean
     5. gradle deps
+* 依赖管理
+** 仓库管理
+repositories{
+  mavenLocal()     //别名，代表使用本地的maven配置
+  mavenCentral()   //别名，代表使用远程的maven官方中心仓库
+  jcenter()        //别名，代表使用Bintary’s JCenter Maven仓库
+  //代表使用自定义maven私服的地址
+  maven{
+     url "http://localhost:8081/nexus/content/groups/public"
+  }
+}
+** 依赖排除
+   1. 全局依赖排除
+
 * 插件
 ** Java
     compileJava {
@@ -27,7 +45,7 @@
     }
 ** Android
 ** War
-processResources {
+   processResources {
     from('src/main/resources') {
         include '**/*'
         exclude 'dorado-home/configure*.properties'
@@ -35,5 +53,5 @@ processResources {
     from('src/production') {
         include '**/*'
     }
-}
+   }
 

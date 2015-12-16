@@ -1,3 +1,7 @@
+* mac常用快捷键
+  command+space 切换输入法
+  control+space 快捷打开命令
+  option+command+shift+esc 强制杀死当前程序
 * mac环境配置
   /etc/profile >> ~/.bash_profile
 * homebrew包管理

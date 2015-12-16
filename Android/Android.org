@@ -150,3 +150,29 @@ Service概述
    就像GIF图片，通过一系列Drawable依次显示来模拟动画的效果。
 ** Property Animation 属性动画
    与View Animation的最大区别是属性动画会改变View的实际属性。
+* 常见问题
+** 应用方法数不能超过65536的问题
+*** 原因
+    是由于 dex 文件格式的限制而引起的这个问题。我们项目中的每一个方法，在编译过后在dex文件中都会有一个与之相对应的方法 id，而 dex 文件中存储方法 id 用的是 short 类型数据，
+    java 中 short 是两个字节大小，所以这就限制了一个 dex 文件中最多只能存储2^16个（unsigned short）
+*** 解决方法
+    1. 在gradle中引入multidex类
+dependencies {
+  compile 'com.android.support:multidex:1.0.0'
+}
+    2. 在AndroidManifest.xml 中声明 MultiDexApplication
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.android.multidex.myapplication">
+    <application
+        ...
+        android:name="android.support.multidex.MultiDexApplication">
+        ...
+    </application>
+</manifest>
+     3. 如果自己已经实现类Applicaiton类，重写attachBaseContext方法
+@Override
+protected void attachBaseContext(Context base) {
+    super.attachBaseContext(base);
+    MultiDex.install(this);
+}
