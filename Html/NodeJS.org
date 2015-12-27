@@ -1,8 +1,41 @@
-* 安装
-  1. https://nodejs.org/en/ 下载node.js安装
-  2. 安装npm，git clone --recursive git://github.com/isaacs/npm.git，然后进入npm目录执行node cli.js install npm -gf
-  3. 使用npm安装其他软件，比如npm install grunt
-
+* 环境搭建
+** 使用官方安装包
+   1. https://nodejs.org/en/ 下载node.js安装
+   2. 卸载，保存一下命令为uninstallNodejs.sh，来自：https://github.com/jesseyu/uninstallNodejs
+ #!/bin/bash
+lsbom -f -l -s -pf /var/db/receipts/org.nodejs.pkg.bom \
+| while read i; do
+  sudo rm /usr/local/${i}
+done
+sudo rm -rf /usr/local/lib/node \
+     /usr/local/lib/node_modules \
+     /var/db/receipts/org.nodejs.*
+** nvm
+   nvm是一个node和iojs的版本管理工具，使用它我们可以快速下载和安装node各个版本
+*** mac安装
+    1. 下载nvm，git clone https://github.com/creationix/nvm
+    2. source nvm/nvm.sh，然后可以直接使用nvm
+    3. nvm ls-remote node查看远程版本
+    4. nvm install [version] 安装相应版本
+*** windows安装
+    1. git clone https://github.com/coreybutler/nvm-windows.git
+    2. 设置环境变量 set "PATH=%NVM_HOME%;PATH"
+    3. nvmw install [version] 安装相应版本
+** npm
+*** 安装
+    1. git clone --recursive git://github.com/isaacs/npm.git
+    2. 进入npm目录执行node cli.js install npm -gf
+    3. 运行npm -v查看版本
+*** 添加npm全局模块
+    使用 nvm 时，默认的 prefix 是当前激活的 node 版本的安装路径。
+    切换 node 版本之后，之前安装全局命令模块需要重新安装，非常不方便。建议解决方案的步骤：
+    1. 编辑 ~/.npmrc，添加一行 prefix=~/.npm-global
+    2. 编辑 ~/.zshrc 或者 ~/.bashrc，在末尾添加一行 export PATH=~/.npm-global/bin:$PATH
+    3. 执行 source ~/.zshrc 或者 source ~/.bashrc
+** cnpm
+   npm和cnpm的关系，类似于maven和nexus的关系，是一个npm本地私服的实现
+** 搭建
+   1. git clone git://github.com/cnpm/cnpmjs.org.git
 * angular2
 ** 安装
    1. 使用npm安装包依赖

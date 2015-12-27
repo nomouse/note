@@ -1,0 +1,6 @@
+* 概述
+* 快捷键
+  进入开发环境     f12     command+alt+j
+* 配置
+** Https缓存
+   chrome://net-internals/#hsts

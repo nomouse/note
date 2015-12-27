@@ -17,16 +17,18 @@
     jfrog http://oss.jfrog.org/artifactory/oss-snapshot-local/
 * 基本命令
   mvn -e
-  打开错误日志
-  mvn -U
-  mvn clean
-  mvn install
-  mvn package
   mvn help:system -U
   显示依赖树
   mvn dependency:tree
   显示实际产生的pom文件
   mvn help:effective-pom -e
+** mvn clean
+** mvn install
+  mvn install
+  mvn install -Dmaven.test.skip=true
+  打开错误日志
+  mvn -U
+** mvn package
 * pom配置
 ** 基本
 ** 项目管理

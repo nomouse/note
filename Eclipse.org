@@ -28,12 +28,26 @@
    3. 最后clean整个项目，就可以直接查看源码了
 * 快捷键设置
 ** 常用
-   Content Assist 代码补全
-   Duplicate Lines 复制当前行
-   Move Lines Up   选中行整体向上
-   Move Lines Down 选中行整体向下
-   Insert Line Below Current 当前行下方插入
-   Insert Line Above Current 当前行上方插入
+   Duplicate Lines 复制当前行       ctrl+alt+down
+   Surround With Quick Menu 弹出快捷代码包裹菜单 ctrl+alt+z
+   Show Source Quick Menu   弹出快捷代码生成菜单 ctrl+alt+s
+   Show Refactor Quick Menu 弹出快捷代码重构菜单 ctrl+alt+t
+   Content Assist 代码补全          alt+.
+   Move Lines Up   选中行整体向上    alt+up
+   Move Lines Down 选中行整体向下    alt+down
+   Forward History  操作历史向前            alt+right
+   Backward History 操作历史回退            alt+left
+   Insert Line Below Current 当前行下方插入  alt+enter
+   Insert Line Above Current 当前行上方插入  alt+shirt+enter
+   Open Resource    打开全局文件搜索         alt+shirt+r
+   Rename - Refactoring     全局重命名          alt+r
+   Quick Hierarchy          快速显示接口实现类   alt+t
+   Find Next                快速查找下一个       alt+k
+   Find and Replace         显示查找窗口        alt+f
+   Quick Switch Editor      快速切换编辑窗口     alt+e
+   Step Over                调试步进            alt+'
+   Step Into                调试入栈            alt+;
+   Step Return              调试出栈            alt+shirt+;
 ** 设置
 1. Eclipse下进入Windows ->Preperences ->General ->keys
 2. 把Word Completion的快捷键设置alt+/删掉！

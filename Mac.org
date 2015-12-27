@@ -19,6 +19,7 @@
   git clone https://github.com/robbyrussell/oh-my-zsh.git
   cd oh-my-zsh
   sh tools/install.sh
+  sudo ln -s /etc/profile /etc/zprofile
 * 命令行终端颜色
 export CLICOLOR=1
 export LSCOLORS=gxfxaxdxcxegedabagaca

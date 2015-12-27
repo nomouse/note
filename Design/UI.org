@@ -1,0 +1,7 @@
+* 概述
+** 入门
+   ui设计者如何入门http://www.zhihu.com/question/19954439
+** 一些资源网站
+   国外设计原型 https://dribbble.com/
+   素材库http://www.lanrentuku.com/vector/
+   UI设计http://www.uisdc.com/tag/iconfans

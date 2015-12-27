@@ -19,6 +19,8 @@ windows:
 unix:
 export PATH=$JAVA_HOME\bin;$ANT_HOME\bin;$M2_HOME\bin;$GRADLE_HOME\bin;$CATALINA_HOME\bin;$ANDROID_HOME\tools;$ANDROID_HOME\platform-tools:$PATH
 
+** JVM常用配置
+   -server -Xms1024m -Xmx1024m -XX:PermSize=256m -XX:MaxNewSize=256m -XX:MaxPermSize=256m
 ** JDK常用类
 *** Object
    1. hashCode
@@ -60,7 +62,7 @@ export PATH=$JAVA_HOME\bin;$ANT_HOME\bin;$M2_HOME\bin;$GRADLE_HOME\bin;$CATALINA
        ArrayList的数据存放在一个Object数组中(transient Object[] elementData)。
        ArrayList的size等于initialCapacity -1 时，会生成一个更大的数组来放置当前数据
 *** Map
-   1. HashMap原理 
+   1. HashMap原理
       HashMap的所有数据存放在一个Entry数组中(transient Entry<K,V>[] table)，其中Entry代表一个键值对，并存放指向另外一个Entry的引用，
       这样就构成一个链表，因此HashMap的数据结构是数组+链表。
       调用put方法时，先计算key的hash值，然后以此为下标将Entry放入table中，如果hash值相等，则放入对应的链表中。
