@@ -1,60 +1,73 @@
+* 基础
+** 安装
+** 配置
+*** 快捷键设置
+**** 设置
+     1. Eclipse下进入Windows ->Preperences ->General ->keys
+     2. 把Word Completion的快捷键设置alt+/删掉！
+     3. 把Content Assist的快捷键由ctrl+space改成alt+/
+**** 常用整理
+ |-----------------+---------------------------+----------------+----------------------|
+ | shortkey        | eclipse                   | idea           | 说明                 |
+ |-----------------+---------------------------+----------------+----------------------|
+ | ctrl+alt+z      | Surround With Quick Menu  | Surround With  | 弹出快捷代码包裹菜单 |
+ | ctrl+alt+s      | Show Source Quick Menu    | Generate       | 弹出快捷代码生成菜单 |
+ | ctrl+alt+t      | Show Refactor Quick Menu  | Refactor This  | 弹出快捷代码重构菜单 |
+ |-----------------+---------------------------+----------------+----------------------|
+ | ctrl+alt+down   | Duplicate Lines           |                | 复制当前行           |
+ | alt+.           | Content Assist            |                | 代码补全             |
+ | alt+up          | Move Lines Up             |                | 选中行整体向上       |
+ | alt+down        | Move Lines Down           |                | 选中行整体向下       |
+ | alt+right       | Forward History           |                | 操作历史向前         |
+ | alt+left        | Backward History          |                | 操作历史回退         |
+ | alt+enter       | Insert Line Below Current |                | 当前行下方插入       |
+ | alt+shirt+enter | Insert Line Above Current |                | 当前行上方插入       |
+ | alt+r           | Rename - Refactoring      |                | 全局重命名           |
+ | alt+t           | Quick Hierarchy           | Implemetations | 快速显示接口实现类   |
+ | alt+k           | Find Next                 |                | 快速查找下一个       |
+ | alt+f           | Find and Replace          |                | 显示查找窗口         |
+ | alt+e           | Quick Switch Editor       |                | 快速切换编辑窗口     |
+ | alt+shirt+r     | Open Resource             |                | 打开全局文件搜索     |
+ | alt+shirt+g     |                           | Find Usage     | 查找调用此方法       |
+ |-----------------+---------------------------+----------------+----------------------|
+ | alt+'           | Step Over                 |                | 调试步进             |
+ | alt+;           | Step Into                 |                | 调试入栈             |
+ | alt+shirt+;     | Step Return               |                | 调试出栈             |
+ |-----------------+---------------------------+----------------+----------------------|
+*** 优化
+**** 关闭自动校验
+     Preferences>Validation
+     将Build下的勾全部勾掉，保留Manual下的勾，在需要校验的文件上手动右键>run validation
+**** 关闭自动更新
+     Preferences>General>
 * 插件
-** 使用link的方式安装插件
+** 安装
+*** 使用link的方式安装插件
 1. 在装好的eclipse目录，比如D:/eclipse目录下，创建一个名为links的文件夹
 2. 在links文件夹下建立一个文本文件，修改后缀名为.link，比如svn.link
 3. 下载eclipse插件离线包文件，比如eclipse svn插件：svn离线插件，将下载后的压缩包解压到任意目录，比如D:/svn。也可以使用相对路径，比如只输入svn
 4. 修改上面的svn.link文件，定位到插件解压的位置(比如D:/svn)，然后重启eclipse，插件就会加载进来，如果以后想要去除此插件，只需要将svn.link文件中的地址改掉就可以了
 5. 如果插件无效，尝试删除$ECLIPSE_HOME/configuration/org.eclipse.update
-** svn插件subclipse
-   http://subclipse.tigris.org/
-** maven插件m2e
-** 命令行插件easyshell
-   http://pluginbox.sourceforge.net/
-** 任务管理插件mylyn
-** bug查找插件findbugs
-   http://findbugs.sourceforge.net/
-   http://findbugs.cs.umd.edu/eclipse/
-** 依赖分析插件JDepend4Eclipse
-   http://andrei.gmxhome.de/
-** 单元测试覆盖率报告插件elcemma
-   http://eclemma.org/
-   http://update.eclemma.org/
-** properties文件编辑工具
-   http://propedit.osdn.jp/index_en.html
-   http://propedit.osdn.jp/eclipse/updates/
-* adt中查看Android Private Libraries下第三方包的源码
+** 常用插件
+*** svn插件subclipse
+    http://subclipse.tigris.org/
+*** maven插件m2e
+*** 命令行插件easyshell
+    http://pluginbox.sourceforge.net/
+*** 任务管理插件mylyn
+*** bug查找插件findbugs
+    http://findbugs.sourceforge.net/
+    http://findbugs.cs.umd.edu/eclipse/
+*** 依赖分析插件JDepend4Eclipse
+    http://andrei.gmxhome.de/
+*** 单元测试覆盖率报告插件elcemma
+    http://eclemma.org/
+    http://update.eclemma.org/
+*** properties文件编辑工具
+    http://propedit.osdn.jp/index_en.html
+    http://propedit.osdn.jp/eclipse/updates/
+* 问题整理
+** adt中查看Android Private Libraries下第三方包的源码
    1. 在项目的libs文件夹下新建一个第三方包名相同的properties文件，比如gson-2.2.4.jar，那么新建的文件为：gson-2.2.4.jar.properties
    2. 在新建的文件夹中输入以下文字：src = [此处代表相应源码的路径]，比如：src = D:\\Source\\google-gson-2.2.4\\gson-2.2.4-sources  
    3. 最后clean整个项目，就可以直接查看源码了
-* 快捷键设置
-** 常用
-   Duplicate Lines 复制当前行       ctrl+alt+down
-   Surround With Quick Menu 弹出快捷代码包裹菜单 ctrl+alt+z
-   Show Source Quick Menu   弹出快捷代码生成菜单 ctrl+alt+s
-   Show Refactor Quick Menu 弹出快捷代码重构菜单 ctrl+alt+t
-   Content Assist 代码补全          alt+.
-   Move Lines Up   选中行整体向上    alt+up
-   Move Lines Down 选中行整体向下    alt+down
-   Forward History  操作历史向前            alt+right
-   Backward History 操作历史回退            alt+left
-   Insert Line Below Current 当前行下方插入  alt+enter
-   Insert Line Above Current 当前行上方插入  alt+shirt+enter
-   Open Resource    打开全局文件搜索         alt+shirt+r
-   Rename - Refactoring     全局重命名          alt+r
-   Quick Hierarchy          快速显示接口实现类   alt+t
-   Find Next                快速查找下一个       alt+k
-   Find and Replace         显示查找窗口        alt+f
-   Quick Switch Editor      快速切换编辑窗口     alt+e
-   Step Over                调试步进            alt+'
-   Step Into                调试入栈            alt+;
-   Step Return              调试出栈            alt+shirt+;
-** 设置
-1. Eclipse下进入Windows ->Preperences ->General ->keys
-2. 把Word Completion的快捷键设置alt+/删掉！
-3. 把Content Assist的快捷键由ctrl+space改成alt+/
-* 优化
-** 自动校验
-   Preferences>Validation
-   将Build下的勾全部勾掉，保留Manual下的勾，在需要校验的文件上手动右键>run validation
-** 自动更新
-   Preferences>General>

@@ -1,10 +1,20 @@
-* 安装配置
+* 基本
 ** 安装
-   集群版地址:http://dev.mysql.com/get/file/mysql-cluster-gpl-7.3.7-linux-glibc2.5-x86_64.tar.gz
-   社区版地址:http://dev.mysql.com/get/file/mysql-gpl-5.5.39-linux-glibc2.5-x86_64.tar.gz
-   源码版地址:http://dev.mysql.com/get/file/mysql-5.5.39.tar.gz
-   其它地址:http://ftp.kaist.ac.kr/mysql/Downloads/
-** 编码设置
+*** 版本
+    集群版地址:http://dev.mysql.com/get/file/mysql-cluster-gpl-7.3.7-linux-glibc2.5-x86_64.tar.gz
+    社区版地址:http://dev.mysql.com/get/file/mysql-gpl-5.5.39-linux-glibc2.5-x86_64.tar.gz
+    源码版地址:http://dev.mysql.com/get/file/mysql-5.5.39.tar.gz
+    其它地址:http://ftp.kaist.ac.kr/mysql/Downloads/
+*** 启动
+**** windows下DOS命令窗口输入指令：
+    查看服务是否启动：net help services
+    启动mysql服务：net start mysql
+    停止mysql服务：net stop mysql
+**** linux下在bash下，输入指令：
+    查看服务状态：service mysqld status
+    启动mysql服务：service mysqld start
+    停止mysql服务：service mysqld stop
+** 配置
 *** windows
     修改Mysql安装目录下my.ini文件，
     [client]
@@ -25,7 +35,7 @@
     character_set_connection	utf8mb4
     character_set_database	utf8mb4
     character_set_filesystem	binary
-    character_set_results	
+    character_set_results
     character_set_server	utf8mb4
     character_set_system	utf8
     collation_connection	utf8mb4_general_ci
@@ -35,19 +45,10 @@
     重启mysql服务，注意创建表的时候要使用utf8格式，如下：
     ALTER database db DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci
 
-** 启动服务
-*** windows下DOS命令窗口输入指令：
-    查看服务是否启动：net help services
-    启动mysql服务：net start mysql
-    停止mysql服务：net stop mysql
-*** linux下在bash下，输入指令：
-    查看服务状态：service mysqld status
-    启动mysql服务：service mysqld start
-    停止mysql服务：service mysqld stop
-* 基本操作
+* 运维
 ** 修改root密码
    mysqladmin -u root -p[oldpassword] password [newpassword]，root没有设置密码的话-p[oldpassword]可以省略
-** 数据库相关操作
+** 管理
 *** 登录
     mysql -u[user] -p[password]
     例子： mysql -uroot -p123456
@@ -75,16 +76,15 @@
    输入：update mysql.user set password=PASSWORD('[这里输入你的新密码]') where user='root'
    输入：flush privileges
    退出，重启mysql服务，用新密码即可登录
-* 高级
-** 事务
+** 事务相关
+   mysql事务只有innodb引擎支持，默认的myisam引擎是不支持事务的。
    mysql的autocommit（自动提交）默认是开启，其对mysql的性能有一定影响，举个例子来说，如果你插入了1000条数据，mysql会commit1000次的，如果我们把autocommit关闭掉，通过程序来控制，只要一次commit就可以了。
-   另外mysql事务只有innodb引擎支持，设置myisam引擎是不支持事务的。
 *** 手动设置autocommit
     select @@autocommit;    查看mysql autocommit设置0为关闭，1为开启
     set autocommit=0;       设置autocommit;
 *** 修改配置文件
     修改/etc/my.cnf，在[mysqld]节点下添加:
-    init_connect='SET autocommit=0' 
+    init_connect='SET autocommit=0'
     需要注意的是连接mysql用户的权限不能大于启动mysql的用户的权限，不然init_connect='SET autocommit=0'根本不会启作用，也不会报任何错误
 ** 数据库分析
    show processlist        查看数据库session
@@ -95,9 +95,6 @@
    恢复数据库:
    mysql -h localhost -u root -plianxi2015! queen < /opt/queen.db
    gunzip < /data/dbname.sql.gz | mysql -uroot -p123456 dbname
-* 数据库HA
-  Mysql HA(High Avalible)数据库高可用，有多种方案可以选择
-** Mysql ndb集群
 ** Myslq 主从
 *** 配置
    主服务器192.168.0.105
@@ -185,9 +182,128 @@ Master_SSL_Verify_Server_Cert: No
        set global sql_slave_skip_counter =1;
        跳过多条event
     2. 重新做主从，完全同步
-* 异常处理
-** Got error 28 from storage engine
+** Mysql ndb集群
+** 异常处理
+*** Got error 28 from storage engine
    数据库临时目录空间不足
+* 数据库设计
+** 字段特性
+*** tinyint,smallint,int和bigint
+|-------------+--------+-----------+-------+----------+-----+-----+------+----------------------+---------------------|
+|             | Oracle | SqlServer | Mysql | Postgres | DB2 | bit | byte |                range |                  to |
+|-------------+--------+-----------+-------+----------+-----+-----+------+----------------------+---------------------|
+| tinyint     |        | y         | y     |          |     |   8 |    1 |                 -128 |                 127 |
+| smallint    |        | y         | y     | y        | y   |  16 |    2 |               -32768 |               32767 |
+| mediumint   | number |           | y     |          |     |  24 |    3 |             -8388608 |             8388607 |
+| int/integer |        | y         | y     | y        | y   |  32 |    4 |          -2147486648 |          2147483647 |
+| binint      |        | y         | y     | y        | y   |  64 |    8 | -9233372036854775808 | 9233372036854775807 |
+|-------------+--------+-----------+-------+----------+-----+-----+------+----------------------+---------------------|
+unsigned表示非负数，把数值上限提高一倍，常用于主键
+*** char和varchar选择
+    char定长字符，储存时会去掉末尾的空格，适用于储存，长度接近或者固定长度的字符，比如md5值
+    varchar(n)可变字符,当最长长度远大于平均长度时，并且很少发生更新时适用
+*** float,double和decimal
+    foalt和double保存的是数值的近似值，
+    decimal是将数字保存为字符串，通常用于保存金钱之类的
+
+*** timestamp和datetime
+    timestamp和时区有关,使用4字节储存，以utc格式保存，查的时候会对当前时区进行转换,默认非空，范围‘1970-01-01 00:00:00－’2038-01-01 00:00:00‘
+    datatime和时区无关，使用8字节储存，以实际格式保存，‘1000-01-01 00:00:00－’9999-01-01 00:00:00‘
+** 一些原则
+1.新建表必须有备注
+2.新加字段必须有备注
+3.新建表必须有主键
+4.建表不能指定字符集(由DBA建库时指定，新建表默认集成库的字符集)
+5.只能建普通BTREE索引(不能建BITMAP索引、HASH索引)
+6.新建表模板自动有ID,GMT_CREATE,GMT_MODIFIED3个字段
+7.mysql字段只支持以下类型:'bigintunsigned', 'bigint', 'int unsigned', 'int','mediumintunsigned','mediumint','smallint unsigned', 
+'smallint','tinyintunsigned','tinyint','decimal','varchar','char', 'text','mediumtext','longtext','date','datetime','time','timestamp',
+以下类型不推荐使用：'blob','longblob','float', 'double'
+oracle字段只支持以下类型:'VARCHAR2', 'NUMBER','DATE', 'TIMESTAMP', 'CHAR', 'BLOB', 'CLOB'
+8.表名不能大于26个字符
+9.表名不区分大小写
+10.表名只能以字母开始
+11.不能用关键字做表名
+12.不能用关键字做字段名
+13.不能两个dailyDDL工单同时修改一张表的同一个字段或索引
+14.不支持枚举类型
+** 关键字列表
+   ADD	ALL	ALTER
+ANALYZE	AND	AS
+ASC	ASENSITIVE	BEFORE
+BETWEEN	BIGINT	BINARY
+BLOB	BOTH	BY
+CALL	CASCADE	CASE
+CHANGE	CHAR	CHARACTER
+CHECK	COLLATE	COLUMN
+CONDITION	CONNECTION	CONSTRAINT
+CONTINUE	CONVERT	CREATE
+CROSS	CURRENT_DATE	CURRENT_TIME
+CURRENT_TIMESTAMP	CURRENT_USER	CURSOR
+DATABASE	DATABASES	DAY_HOUR
+DAY_MICROSECOND	DAY_MINUTE	DAY_SECOND
+DEC	DECIMAL	DECLARE
+DEFAULT	DELAYED	DELETE
+DESC	DESCRIBE	DETERMINISTIC
+DISTINCT	DISTINCTROW	DIV
+DOUBLE	DROP	DUAL
+EACH	ELSE	ELSEIF
+ENCLOSED	ESCAPED	EXISTS
+EXIT	EXPLAIN	FALSE
+FETCH	FLOAT	FLOAT4
+FLOAT8	FOR	FORCE
+FOREIGN	FROM	FULLTEXT
+GOTO	GRANT	GROUP
+HAVING	HIGH_PRIORITY	HOUR_MICROSECOND
+HOUR_MINUTE	HOUR_SECOND	IF
+IGNORE	IN	INDEX
+INFILE	INNER	INOUT
+INSENSITIVE	INSERT	INT
+INT1	INT2	INT3
+INT4	INT8	INTEGER
+INTERVAL	INTO	IS
+ITERATE	JOIN	KEY
+KEYS	KILL	LABEL
+LEADING	LEAVE	LEFT
+LIKE	LIMIT	LINEAR
+LINES	LOAD	LOCALTIME
+LOCALTIMESTAMP	LOCK	LONG
+LONGBLOB	LONGTEXT	LOOP
+LOW_PRIORITY	MATCH	MEDIUMBLOB
+MEDIUMINT	MEDIUMTEXT	MIDDLEINT
+MINUTE_MICROSECOND	MINUTE_SECOND	MOD
+MODIFIES	NATURAL	NOT
+NO_WRITE_TO_BINLOG	NULL	NUMERIC
+ON	OPTIMIZE	OPTION
+OPTIONALLY	OR	ORDER
+OUT	OUTER	OUTFILE
+PRECISION	PRIMARY	PROCEDURE
+PURGE	RAID0	RANGE
+READ	READS	REAL
+REFERENCES	REGEXP	RELEASE
+RENAME	REPEAT	REPLACE
+REQUIRE	RESTRICT	RETURN
+REVOKE	RIGHT	RLIKE
+SCHEMA	SCHEMAS	SECOND_MICROSECOND
+SELECT	SENSITIVE	SEPARATOR
+SET	SHOW	SMALLINT
+SPATIAL	SPECIFIC	SQL
+SQLEXCEPTION	SQLSTATE	SQLWARNING
+SQL_BIG_RESULT	SQL_CALC_FOUND_ROWS	SQL_SMALL_RESULT
+SSL	STARTING	STRAIGHT_JOIN
+TABLE	TERMINATED	THEN
+TINYBLOB	TINYINT	TINYTEXT
+TO	TRAILING	TRIGGER
+TRUE	UNDO	UNION
+UNIQUE	UNLOCK	UNSIGNED
+UPDATE	USAGE	USE
+USING	UTC_DATE	UTC_TIME
+UTC_TIMESTAMP	VALUES	VARBINARY
+VARCHAR	VARCHARACTER	VARYING
+WHEN	WHERE	WHILE
+WITH	WRITE	X509
+XOR	YEAR_MONTH	ZEROFIL
+
 * 其它
   赶集网mysql开发36军规
   写在前面的话：

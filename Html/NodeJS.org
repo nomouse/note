@@ -14,9 +14,12 @@ sudo rm -rf /usr/local/lib/node \
    nvm是一个node和iojs的版本管理工具，使用它我们可以快速下载和安装node各个版本
 *** mac安装
     1. 下载nvm，git clone https://github.com/creationix/nvm
-    2. source nvm/nvm.sh，然后可以直接使用nvm
+    2. 在/etc/profile中添加
+       source $NVM_HOME/nvm.sh，
+       然后可以直接在命令行中使用nvm
     3. nvm ls-remote node查看远程版本
     4. nvm install [version] 安装相应版本
+    5. nvm use [version] 切换版本
 *** windows安装
     1. git clone https://github.com/coreybutler/nvm-windows.git
     2. 设置环境变量 set "PATH=%NVM_HOME%;PATH"
@@ -34,8 +37,10 @@ sudo rm -rf /usr/local/lib/node \
     3. 执行 source ~/.zshrc 或者 source ~/.bashrc
 ** cnpm
    npm和cnpm的关系，类似于maven和nexus的关系，是一个npm本地私服的实现
-** 搭建
-   1. git clone git://github.com/cnpm/cnpmjs.org.git
+*** 安装
+    npm install cnpm -g --registry=http://registry.npm.nomouse.com
+*** 搭建
+    1. git clone git://github.com/cnpm/cnpmjs.org.git
 * angular2
 ** 安装
    1. 使用npm安装包依赖

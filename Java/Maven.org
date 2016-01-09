@@ -1,11 +1,24 @@
-* 安装配置
+* 基础
 ** 安装
-  1. 解压到任意目录
-  2. 配置PATH路径M2_HOME
-  3. 修改$M2_HOME/conf/setting.xml的localRepository节点，修改本地仓库路径
-** maven2找不到JAVA_HOME
-   vi ~/.mavenrc
-   export JAVA_HOME=$(/usr/libexec/java_home)
+*** 地址
+*** 版本
+    2+ 使用2.2.1
+    3+ 使用3.0.5
+*** 步骤
+    1. 解压到任意目录
+    2. 配置PATH路径M2_HOME
+    3. 修改$M2_HOME/conf/setting.xml的localRepository节点，修改本地仓库路径
+** 配置
+*** 环境变量
+    M2_HOME
+*** 配置文件
+    $M2_HOME/conf/settings.xml
+*** 配置目录
+    ~/.m2是默认缓存文件夹，可在全局配置文件中设置
+** FAQ
+*** mac下maven2找不到JAVA_HOME
+    vi ~/.mavenrc
+    export JAVA_HOME=$(/usr/libexec/java_home)
 * 公用仓库地址
     Apache https://repository.apache.org/snapshots/
     Maven Central https://repo1.maven.org/maven2/
@@ -16,19 +29,44 @@
     ibiblio http://mirrors.ibiblio.org/maven2/
     jfrog http://oss.jfrog.org/artifactory/oss-snapshot-local/
 * 基本命令
-  mvn -e
-  mvn help:system -U
-  显示依赖树
-  mvn dependency:tree
-  显示实际产生的pom文件
-  mvn help:effective-pom -e
+** 通用
+*** mvn -v
+    显示版本
+*** mvn -e
+    执行命令时开启打印日志
+*** mvn -U
+    强制更新插件或依赖库（默认maven只会一天更新一次本地仓库)
+*** mvn -o
+    运行在offline模式，不联网的时候适用
+*** mvn -Dmaven.test.skip=true
+    忽略单元测试
+*** mvn -Dautoconf.skip=true
+    忽略autoconf
+** mvn help
+   mvn帮助
+*** mvn help:system -U
+*** mvn help:effective-pom
+    显示实际产生的pom文件
+*** mvn help:effective-settings
+    显示实际启用的setting.xml文件
+** mvn dependency
+   mvn依赖相关
+*** mvn dependency:tree
+    显示依赖树
+*** mvn dependency:resolve
+    显示已解决的依赖
+*** mvn dependency:tree -Dverbose
+    为当前所在模块及所有子模块生成详细的依赖图（包括被仲裁掉的）
 ** mvn clean
+   清理所有构建
 ** mvn install
-  mvn install
-  mvn install -Dmaven.test.skip=true
-  打开错误日志
-  mvn -U
+   mvn install
+   mvn install -Dmaven.test.skip=true
+   打开错误日志
+   mvn -U
 ** mvn package
+* 插件相关命令
+
 * pom配置
 ** 基本
 ** 项目管理

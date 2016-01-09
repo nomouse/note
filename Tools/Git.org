@@ -33,7 +33,6 @@
    git checkout -b [分支名] 当前远程分支为基础创建本地新分支
 ** merge
    git merge --ff-none 合并分支
-
 * 应用
 ** 本地初始化一个仓库到远程
 mkdir webxdemo

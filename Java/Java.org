@@ -1,5 +1,5 @@
 * 基础
-** PATH
+** JDK基本配置
 JAVA_HOME=$(/usr/libexec/java_home)
 JAVA_TOOL_OPTIONS=-Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=US
 
@@ -22,6 +22,15 @@ export PATH=$JAVA_HOME\bin;$ANT_HOME\bin;$M2_HOME\bin;$GRADLE_HOME\bin;$CATALINA
 ** JVM常用配置
    -server -Xms1024m -Xmx1024m -XX:PermSize=256m -XX:MaxNewSize=256m -XX:MaxPermSize=256m
 ** JDK常用类
+*** 基本类型和包装类
+*** String
+**** 原理
+     String不属于基础类型，属于对象，但是String的内存分配不在堆中，而是在方法区的常量池中，要避免new String
+**** intern方法
+     String的intern方法是去检查常量池中是否有相同的String对象，如果有就直接指向此引用
+**** StringBuilder
+    StringBuilder扩容问题，StringBuilder底层是一个char数组，每次appand或者insert的时候，
+    先检测char数组能不能承受下整个StringBuilder的字符串长度，如果不行则扩容
 *** Object
    1. hashCode
      一般是通过将该对象的内部地址转换成一个整数来实现的
@@ -33,9 +42,6 @@ export PATH=$JAVA_HOME\bin;$ANT_HOME\bin;$M2_HOME\bin;$GRADLE_HOME\bin;$CATALINA
     wait指在其他线程调用此对象的 notify() 方法或 notifyAll() 方法，或者超过指定的时间量前，导致当前线程等待。
     notify 唤醒在此对象监视器上等待的单个线程。如果所有线程都在此对象上等待，则会选择唤醒其中一个线程。选择是任意性的，并在对实现做出决定时发生。线程通过调用其中一个wait方法，在对象的监视器上等待。
     wait notify与sleep的区别,见Java同步
-*** String
-*** StringBuilder
-    StringBuilder扩容问题，StringBuilder底层是一个char数组，每次appand或者insert的时候，先检测char数组能不能承受下整个StringBuilder的字符串长度，如果不行则扩容
 *** equre和hashCode
 *** hashCode算法
     String类的hashCode算法
