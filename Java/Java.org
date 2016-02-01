@@ -1,4 +1,4 @@
-* 基础
+* 环境
 ** JDK基本配置
 JAVA_HOME=$(/usr/libexec/java_home)
 JAVA_TOOL_OPTIONS=-Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=US
@@ -21,47 +21,48 @@ export PATH=$JAVA_HOME\bin;$ANT_HOME\bin;$M2_HOME\bin;$GRADLE_HOME\bin;$CATALINA
 
 ** JVM常用配置
    -server -Xms1024m -Xmx1024m -XX:PermSize=256m -XX:MaxNewSize=256m -XX:MaxPermSize=256m
-** JDK常用类
-*** 基本类型和包装类
-*** String
-**** 原理
-     String不属于基础类型，属于对象，但是String的内存分配不在堆中，而是在方法区的常量池中，要避免new String
-**** intern方法
-     String的intern方法是去检查常量池中是否有相同的String对象，如果有就直接指向此引用
-**** StringBuilder
-    StringBuilder扩容问题，StringBuilder底层是一个char数组，每次appand或者insert的时候，
-    先检测char数组能不能承受下整个StringBuilder的字符串长度，如果不行则扩容
-*** Object
-   1. hashCode
-     一般是通过将该对象的内部地址转换成一个整数来实现的
-   2. equarls
-     默认2个对象是否指向同一个引用，用hashCode方法实现
-   3. toString
-     默认该字符串由类名（对象是该类的一个实例）、at 标记符“@”和此对象哈希码的无符号十六进制表示组成。
-   4. wait notify notifyAll
-    wait指在其他线程调用此对象的 notify() 方法或 notifyAll() 方法，或者超过指定的时间量前，导致当前线程等待。
-    notify 唤醒在此对象监视器上等待的单个线程。如果所有线程都在此对象上等待，则会选择唤醒其中一个线程。选择是任意性的，并在对实现做出决定时发生。线程通过调用其中一个wait方法，在对象的监视器上等待。
-    wait notify与sleep的区别,见Java同步
-*** equre和hashCode
-*** hashCode算法
-    String类的hashCode算法
-    比如String str="abcd"
-    算法为:
-    (('a'*31+'b')*31+'c')*31+'d' = 2987074
-    这个算法的优点在于越早的字符权重越高,而且临近的字母的hash值也临近,可以加快索引的速度
+* 基础
 ** Java基本类型和包装类型
 *** Integer
 *** Long
+
+** String
+*** 原理
+    String不属于基础类型，属于对象，但是String的内存分配不在堆中，而是在方法区的常量池中，要避免new String
+*** intern方法
+    String的intern方法是去检查常量池中是否有相同的String对象，如果有就直接指向此引用
+*** StringBuilder
+*** 字符串拼接
+    常见有＋，String.concat()和StringBuilder（StringBuffer）.append()等方法
+    推荐使用append，但要注意StringBuilder的扩容问题
+    StringBuilder扩容问题，StringBuilder底层是一个char数组，每次appand或者insert的时候，
+    先检测char数组能不能承受下整个StringBuilder的字符串长度，如果不行则扩容
+*** 字符串拆分
+    常见有split,StringTokenizer,indexOf+substring等方法
+    其中StringTokenizer的性能最快,split最慢,因为split底层是用正则表达式来实现
+*** 字符串查找
+    常见有indexOf/startWith/endsWith/matches等方法,
+    其中indexOf性能最高，matches最差,因为用正则表达式
+*** 字符串格式化
+    String.format性能很差，因为每次都会new一个Formatter类，StringBuilder类和String类,推荐使用拼接，或者实在不行用Formater类复用
+** Object
+*** hashCode
+   一般是通过将该对象的内部地址转换成一个整数来实现的
+   String类的hashCode算法
+   比如String str="abcd"
+   算法为:
+   (('a'*31+'b')*31+'c')*31+'d' = 2987074
+   这个算法的优点在于越早的字符权重越高,而且临近的字母的hash值也临近,可以加快索引的速度
+*** equarls
+   默认2个对象是否指向同一个引用，用hashCode方法实现
+*** toString
+   默认该字符串由类名（对象是该类的一个实例）、at 标记符“@”和此对象哈希码的无符号十六进制表示组成。
+*** wait notify notifyAll
+  wait指在其他线程调用此对象的 notify() 方法或 notifyAll() 方法，或者超过指定的时间量前，导致当前线程等待。
+  notify 唤醒在此对象监视器上等待的单个线程。如果所有线程都在此对象上等待，则会选择唤醒其中一个线程。选择是任意性的，并在对实现做出决定时发生。线程通过调用其中一个wait方法，在对象的监视器上等待。
+  wait notify与sleep的区别,见Java同步
 ** Java反射
-** Java注解
-** Java范型
-*** 范型的优点
-    编译时检查类型,避免强制类型传换带来的运行时错误
-*** 范型的应用
-    JDK集合包
-*** 伪范型
-    Java范型的实现是伪范型，即在编译阶段检查，在生成字节码时不会包含范型的信息，这一点区分于c++的范型。
-    因此，Java范型做不到在运行时动态指定范型，只能通过类文件传递
+** JavaIO
 ** Java集合
 *** List
    1. ArrayList原理
@@ -79,8 +80,16 @@ export PATH=$JAVA_HOME\bin;$ANT_HOME\bin;$M2_HOME\bin;$GRADLE_HOME\bin;$CATALINA
 *** Set
    1. HashSet原理
        HashSet内部通过一个HashMap的key来放置数据
+** Java范型
+*** 范型的优点
+    编译时检查类型,避免强制类型传换带来的运行时错误
+*** 范型的应用
+    JDK集合包
+*** 伪范型
+    Java范型的实现是伪范型，即在编译阶段检查，在生成字节码时不会包含范型的信息，这一点区分于c++的范型。
+    因此，Java范型做不到在运行时动态指定范型，只能通过类文件传递
 ** Java枚举
-** JavaIO
+** Java注解
 * 中级
 ** Java RMI
 *** 对象序列化
