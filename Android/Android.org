@@ -114,6 +114,15 @@ Service概述
    基于线程池+Hander
    在3.0以前，最大支持128个线程的并发，10个任务的等待。在3.0以后，无论有多少任务，都会在其内部单线程执行；
 * 资源
+** xml布局文件
+*** tools命名空间
+    tools命名空间及其属性用于帮助我们进行布局可视化调试。
+    tools可以覆盖android所有标准属性，只在设计布局时可见，运行时会被忽略。
+    比如用tools:text代表android:text，即可在可视化界面看到效果
+*** tools:content
+    是一个特殊的辅助属性，通常指向Activity，用于帮助可视化组件确定当前Activity使用的Theme
+    比如tools:content="nomouse.module.MouduleActivity"，那么在manifest中的Activity设置了Theme后，
+    可视化组件可以显示相应的效果
 ** 屏幕适配
 *** px
     是英文单词pixel的缩写，意为像素，屏幕上的点。我们通常所说的分辨率如480X800就是指的像素。
@@ -150,6 +159,11 @@ Service概述
 
     iPhone6s plus尺寸为5.5英寸，1920x1080，对角线2202，dpi约等于400
     iPhone6s尺寸为4.7英寸，1334x750，对角线1530，dpi约等于320
+** theme
+   theme类似于css的作用，为所有布局提供整体设置，可以通过在Application中设置相应的Theme来控制所有Activity的样式。
+*** 解决Activity跳转出现黑屏的问题
+    在manifest文件中的对应Activity节点设置:
+    android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"
 * UI
 ** LinearLayout
    1. weight，通常会将weight所在的组件的height或者width设置为0再去
