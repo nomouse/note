@@ -33,7 +33,6 @@
    git checkout -b [分支名] 当前远程分支为基础创建本地新分支
 ** merge
    git merge --ff-none 合并分支
-
 * 应用
 ** 本地初始化一个仓库到远程
 mkdir webxdemo
@@ -57,6 +56,12 @@ git push -u origin master
    git checkout master 签到master分支，如果本地没有就从远程拉下来
    git branch -d 删除本地分支
    git push origin --delete beta 删除远程origin仓库中的beta分支
+** 更新
+   git fetch  从远程分支获取最新的版本到本地，不会自动merge
+   git pull   从远程分支获取最新的版本到本地，并且自动merge，方便但是不推荐
+   git fetch orgin master:tmp     从远程分支获取最新的版本到本地的tmp分支
+   git diff tmp    比较当前本地分支和本地tmp分支的差别
+   git merge tmp   合并当前本地分支和本地tmp分支
 ** 提交
    git rm test.txt 删除text.txt文件
    git add test.txt 添加test.txt文件
@@ -64,10 +69,11 @@ git push -u origin master
    git commit -a -m "sdf" 省略git add
    git diff 查看差别
    git push 推到远程
+   git push origin HEAD:feature/20151228_brach_492577  推送到远程的某个分支
 ** 回滚
    git log 查看git提交日志
    git checkout test.txt 回滚test.txt文件
-   git reset -head 12sdfafsf 回滚提交的版本
+   git reset --hard 12sdfafsf 回滚提交的版本
 ** 版本标签
    git tag 查看标签
    git tag -a v1.4.2 -m "说明" 创建本地版本标签

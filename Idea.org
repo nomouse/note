@@ -1,0 +1,74 @@
+* Settings
+*** File Encoding
+  1. IDE Encoding > UTF-8
+  2. Prject Encoding > UTF-8
+  3. Default encoding for properties files: > UTF-8
+  4. Transparent native-to-ascii conversion > ture
+*** Keymaps
+  1. M+Insert   弹出快捷代码生成菜单
+  2. C+h        全局搜索
+  3. C+j        插入代码模板
+* idea中查看Android源码
+在用户目录下的.AndroidStudioBeta目录下搜索jdk.table.xml这个文件，然后找到下面的一段（根据android版本自行匹配），在sourcePath的root节点下添加<root type="simple" url="file://$APPLICATION_HOME_DIR$/sdk/sources/android-19" />这一段，其中$APPLICATION_HOME_DIR$代表本机android sdk的安装位置，然后重启。
+
+<jdk version="2">
+      <name value="Android API 19 Platform" />
+      <type value="Android SDK" />
+      <version value="java version "1.7.0_45"" />
+      <homePath value="D:\adt-bundle\android-studio\sdk" />
+      <roots>
+        <annotationsPath>
+          <root type="composite">
+            <root type="simple" url="jar://$APPLICATION_HOME_DIR$/plugins/android/lib/androidAnnotations.jar!/" />
+          </root>
+        </annotationsPath>
+        <classPath>
+          <root type="composite">
+            <root type="simple" url="jar://$APPLICATION_HOME_DIR$/sdk/platforms/android-19/android.jar!/" />
+            <root type="simple" url="file://$APPLICATION_HOME_DIR$/sdk/platforms/android-19/data/res" />
+          </root>
+        </classPath>
+        <javadocPath>
+          <root type="composite">
+            <root type="simple" url="http://developer.android.com/reference/" />
+          </root>
+        </javadocPath>
+        <sourcePath>
+          <root type="composite">
+            <root type="simple" url="file://$APPLICATION_HOME_DIR$/sdk/sources/android-19" />
+          </root>
+        </sourcePath>
+      </roots>
+      <additional jdk="JDK" sdk="android-19" />
+</jdk>
+
+* idea中查看Android Private Libraries下第三方包的源码
+比如想看android support包的源码，需要在Project下面的.idea/libraries文件夹内，找到相关的配置，比如support_v4_20_0_0.xml这个文件，在SOURCES
+节点下，添加<root url="file://$APPLICATION_HOME_DIR$/sdk/extras/android/support/v4/src" />
+
+<component name="libraryTable">
+  <library name="support-v4-20.0.0">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/LXBaseFrame/build/intermediates/exploded-aar/com.android.support/support-v4/20.0.0/classes.jar!/" />
+      <root url="jar://$PROJECT_DIR$/LXBaseFrame/build/intermediates/exploded-aar/com.android.support/support-v4/20.0.0/libs/internal_impl-20.0.0.jar!/" />
+      <root url="file://$PROJECT_DIR$/LXBaseFrame/build/intermediates/exploded-aar/com.android.support/support-v4/20.0.0/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <<root url="file://$APPLICATION_HOME_DIR$/sdk/extras/android/support/v4/src" />
+    </SOURCES>
+  </library>
+</component>
+
+* android studio相关
+** android studio导入android项目
+   两种方式
+   1. 传统方式(类eclipse adt)
+   2. gradle方式
+** jumbo错误
+   com.android.dex.DexIndexOverflowException: Cannot merge new index 66072 into a non-jumbo instruction!
+   最新的ADT和SDK Tool在将jar转化成dex的时候，可能会合并类的代码，这将导致巨大的类；类中的每一个方法都分配有一个id，字节码中以id标识和调用方法；
+   早期的Dalvik VM内部使用short类型变量来标识方法的id，最大值限制在65535；综合上述因素，代码在安装的时候，不能通过验证，所以安装失败。
+   最新的Android可能已经解决了这个问题，但是更早的Android版本可能仍然存在此问题。
+   因此，由于大量遗留机器的存在，这个问题是不能彻底解决的，一个临时的解决方案是：删掉没有实际使用的代码，或者使用ProGuard处理代码（可以减小代码体积）。
+   一个不幸的推论是：随着一个软件功能的增加，代码的膨胀，APK包终将超出可以处理的范围，也许就是8M（指APK包里面的classes.dex）.

@@ -1,6 +1,7 @@
 * 资源
   http://ftp.gnu.org/gnu
 * 快捷键
+  C代表Ctrl键，M代表Alt（Mac下是Command），C-x代表同时按下Ctrl和x键，C-x C-f代表先同时按下Ctrl和x键，松开后再同时按下Ctrl和f键
 ** 基础
 *** C-x C-f Find a file(Open or New)
 *** C-x C-s Save current file
@@ -24,7 +25,10 @@
 *** M-x linum-mode  Show or Hide line numbers
 *** C-x k           Close buffer
 *** M-x packages-list-packages  List packages
+* Tbl
+** C-M-right
 * Org mode
 ** Structure
-*** TAB     cycling
-***  
+*** TAB           cycling
+*** M-right org level down
+*** M-left org level up
