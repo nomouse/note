@@ -163,7 +163,7 @@ Service概述
    theme类似于css的作用，为所有布局提供整体设置，可以通过在Application中设置相应的Theme来控制所有Activity的样式。
 *** 解决Activity跳转出现黑屏的问题
     在manifest文件中的对应Activity节点设置:
-    Android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"
+    android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"
 * UI
 ** LinearLayout
    1. weight，通常会将weight所在的组件的height或者width设置为0再去
