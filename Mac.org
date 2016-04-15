@@ -74,4 +74,13 @@ export MANPATH="$GNU_HOME/gnuman:$MANPATH"
    <string>moveToEndOfLine:, insertNewline:</string>
    </dict>
    3. 重启Xcode，在Xcode菜单中，打开Preferences，选中Key Binding，在右上方搜索GDI
+* svn
+** 卸载老版本
+   1. which svn 查找svn命令所在
+   2. ls /usr/bin/svn* 查找所有svn前缀命令
+   3. rm -rf /usr/bin/svn* 删除所有svn命令
+** 安装新版本
+   1. brew options subversion
+   2. brew install subversion
+   3. svn --version
 * 屏幕取色Pochade

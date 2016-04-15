@@ -13,7 +13,7 @@
    git config --global i18n.logoutputencoding utf-8 设置git输入日志格式为utf-8
 ** 忽略文件
    在git应用目录下的.gitigore文件中编写忽略提交的文件
-* 基础
+* 基本命令
 ** init
    git init 初始化本地git仓库
    建立远程仓库
@@ -35,6 +35,11 @@
    git checkout -b [分支名] 当前远程分支为基础创建本地新分支
 ** merge
    git merge --ff-none 合并分支
+** rebase
+   git checkout -b mywork origin/master
+   git rebase origin/master
+   这些命令会把你的"mywork"分支里的每个提交(commit)取消掉，并且把它们临时保存为补丁(patch)(这些补丁放到".git/rebase"目录中),
+   然后把"mywork"分支更新 到最新的"origin"分支，最后把保存的这些补丁应用到"mywork"分支上。
 * 应用
 ** 本地初始化一个仓库到远程
    mkdir webxdemo

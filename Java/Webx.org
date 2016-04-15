@@ -1,9 +1,4 @@
-mvn archetype:generate \
- -DgroupId=com.alibaba.webx \
- -DartifactId=demo \
- -Dversion=1.0 \
- -Dpackage=com.alibaba.webx.demo \
- -DarchetypeArtifactId=archetype-webx-quickstart \
- -DarchetypeGroupId=com.alibaba.citrus.sample \
- -DarchetypeVersion=1.8 \
- -DinteractiveMode=false
+* 概述
+* autoconfig
+** 命令方式
+   autocoNfig petstore.war   无论petstore.war是一个zip包还是目录
