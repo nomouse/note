@@ -1,5 +1,8 @@
 * 概述
 * 标签
+** 通用的
+   text-align:center  文字居中
+   word-wrap:break-word;  英文截断
 ** div
    块状元素
 ** span
