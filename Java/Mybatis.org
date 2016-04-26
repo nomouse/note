@@ -1,0 +1,59 @@
+* 配置
+* ibatis mapper文件
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="portal.alarm_aim_focus">
+        <typeAlias alias="AlarmAimFocusDO" type="com.alibaba.intl.datasky.datasource.portal.domain.AlarmAimFocusDO"/>
+        <insert id="save" parameterClass="AlarmAimFocusDO" >
+                insert into ds_portal_alarm_aim_focus(aim_id,user_id,gmt_create)
+                values(#aimId#,#userId#,#gmtCreate#)
+                <selectKey resultClass="long" keyProperty="id" >
+            SELECT @@IDENTITY AS id
+        </selectKey>
+        </insert>
+        <delete id="delete" parameterClass="Map">
+                delete from ds_portal_alarm_aim_focus
+                where aim_id=#aimId# and user_id=#userId#
+        </delete>
+        <select id="findByUserId" parameterClass="String" resultClass="Long">
+                select aim_id
+                from ds_portal_alarm_aim_focus
+                where user_id=#value#
+                order by gmt_create desc
+        </select>
+        <sql id="findWhereSql">
+                <dynamic prepend="where">
+                        <iterate prepend="and" property="aimIdList" open="(" close=")" conjunction=",">
+                                t.aim_id=#aimIdList[]#
+                        </iterate>
+                        <isNotNull prepend="and" property="id">
+                                t.id=#id#
+                        </isNotNull>
+                        <isNotEmpty prepend="and" property="userId">
+                                t.user_id like concat('%', #userId#, '%')
+                        </isNotEmpty>
+                        <isNotNull prepend="and" property="gmtCreate">
+                                <![CDATA[
+                                t.gmt_create <= #gmtCreate#
+                                ]]>
+                        </isNotNull>
+                </dynamic>
+        </sql>
+        <select id="find" parameterClass="Map" resultClass="AlarmAimFocusDO">
+                select
+                id,
+                aim_id as aimId,
+                user_id as userId,
+                gmt_create as gmtCreate
+                from ds_portal_alarm_aim_focus t
+                <include refid="findWhereSql" />
+                limit #limit# offset #offset#
+        </select>
+        <select id="findCount" parameterClass="Map" resultClass="AlarmAimFocusDO">
+                select
+                *
+                from ds_portal_alarm_aim_focus t
+                <include refid="findWhereSql" />
+        </select>
+</sqlMap>
+* mapper文件
