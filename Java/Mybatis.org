@@ -1,9 +1,14 @@
 * 配置
+* 源码
+** sql查看
+   核心类:com.ibatis.sqlmap.engine.mapping.statement.MappedStatement
+   方法: execute*
+   核心类:com.ibatis.sqlmap.engine.executionSqlExecutor
 * ibatis mapper文件
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
 <sqlMap namespace="portal.alarm_aim_focus">
-        <typeAlias alias="AlarmAimFocusDO" type="com.alibaba.intl.datasky.datasource.portal.domain.AlarmAimFocusDO"/>
+<typeAlias alias="AlarmAimFocusDO" type="com.alibaba.intl.datasky.datasource.portal.domain.AlarmAimFocusDO"/>
         <insert id="save" parameterClass="AlarmAimFocusDO" >
                 insert into ds_portal_alarm_aim_focus(aim_id,user_id,gmt_create)
                 values(#aimId#,#userId#,#gmtCreate#)

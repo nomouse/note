@@ -84,6 +84,9 @@
    git log -p 查看提交日志和具体修改
    git checkout test.txt 回滚test.txt文件
    git reset --hard 12sdfafsf 回滚提交的版本
+   git reset HEAD^ 回退所有内容到上一个版本
+   git reset HEAD^ a.py  回退a.py这个文件的版本到上一个版本
+   git reset –hard origin/master  将本地的状态回退到和远程的一样
 ** 版本标签
    git tag 查看标签
    git tag -a v1.4.2 -m "说明" 创建本地版本标签
