@@ -22,9 +22,11 @@
 *** C-s     Search below
 *** C-r     Search above
 ** 高级
-*** M-x linum-mode  Show or Hide line numbers
+*** M-x linum-mode  打开/关闭行号
 *** C-x k           Close buffer
 *** M-x packages-list-packages  List packages
+*** M-x load-file   重新加载文件，选择~/.emacs.d/init.el，重新加载配置
+*** M-x shell       在当前页面打开shell窗口
 * Tbl
 ** C-M-right
 * Org mode
