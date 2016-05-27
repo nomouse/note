@@ -139,6 +139,9 @@
 *** 例子
     查找/usr目录下名字以nginx开头的文件
     find /usr -name nginx*
+** grep 文本检索
+   递归查找/opt/jboss目录下所有文件中包含JBoss字符串的行
+   grep -r JBoss /opt/jboss
 ** ls 显示当前目录下文件夹
 *** 用法
    -h 文件大小可读

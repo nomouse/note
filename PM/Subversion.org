@@ -13,7 +13,27 @@
 *** 配置文件内容
     1. global-ignore
     2. auto-prop
+* 基础使用
+** 分支相关
+*** 创建分支
+    svn copy http://nomouse.com/repos/nomouse-java/trunk http://nomouse.com/repos/nomouse-java/branches/20160524 -m '功能分支1'
+*** 切换分支
+    1. 保证当前branch分支是clean的
+    2. 执行命令:
+       svn switch http://nomouse.com/repos/nomouse-java/branches/20160524
+*** 分支合并到主干
+    拉取分支开发完之后合并到主干,然后关闭分支
+    1. 保证当前branch分支是clean的，也就是说使用svn status看不到任何的本地修改。
+    2. 命令行下切换到trunk目录中:
+       svn merge http://nomouse.com/repos/nomouse-java/branches/20160524
+    3. 如果出现merge冲突则进行解决，然后执行svn ci -m 'description'来提交变动。
+    4. 查看分支合并情况
+       svn mergeinfo http://nomouse.com/repos/nomouse-java/branches/20160524
+*** 主干合并到分支
+    在分支上正在开发时，将主干变动及时合并到本地，避免冲突
+
 * 命令
 ** svn switch
    切换分支
 ** svn merge
+   当前处理branch上面，将trunk的变更合并到当前主干

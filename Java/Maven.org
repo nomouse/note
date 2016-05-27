@@ -11,6 +11,8 @@
 ** 配置
 *** 环境变量
     M2_HOME
+    M2_HOME=/Users/nomouse/Java/apache-maven-2.2.1
+    export PATH="$M2_HOME/bin:$PATH"
 *** 配置文件
     $M2_HOME/conf/settings.xml
 *** 配置目录
