@@ -66,6 +66,9 @@
 *** properties文件编辑工具
     http://propedit.osdn.jp/index_en.html
     http://propedit.osdn.jp/eclipse/updates/
+* 高级
+** debug相关设置所在目录
+   $ECLIPSE_WORKSPACE/.metadata/.plugins/org.eclipse.debug.core/.launches
 * 问题整理
 ** adt中查看Android Private Libraries下第三方包的源码
    1. 在项目的libs文件夹下新建一个第三方包名相同的properties文件，比如gson-2.2.4.jar，那么新建的文件为：gson-2.2.4.jar.properties
