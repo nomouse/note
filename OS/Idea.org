@@ -8,6 +8,8 @@
   1. M+Insert   弹出快捷代码生成菜单
   2. C+h        全局搜索
   3. C+j        插入代码模板
+* idea日志查看
+  Mac: ~/Library/Logs/IntelliJIdea14
 * idea中查看Android源码
 在用户目录下的.AndroidStudioBeta目录下搜索jdk.table.xml这个文件，然后找到下面的一段（根据android版本自行匹配），在sourcePath的root节点下添加<root type="simple" url="file://$APPLICATION_HOME_DIR$/sdk/sources/android-19" />这一段，其中$APPLICATION_HOME_DIR$代表本机android sdk的安装位置，然后重启。
 

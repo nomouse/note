@@ -54,11 +54,12 @@
 ** mvn dependency
    mvn依赖相关
 *** mvn dependency:tree
-    显示依赖树
+    1.显示依赖树
+    mvn dependency:tree
+    2.为当前所在模块及所有子模块生成详细的依赖图（包括被仲裁掉的）
+    mvn dependency:tree -Dverbose
 *** mvn dependency:resolve
     显示已解决的依赖
-*** mvn dependency:tree -Dverbose
-    为当前所在模块及所有子模块生成详细的依赖图（包括被仲裁掉的）
 ** mvn clean
    清理所有构建
 ** mvn install

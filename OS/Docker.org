@@ -1,12 +1,32 @@
 ﻿* 安装
+** Linux
   yum install docker-io
   yum install device-mapper
-** 升级内核
+*** 升级内核
   docker run -d --name redis phusion/baseimage /sbin/my_init --enable-insecure-key
   docker inspect redis | grep IPA
   curl -o insecure_key -fSL https://github.com/phusion/baseimage-docker/raw/master/image/insecure_key
   chmod 600 insecure_key
   ssh -i insecure_key root
+** Mac
+   目前有3种客户端，按照时间顺序：boot2docker >> Docker Toolbox >> Docker for Mac（推荐）
+   官方链接：https://docs.docker.com/docker-for-mac/， dmg文件直接安装
+*** 配置
+    1. 安装后双击打开，点击状态栏小图标上可以看到Docker的状态，比如Docker is running或者Docker is restarting
+    2. 点击preference打开配置页面，在Advance页面可以配置dockerhub私服，配置更改后重启，然后通过命令来验证修改
+       docker info
+    3. 实际的配置文件在~/.docker
+*** 仓库配置
+    1. 登录私服命令
+       docker login -u [用户名] [私服地址]
+       比如： docker login -u nomouse reg.docker.nomouse.com
+    2. 拉取镜像
+       docker pull [镜像地址]
+       比如: docker pull reg.docker.nomouse.com/nomouse-base:20161010
+    3. 构建镜像
+       docker build --pull=true --no-cache=true -f Dockerfile -t reg.docker.nomouse.com/nomouse-base:20161010 .
+    4. 推送镜像
+       docker push reg.docker.nomouse.com/nomouse-base:20161010
 * 基本命令
 ** 建立本机镜像
    docker images 查看当前所有镜像
