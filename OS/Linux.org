@@ -17,6 +17,7 @@
 ** 时间管理
 *** date 显示当前时间
     date
+   `date +%Y%m%d-%H%M%S`   格式为20150122-152059
 *** ntpdate 时间同步工具
     yum install -y ntp
     ntpdate -u pool.ntp.org 将Internet时间同步到系统时间
@@ -125,6 +126,8 @@
        df -h
 
 * 文件管理
+** pwd
+   显示当前执行命令的目录
 ** yum
    yum search mysql
    yum install mysql-5.5.39-x86_64
@@ -269,10 +272,23 @@
         1. 
 
 * Shell/Bash
-** pwd
-** date
-   `date +%Y%m%d-%H%M%S`
-   20150122-152059
+  #!/bin/bash
+** if
+*** 用法
+   if [ expression ]; then
+       ...
+   else
+       ...
+   fi
+*** 表达式
+    ［-z $String］   空值为真
+    ［-n $String］   非空为真
+    ［-d $String］   判断目录是否存在,存在为真
+    ［-f $String］   判断文件是否存在,存在为真
+** 符号
+   "" 双引号允许变量替换
+   '' 单引号屏蔽变量替换
+   `` 反单引号会先执行其中的命令
 * 高级工具
 ** rzsz 文件传输
    rz 从本地传至远程服务器
@@ -366,7 +382,8 @@
    COMMAND:
    常用命令：
    a\ 新增，在当前行后添加一行或多行。多行时除最后一行外，每行末尾需用“\”续行
-   c\ 取代，用此符号后的新文本替换当前行中的文本。多行时除最后一行外，每行末尾需用"\"续行
+      sed -i "1i export JAVA_HOME=$java_home" /etc/profile
+      c\ 取代，用此符号后的新文本替换当前行中的文本。多行时除最后一行外，每行末尾需用"\"续行
       sed -i "/^export JAVA_HOME=/c\export JAVA_HOME=$java_home" /etc/profile
       将/etc/profile文件中以"export JAVA_HOME="开头的行替换为"export JAVA_HOME=$java_home"
    i\ 插入，在当前行之前插入文本。多行时除最后一行外，每行末尾需用"\"续行
@@ -379,6 +396,7 @@
       sed -i 's:dfdf:#dfdf:g' test.cnf   修改test.cnf文件，将所有为'dfdf'的文本替换为'#dfdf'
       sed -i 1,20s/old/new/g 修改t.conf文件,在1到20行范围内替换所有old字符为new
 
+** awk
 ** logrotate 日志分割工具
 *** 安装配置
     yum install logrotate
