@@ -1,6 +1,5 @@
 * 环境
 ** JDK基本配置
-JAVA_HOME=$(/usr/libexec/java_home)
 JAVA_TOOL_OPTIONS=-Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=US
 
 ANT_HOME
@@ -18,6 +17,8 @@ windows:
 .;%JAVA_HOME%\bin;%ANT_HOME%\bin;%M2_HOME%\bin;%GRADLE_HOME%\bin;%CATALINA_HOME%\bin;%ANDROID_HOME%\tools;%ANDROID_HOME%\platform-tools
 unix:
 export PATH=$JAVA_HOME\bin;$ANT_HOME\bin;$M2_HOME\bin;$GRADLE_HOME\bin;$CATALINA_HOME\bin;$ANDROID_HOME\tools;$ANDROID_HOME\platform-tools:$PATH
+mac:
+JAVA_HOME=$(/usr/libexec/java_home)
 
 ** JVM常用配置
    -server -Xms1024m -Xmx1024m -XX:PermSize=256m -XX:MaxNewSize=256m -XX:MaxPermSize=256m
@@ -438,3 +439,12 @@ export PATH=$JAVA_HOME\bin;$ANT_HOME\bin;$M2_HOME\bin;$GRADLE_HOME\bin;$CATALINA
    2. 大数据量业务处理的实践经验；
    3. 高性能跨源查询中间件设计、开发经验；
    4. 分布式系统中间件设计、开发经验；
+* 常见问题
+** 包冲突解决 java.lang.NoSuchMethodError
+   1.如果能拿到类名，就去线上war包lib目录下排查是否有重复的类
+   命令：
+   grep -rl 'com.alibaba.da.common.exception.BizException' /home/admin/kpi/target/kpi.war/WEB-INF/lib
+   2.
+
+
+

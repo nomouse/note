@@ -69,7 +69,6 @@
    mvn -U
 ** mvn package
 * 插件相关命令
-
 * pom配置
 ** 基本
 ** 项目管理
@@ -99,3 +98,13 @@
                 </exclusions>
     </dependency>
 * 结构模版
+* 常见错误
+** Maven error “Failure to transfer…”
+   1. 删除所有未下载成功的文件
+   linux:
+   find ~/.m2  -name "*.lastUpdated" -exec grep -q "Could not transfer" {} \; -print -exec rm {} \;
+   windows:
+   cd %userprofile%\.m2\repository
+   for /r %i in (*.lastUpdated) do del %i
+
+   2. Eclipse项目右键》Maven》Update Project》勾选Force Update of Snapshots/Release
