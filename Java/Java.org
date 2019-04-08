@@ -406,8 +406,9 @@ JAVA_HOME=$(/usr/libexec/java_home)
    python -c 'print hex([线程tid])'
    python>>hex([线程tid])
    3. 定位到相关堆栈的执行
-   jstack -F [进程pid] | grep -A 100 [线程tid]
-** Java相关调优
+   jstack -[fn:1]F [进程pid] | grep -A 100 [线程tid]
+** Java
+相关调优
 *** 高CPU占用
     Java应用CPU占用过高，除了确实是计算密集型应用外，通常原因是因为死循环，利用linux下的系统工具和jdk工具可以帮助查找问题
     1. 运行top命令,发现进程43945的java程序CPU达到200%
@@ -446,5 +447,6 @@ JAVA_HOME=$(/usr/libexec/java_home)
    grep -rl 'com.alibaba.da.common.exception.BizException' /home/admin/kpi/target/kpi.war/WEB-INF/lib
    2.
 
+* Footnotes
 
-
+[fn:1]DD

@@ -1,4 +1,8 @@
 * Settings
+* IDEA 默认配置文件存放位置
+  Windows 保存在 '%HOMEPATH%/.<product><version>/config' 例如'C:/Users/JohnS/.IntelliJIdea2018.1/config'
+  Unix/Linux 保存在 '~/.<product><version>/config' 例如 '~/.IntelliJIdea2018.1/config'
+  Mac 保存在 '~/Library/Preferences/<product><version>' 例如 '~/Library/Preferences/IntelliJIdea2018.1'
 *** File Encoding
   1. IDE Encoding > UTF-8
   2. Prject Encoding > UTF-8
@@ -74,3 +78,9 @@
    最新的Android可能已经解决了这个问题，但是更早的Android版本可能仍然存在此问题。
    因此，由于大量遗留机器的存在，这个问题是不能彻底解决的，一个临时的解决方案是：删掉没有实际使用的代码，或者使用ProGuard处理代码（可以减小代码体积）。
    一个不幸的推论是：随着一个软件功能的增加，代码的膨胀，APK包终将超出可以处理的范围，也许就是8M（指APK包里面的classes.dex）.
+* 注册
+** 进入ide主页面，help-register-license server
+　　http://intellij.mandroid.cn/
+　　http://idea.imsxm.com/
+　　http://idea.iteblog.com/key.php
+** 到网站 http://idea.lanyus.com/ 获取注册码。

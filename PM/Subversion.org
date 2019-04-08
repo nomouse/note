@@ -14,7 +14,13 @@
     1. global-ignore
     2. auto-prop
 * 基础使用
-** 分支相关
+** 命令
+*** 下载分支
+    svn checkout http://nomouse.com/repos/nomouse-java/trunk nomouse-java
+*** 更新分支
+    svn update
+*** 查看分支状态
+    svn status
 *** 创建分支
     svn copy http://nomouse.com/repos/nomouse-java/trunk http://nomouse.com/repos/nomouse-java/branches/20160524 -m '功能分支1'
 *** 切换分支
@@ -31,9 +37,3 @@
        svn mergeinfo http://nomouse.com/repos/nomouse-java/branches/20160524
 *** 主干合并到分支
     在分支上正在开发时，将主干变动及时合并到本地，避免冲突
-
-* 命令
-** svn switch
-   切换分支
-** svn merge
-   当前处理branch上面，将trunk的变更合并到当前主干
