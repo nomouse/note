@@ -8,6 +8,11 @@
   1. M+Insert   弹出快捷代码生成菜单
   2. C+h        全局搜索
   3. C+j        插入代码模板
+* 去除private field is never assigned
+  Preferences>Inspections>搜索unused declaration>entry points>Annotations>输入常用的注解，
+  比如Resource和Autowired
+* 去除public method is never used 
+  Preferences>Inspections>搜索unused declaration>Members to report>Methods调整为Protected、Class调整为Package-Privated
 * idea日志查看
   Mac: ~/Library/Logs/IntelliJIdea14
 * idea中查看Android源码

@@ -59,28 +59,28 @@ JAVA_HOME=$(/usr/libexec/java_home)
 *** toString
    默认该字符串由类名（对象是该类的一个实例）、at 标记符“@”和此对象哈希码的无符号十六进制表示组成。
 *** wait notify notifyAll
-  wait指在其他线程调用此对象的 notify() 方法或 notifyAll() 方法，或者超过指定的时间量前，导致当前线程等待。
-  notify 唤醒在此对象监视器上等待的单个线程。如果所有线程都在此对象上等待，则会选择唤醒其中一个线程。选择是任意性的，并在对实现做出决定时发生。线程通过调用其中一个wait方法，在对象的监视器上等待。
-  wait notify与sleep的区别,见Java同步
+    wait指在其他线程调用此对象的 notify() 方法或 notifyAll() 方法，或者超过指定的时间量前，导致当前线程等待。
+    notify 唤醒在此对象监视器上等待的单个线程。如果所有线程都在此对象上等待，则会选择唤醒其中一个线程。选择是任意性的，并在对实现做出决定时发生。线程通过调用其中一个wait方法，在对象的监视器上等待。
+    wait notify与sleep的区别,见Java同步
 ** Java反射
 ** JavaIO
 ** Java集合
 *** List
-   1. ArrayList原理
-       ArrayList的数据存放在一个Object数组中(transient Object[] elementData)。
-       ArrayList的size等于initialCapacity -1 时，会生成一个更大的数组来放置当前数据
+    1. ArrayList原理
+      ArrayList的数据存放在一个Object数组中(transient Object[] elementData)。
+      ArrayList的size等于initialCapacity -1 时，会生成一个更大的数组来放置当前数据
 *** Map
-   1. HashMap原理
+    1. HashMap原理
       HashMap的所有数据存放在一个Entry数组中(transient Entry<K,V>[] table)，其中Entry代表一个键值对，并存放指向另外一个Entry的引用，
       这样就构成一个链表，因此HashMap的数据结构是数组+链表。
       调用put方法时，先计算key的hash值，然后以此为下标将Entry放入table中，如果hash值相等，则放入对应的链表中。
       调用get方法时，先计算key的hash值，然后通过table下标取得Entry，并遍历链表返回value
-   2. HashMap的性能问题
+    2. HashMap的性能问题
       HashMap有两个可选参数，即initialCapacity(初始数组大小)和loaderFactor(负载因子)
       当HashMap的size大于initialCapacity * loaderFactor时，HashMap会进行rehash，即生成一个更大的table来存放当前Entry。
 *** Set
-   1. HashSet原理
-       HashSet内部通过一个HashMap的key来放置数据
+    1. HashSet原理
+      HashSet内部通过一个HashMap的key来放置数据
 ** Java范型
 *** 范型的优点
     编译时检查类型,避免强制类型传换带来的运行时错误
