@@ -82,9 +82,13 @@
    -h 用M或者G为单位来显示
    --max-depth=1 查看文件夹最大深度
    -s 不显示子目录
+   -m 用M来作为单位展示
 
+   查询当前目录下所有子目录的大小总和
    du -h --max-depth=1 work/testing
    du -hs
+   查询当前目录下，所有application.log.log.2018-12-02开头文件的大小总和
+   du -h application.log.log.2018-12-02* | awk '{sum += $1}; END{print sum}'
 ** fdisk 硬盘分区
 *** 硬盘常识
     IDE硬盘在LINUX中的设备名一般为/dev/hda,/dev/hdb,/dev/hdc...
@@ -145,6 +149,8 @@
 ** grep 文本检索
    递归查找/opt/jboss目录下所有文件中包含JBoss字符串的行
    grep -r JBoss /opt/jboss
+
+
 ** ls 显示当前目录下文件夹
 *** 用法
    -h 文件大小可读
@@ -192,6 +198,9 @@
    例子：
    cat /etc/profile 输出整个文件，无法翻页
    cat tail catalina.out 查看当前日志输出，会不停的刷新
+
+   查询某个文件下某个字符串出现的次数
+   cat application.log.log.2018-12-02.172 |grep "c.a.l.s.h.p.p.QuotaPurchaseJobProcessor" |wc -l
 ** head 显示一个文件的前几行
 ** tail 显示一个文件的后几行
    命令：tail [OPTION]... [FILE]...

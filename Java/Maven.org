@@ -58,6 +58,8 @@
     mvn dependency:tree
     2.为当前所在模块及所有子模块生成详细的依赖图（包括被仲裁掉的）
     mvn dependency:tree -Dverbose
+    3.将所有冲突中包含asm的jar包信息输出到1.txt
+    mvn dependency:tree -Dverbose -Dincludes=asm:asm > 1.txt
 *** mvn dependency:resolve
     显示已解决的依赖
 ** mvn clean
@@ -68,6 +70,7 @@
    打开错误日志
    mvn -U
 ** mvn package
+   if
 * 插件相关命令
 * pom配置
 ** 基本
