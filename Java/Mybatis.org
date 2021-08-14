@@ -1,10 +1,17 @@
+* 注意点
+** Mybatis中#和*的差别
+
+* 原理
+** Mybatis怎么实现接口调用
+** Mybatis插件机制
+** Mybatis-plus应用
+
 * 配置
-* 源码
 ** sql查看
    核心类:com.ibatis.sqlmap.engine.mapping.statement.MappedStatement
    方法: execute*
    核心类:com.ibatis.sqlmap.engine.executionSqlExecutor
-* ibatis mapper文件
+*** ibatis mapper文件
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
 <sqlMap namespace="portal.alarm_aim_focus">

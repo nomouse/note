@@ -34,6 +34,9 @@
    使用swagger与spring-mvc生成api文档
    1. https://github.com/swagger-api/swagger-ui 下载swwager ui
    2. https://github.com/martypitt/swagger-springmvc 集成spring-mvc
+** Spring循环依赖
+   三级缓存
+    
 ** 事务管理
 *** 数据库事务
     数据库事务(Database Transaction) ，是指作为单个逻辑工作单元执行的一系列操作，要么完全地执行，要么完全地不执行。 
@@ -111,3 +114,12 @@ ServiceA.methodA已经起了事务，这时调用ServiceB.methodB，ServiceB.met
 理解Nested的关键是savepoint。他与PROPAGATION_REQUIRES_NEW的区别是，PROPAGATION_REQUIRES_NEW另起一个事务，将会与他的父事务相互独立，
 而Nested的事务和他的父事务是相依的，他的提交是要等和他的父事务一块提交的。也就是说，如果父事务最后回滚，他也要回滚的。
 而Nested事务的好处是他有一个savepoint。
+
+* 精通
+** Spring的理解
+1. 团队开发范式
+2. 一种最佳实践
+3. 灵活面向扩展的架构风格
+
+** bean的生命周期
+

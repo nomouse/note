@@ -1,20 +1,2 @@
 * 概述
-   ZooKeeper是一个分布式的，开放源码的分布式应用程序协调服务，是Google的Chubby一个开源的实现，是Hadoop和Hbase的重要组件。
-   它是一个为分布式应用提供一致性服务的软件，提供的功能包括：配置维护、名字服务、分布式同步、组服务等。
-* 安装配置
-** 安装zookeeper服务器
-   1. 安装jdk环境,解压zookeeper包至任意目录
-   2. 将conf/zoo_example.cfg拷贝为配置文件conf/zoo.cfg
-   3. 修改conf/zoo.cfg,添加
-      server.37=192.168.100.37:2888:3888
-      server.38=192.168.100.38:2888:3888
-      server.31=192.168.100.31:2888:3888
-      其中server.1的1代表服务器编号,必须与手动建立在dataDir目录下建立的myid文件内容一致,2888代表leader信息交换端口,3888代表leader选举接口
-   4. bin/zkServer.sh start启动各台服务器
-   5. bin/zkCli.sh -server 127.0.0.1:2181测试连接服务器
-** 基础命令
-   bin/zkCli.sh -server 127.0.0.1:2181测试连接服务器
-*** help
-*** ls
-   ls / 列出zookeeper根目录
-*** delete
+
