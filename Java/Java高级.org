@@ -98,7 +98,7 @@ JAVA_HOME=$(/usr/libexec/java_home)
     序列化对象需要设置serialVersionUID，用于标识序列化对象版本，反序列化时会参照相应类中的这个值，如果不相等则抛出InvalidClassException
 ** 设计模式
    面向接口编程，而不是实现；优先使用组合，而不是继承
-*** 原则
+*** 原则SOLID
     1. 单一职责原则
        一个类应该只负责一个职责
     2. 里氏替换原则
