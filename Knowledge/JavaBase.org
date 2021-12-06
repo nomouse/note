@@ -1,31 +1,7 @@
-* 环境
-** JDK基本配置
-JAVA_TOOL_OPTIONS=-Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=US
-
-ANT_HOME
-M2_HOME
-GRADLE_HOME
-GRADLE_USER_HOME
-
-LEIN_HOME
-LEIN_JAR
-
-CATALINA_HOME
-ANDROID_HOME
-
-windows:
-.;%JAVA_HOME%\bin;%ANT_HOME%\bin;%M2_HOME%\bin;%GRADLE_HOME%\bin;%CATALINA_HOME%\bin;%ANDROID_HOME%\tools;%ANDROID_HOME%\platform-tools
-unix:
-export PATH=$JAVA_HOME\bin;$ANT_HOME\bin;$M2_HOME\bin;$GRADLE_HOME\bin;$CATALINA_HOME\bin;$ANDROID_HOME\tools;$ANDROID_HOME\platform-tools:$PATH
-mac:
-JAVA_HOME=$(/usr/libexec/java_home)
-
-** JVM常用配置
-   -server -Xms1024m -Xmx1024m -XX:PermSize=256m -XX:MaxNewSize=256m -XX:MaxPermSize=256m
-* 基础
 ** Java基本类型和包装类型
 *** Integer
 *** Long
+    基本类型使用==比较时，会使用缓存来对比，因此会出现超过范围不相等的情况，一般要使用equals
 
 ** String
 *** 原理
@@ -62,25 +38,6 @@ JAVA_HOME=$(/usr/libexec/java_home)
     wait指在其他线程调用此对象的 notify() 方法或 notifyAll() 方法，或者超过指定的时间量前，导致当前线程等待。
     notify 唤醒在此对象监视器上等待的单个线程。如果所有线程都在此对象上等待，则会选择唤醒其中一个线程。选择是任意性的，并在对实现做出决定时发生。线程通过调用其中一个wait方法，在对象的监视器上等待。
     wait notify与sleep的区别,见Java同步
-** Java反射
-** JavaIO
-** Java集合
-*** List
-    1. ArrayList原理
-      ArrayList的数据存放在一个Object数组中(transient Object[] elementData)。
-      ArrayList的size等于initialCapacity -1 时，会生成一个更大的数组来放置当前数据
-*** Map
-    1. HashMap原理
-      HashMap的所有数据存放在一个Entry数组中(transient Entry<K,V>[] table)，其中Entry代表一个键值对，并存放指向另外一个Entry的引用，
-      这样就构成一个链表，因此HashMap的数据结构是数组+链表。
-      调用put方法时，先计算key的hash值，然后以此为下标将Entry放入table中，如果hash值相等，则放入对应的链表中。
-      调用get方法时，先计算key的hash值，然后通过table下标取得Entry，并遍历链表返回value
-    2. HashMap的性能问题
-      HashMap有两个可选参数，即initialCapacity(初始数组大小)和loaderFactor(负载因子)
-      当HashMap的size大于initialCapacity * loaderFactor时，HashMap会进行rehash，即生成一个更大的table来存放当前Entry。
-*** Set
-    1. HashSet原理
-      HashSet内部通过一个HashMap的key来放置数据
 ** Java范型
 *** 范型的优点
     编译时检查类型,避免强制类型传换带来的运行时错误
@@ -91,89 +48,61 @@ JAVA_HOME=$(/usr/libexec/java_home)
     因此，Java范型做不到在运行时动态指定范型，只能通过类文件传递
 ** Java枚举
 ** Java注解
-* 中级
 ** Java RMI
 *** 对象序列化
     Serialization(序列化)是将一个Java对象转化为字节流的过程，通常通过实现Serializable接口来实现序列化
     序列化对象需要设置serialVersionUID，用于标识序列化对象版本，反序列化时会参照相应类中的这个值，如果不相等则抛出InvalidClassException
-** 设计模式
-   面向接口编程，而不是实现；优先使用组合，而不是继承
-*** 原则
-    1. 单一职责原则
-       一个类应该只负责一个职责
-    2. 里氏替换原则
-       继承时，子类可以扩展父类的功能，但不能改变父类原有的功能，即子类可以实现父类的抽象方法，但是不应该覆盖父类的非抽象方法
-    3. 依赖倒置原则
-       高层模块不应该依赖低层模块，二者都应该依赖其抽象；抽象不应该依赖细节；细节应该依赖抽象
-       Bridge
-    4. 接口隔离原则
-       客户端不应该依赖它不需要的接口；一个类对另一个类的依赖应该建立在最小的接口上
-       Adapter
-    5. 迪米特法则(最少知识原则)
-       一个对象应该对其他对象保持最少的了解。低耦合，高内聚
-       Visitor
-    6. 开闭原则
-       一个软件实体如类、模块和函数应该对扩展开放，对修改关闭。
-       Factory Method/Abstract Factory
-*** 设计模式表格
+** Java反射
+** JavaIO
 
-|      | 创建型           | 结构型        | 行为型                  |
-|------+------------------+---------------+-------------------------|
-| 类   | Factory Method   | Adapter(类)   | Interpreter           |
-|      |                  |               | Template Method         |
-|------+------------------+---------------+-------------------------|
-| 对象 | Abstract Factory | Adapter(对象) | Chain of Responsibility |
-|      | Builder          | Bridge        | Command                 |
-|      | Prototype        | Composite     | Iterator                |
-|      | Singleton        | Decorator     | Mediator                |
-|      |                  | Facade        | Memento                 |
-|      |                  | Flyweight     | Observer                |
-|      |                  | Proxy         | State                   |
-|      |                  |               | Strategy                |
-|      |                  |               | Visitor                 |
-*** 设计模式详细
-    1. (Factory Method)工厂方法模式
-       spring ioc
-       spring BeanFactory
-    2. (Abstract Factory)抽象工厂模式
-    3. (Prototype)原型模式
-       spring ioc
-    4. (Builder)构造器模式
-       android AlertDialog
-       gson GsonBuilder
-    5. (Singleton)单例模式
-       spring ioc容器级别提供了单例的效果
-    6. (Adapter)适配器模式
-       android ListView 
-       swing JTable
-    7. (Bridge)桥接模式
-    8. (Composite)组合模式
-       android View树
-       swing JComponet树
-    9. (Decorator)装饰器模式
-       jdk io库
-    10. (Facade)门面模式
-    11. (Flyweight)享元模式
-    12. (Proxy)代理模式
-       spring aop动态代理
-    13. (Interpreter)解释器模式
-    14. (Template Method)模板方法模式
-        jdbc Template
-    15. (Chain of Responsibility)责任链模式
-        java ee Filter
-    16. (Command)命令模式
-        springmvc DispacterServlet
-        struts
-    17. (Iterator)迭代器模式
-        Java集合
-    18. (Mediaotr)中介者模式
-    19. (Memento)备忘录模式
-    20. (Observer)观察者模式
-        spring ContextLoaderListener
-    21. (State)状态机模式
-    22. (Strategy)策略模式
-        hibernate Dialect
-    23. (Visitor)访问者模式
+
+** Java集合
+*** 数据结构
+    1.红黑树和二叉树对比，为什么使用红黑树
+       AVL平衡二叉树：所有节点的左右子树高度差不超过1。
+       红黑树：通过对任何一条从根到叶子的路径上各个节点着色的方式的限制，红黑树确保没有一条路径会比其它路径长出两倍。
+       AVL对于平衡的要求更严格，高度上一般低于红黑树
+       AVL树适合用于插入与删除次数比较少，但查找多的情况；
+       相对于要求严格的AVL树来说，红黑树的旋转次数少，所以对于搜索、插入、删除操作较多的情况下，我们就用红黑树。
+*** List
+    1. ArrayList原理
+      ArrayList的数据存放在一个Object数组中(transient Object[] elementData)。
+      ArrayList的size等于initialCapacity -1 时，会生成一个更大的数组来放置当前数据
+    2. LinkedList原理
+       底层采用双向队列实现
+
+*** Map
+    1. HashMap原理
+      HashMap的所有数据存放在一个Entry数组中(transient Entry<K,V>[] table)，其中Entry代表一个键值对，并存放指向另外一个Entry的引用，
+      这样就构成一个链表，因此HashMap的数据结构是数组+链表，JDK1.8后变成数组+红黑树。
+      调用put方法时，先计算key的hash值，然后以此为下标将Entry放入table中，如果hash值相等，则放入对应的链表中。
+      调用get方法时，先计算key的hash值，然后通过table下标取得Entry，并遍历链表返回value
+    2. HashMap的性能问题
+       HashMap有两个可选参数，即initialCapacity(初始数组大小)和loaderFactor(负载因子)
+       当HashMap的size大于initialCapacity * loaderFactor时，HashMap会进行rehash，即生成一个更大的table来存放当前Entry。
+    3. TreeMap原理
+       TreeMap是一个有序的key-value集合，是非线程安全的，基于红黑树(Red-Black tree)实现。
+       其映射根据键的自然顺序进行排序，或者根据创建映射时提供的Comparator进行排序，具体取决于使用的构造方法。
+
+*** Set
+    1. HashSet哈希集合
+       HashSet内部通过一个HashMap的key来放置数据
+    2. LinkedHashSet顺序哈希集合
+       LinkedHashSet是一个哈希表和链表的结合，且是一个双向链表
+       利用这个特性可以用来实现LRU缓存
+    3. TreeSet排序哈希集合
+        原理见TreeMap
+*** Queue
+    1. Deque双端队列
+    2. PriorityQueue优先级队列
+        底层采用二叉堆实现，在初始化时可以设定升序和降序以及比较器，
+
+*** Stack
+    1. Stack
+       java栈，offer,pop,peek
+
+
+
 ** Java多线程
 *** 线程和进程的区别
    1. 在引入线程的操作系统中，通常都是把进程作为分配资源的基本单位，而把线程作为独立运行和独立调度的基本单位。
@@ -186,6 +115,30 @@ JAVA_HOME=$(/usr/libexec/java_home)
     2. Runnable
     3. sleep
        sleep是Thread的静态方法，通常使用Thread.currentThread.sleep()来使用，作用是让线程休眠制定的时间，在时间到达时恢复，也就是说sleep将在接到时间到达事件事恢复线程执行，也可以强行调用具体线程实例的interrupted方法强行中断
+*** 线程生命周期
+    New->Runnable->Blocked/Waiting/Timed Waiting->Terminal
+*** ThreadPoolExecutor构造方法核心参数
+    corePoolSize：核心线程数，也就是线程池期望池化的最大线程数
+    maximumPoolSize：最大线程数，也就是允许线程池临时超载后达到的最大线程数，虽然期望将并发状态保持在一定范围，但是在任务过多的情况下，增加非核心线程来临时处理任务。非核心线程数 = maximumPoolSize - corePoolSize
+    workQueue：阻塞队列，存储实现Runnable接口的线程任务
+    keepAliveTime：在没有任务时线程的存活时间
+    threadFactory：线程工厂，用来创建新线程
+    handler：当任务已满，并且无法再增加线程数时，或拒绝添加任务时，所执行的策略
+*** 线程池的核心步骤
+    1.提交一个任务，线程池里存活的核心线程数小于线程数corePoolSize时，线程池会创建一个核心线程去处理提交的任务。
+    2.如果线程池核心线程数已满，即线程数已经等于corePoolSize，一个新提交的任务，会被放进任务队列workQueue排队等待执行。
+    3.当线程池里面存活的线程数已经等于corePoolSize了，并且任务队列workQueue已满，再判断线程数是否达到maximumPoolSize，即最大线程数是否已满，如果没到达，创建一个非核心线程执行提交的任务。
+    4.如果当前的线程数达到了maximumPoolSize，还有新的任务过来的话，直接采用拒绝策略处理。
+*** ThreadLocal
+
+** Java并发
+*** 并发的三个问题
+   1. 原子性
+      原子性：即一个操作或者多个操作 要么全部执行并且执行的过程不会被任何因素打断，要么就都不执行。
+   2. 可见性
+      可见性是指当多个线程访问同一个变量时，一个线程修改了这个变量的值，其他线程能够立即看得到修改的值。
+   3. 有序性
+      有序性：即程序执行的顺序按照代码的先后顺序执行。
 *** 如何实现多线程同步
     1. synchronized
        两种使用方式，同步方法和同步块。
@@ -193,8 +146,48 @@ JAVA_HOME=$(/usr/libexec/java_home)
     3. wait nofify
        wait是Object的方法，也就是说可以对任意一个对象调用wait方法，调用wait方法将会将调用者的线程挂起，直到其他线程调用同一个对象的notify方法才会重新激活调用者，需要配合同步块或方法实现
        在使用wait和nofity之前都必须首先获得相关的锁，而wait()被调用后，会释放之前进行同步块所获取到的锁。
-*** ThreadLocal
-*** ReentrantLock
+*** volitile
+    volatile来保证并发对象的有序性和可见性。
+    可见性问题的根源是因为CPU高速缓存和主存的数据不一致，通过MESI协议(CPU缓存一致性协议)保证
+    volatile变量修饰后，在总线上注册MESI协议，开启CPU总线嗅探机制，一个高速缓存修改后就失效所有其他高速缓存内的值
+    有序性是通过内存屏障禁止java编译器和CPU指令重排，Load Barrier，Store Barrier，被volatile修饰的变量在写时前面插入
+    StoreStore写后插入StoreLoad，读前插入LoadLoad,读后插入LoadStore。
+
+*** synchronized原理
+    synchronized是java关键字，是jvm层面提供的一种锁，
+    特性：可重入、非公平
+    字节码层面通过monitorentry和monitorexit来完成
+
+*** synchronized锁升级过程
+    锁主要存在四种状态，依次是:无锁状态、偏向锁状态、轻量级锁状态、重量级锁状态，他们会随着竞争的激烈而逐渐升级。
+    无锁：
+        偏向的线程ID是0，偏向一个Anonymous BiasedLock
+        如果有线程去抢占锁，那么这个时候线程会先去抢占偏向锁
+    偏向锁：
+        也就是把markword的线程ID改为当前抢占锁的线程ID的过程
+        如果有线程竞争，这个时候会撤销偏向锁，升级到轻量级锁
+    轻量级锁：
+        线程在自己的线程栈帧中会创建一个 LockRecord，用CAS操作把markword设置为指向自己这个线程的LR的指针，设置成功后表示抢占到锁。
+        如果竞争加剧，比如有线程超过10次自旋(-XX:PreBlockSpin参数配置)，在1.6之后，或者自旋线程数超过 CPU核心数的一般，加入了自适应自旋Adapative Self Spinning.JVM会根据上次竞争 的情况来自动控制自旋的时间，
+    重量级锁：
+        升级到重量级锁，向操作系统申请资源， Linux Mutex，然后线程被挂起进入到等待队列。
+
+*** ReentrantLock原理
+    ReentrantLock是java juc包中提供的代码层面的锁
+    特性：可重入、支持公平和非公平、支持条件
+*** AQS原理
+*** synchronized和ReentrantLock区别
+
+** Java并发应用
+*** CountDownLatch
+    计数器，一个任务等待其他4个任务结束后再执行
+    await() countDown()
+*** CyclicBarrier
+    字面意思回环栅栏，通过它可以实现让一组线程等待至某个状态之后再全部同时执行。
+    await()
+*** Semaphore
+    Semaphore翻译成字面意思为信号量，Semaphore可以控同时访问的线程个数，
+    通过 acquire()获取一个许可，如果没有就等待，而release() 释放一个许可。
 *** ConcurrentHashMap
     原理，区别于HashTable的Entry数组(Entry<K,V>[] table)，ConcurrentHashMap的数据存放在Segment数组中(Segment<K,V>[] segments)
     其中每个segment包含一个HashEntry数组(HashEntry<K,V>[] table)，也就是说ConcurrentHashMap是由多个小hashmap构成的。
@@ -203,121 +196,16 @@ JAVA_HOME=$(/usr/libexec/java_home)
     原理，更新时先lock一个重入锁ReentrantLock，然后将原有数组复制一份新的数组上进行更新，再将引用指向新的数组,然后unlock
     在更新过程中如果有线程进行读操作，先查看锁状态，如果是lock则是再原有列表上操作的，不会出现数据不一致
     因此，使用时要避免频繁更新
-*** 并发的三个问题
-   1. 原子性
-      原子性：即一个操作或者多个操作 要么全部执行并且执行的过程不会被任何因素打断，要么就都不执行。
-   2. 可见性
-      可见性是指当多个线程访问同一个变量时，一个线程修改了这个变量的值，其他线程能够立即看得到修改的值。
-   3. 有序性
-      有序性：即程序执行的顺序按照代码的先后顺序执行。
-*** volitile
-    用volatile修饰的变量，线程在每次使用变量的时候，都会读取变量修改后的最新值
-** JavaNIO
-    JavaNIO实际上是Java New IO，来区别于以前的Java IO，一般也称之为Java非阻塞式IO
-*** 阻塞式IO
-    传统的Java IO是阻塞式的，即InputStream.read()方法时是阻塞的，当前线程处于等待状态，直到数据到来或超时才继续执行。
+*** ArrayBlockingQueue
+    底层采用ReentrantLock+Condition实现，
 
-    阻塞式IO的服务端并发模型是:
-    1. 服务端启动ServerSocket，执行到ServerSocket.accept()方法时处于阻塞状态，等待客户端连接
-    2. 客户端连接过来后，服务端都会启动一个线程去处理该客户端的请求，这个线程也是阻塞的
-
-    传统阻塞式IO的缺点:
-    1. 当客户端多时，会创建大量的处理线程。且每个线程都要占用栈空间和一些CPU时间
-    2. 阻塞可能带来频繁的上下文切换，且大部分上下文切换可能是无意义的
-*** 非阻塞式IO
-    JavaNIO提供了一种非阻塞的IO方式，
-
-    非阻塞式IO的服务端并发模型如下(被称为reactor模式):
-    1. 由一个专门的线程来处理所有的IO事件，并负责分发
-    2. 事件驱动机制:事件到的时候触发，而不是同步的去监视事件。
-    3. 线程通讯:线程之间通过wait,notify等方式通讯。保证每次上下文切换都是有意义的。减少无谓的线程切换。
-*** 比较
-    1. 面向流与面向缓冲
-       Java NIO和IO之间第一个最大的区别是，IO是面向流的，NIO是面向缓冲区的。 Java IO面向流意味着每次从流中读一个或多个字节，直至读取所有字节，它们没有被缓存在任何地方。此外，它不能前后移动流中的数据。如果需要前后移动从流中读取的数据，需要先将它缓存到一个缓冲区。 Java NIO的缓冲导向方法略有不同。数据读取到一个它稍后处理的缓冲区，需要时可在缓冲区中前后移动。这就增加了处理过程中的灵活性。但是，还需要检查是否该缓冲区中包含所有您需要处理的数据。而且，需确保当更多的数据读入缓冲区时，不要覆盖缓冲区里尚未处理的数据。
-    2. 阻塞与非阻塞IO
-       Java IO的各种流是阻塞的。这意味着，当一个线程调用read()或write()时，该线程被阻塞，直到有一些数据被读取，或数据完全写入。该线程在此期间不能再干任何事情了。 Java NIO的非阻塞模式，使一个线程从某通道发送请求读取数据，但是它仅能得到目前可用的数据，如果目前没有数据可用时，就什么都不会获取。而不是保持线程阻塞，所以直至数据变的可以读取之前，该线程可以继续做其他的事情。 非阻塞写也是如此。一个线程请求写入一些数据到某通道，但不需要等待它完全写入，这个线程同时可以去做别的事情。 线程通常将非阻塞IO的空闲时间用于在其它通道上执行IO操作，所以一个单独的线程现在可以管理多个输入和输出通道（channel）。
-    3. 选择器(Selectors)
-       Java NIO的选择器允许一个单独的线程来监视多个输入通道，你可以注册多个通道使用一个选择器，然后使用一个单独的线程来“选择”通道：这些通道里已经有可以处理的输入，或者选择已准备写入的通道。这种选择机制，使得一个单独的线程很容易来管理多个通道。
-** JDK
-*** PATH
-*** JAVA_HOME
-*** JAVA_TOOL_OPTIONS 
-      在所有JDK命令前添加一些系统变量，比如:JAVA_TOOL_OPTIONS=-Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=US
-*** CLASS_PATH
-*** -D系统变量
-    file.encoding=UTF-8
-    sun.jnu.encoding=UTF-8
-    jdbc.drivers=com.mysql.jdbc.Driver:org.postgresql.Driver:org.apache.derby.jdbc.EmbeddedDriver
-    java.ext.dirs=E:\workspace_indigo\tigase-server\jars
-    java.home=D:/Java
-    sun.boot.library.path=C:\Program Files\Java\jre1.5.0_08\bin 
-    java.vm.version=1.5.0_08-b03 
-    java.vm.vendor=Sun Microsystems Inc. 
-    java.vendor.url=http://java.sun.com/ 
-    path.separator=; 
-    java.vm.name=Java HotSpot(TM) Client VM 
-    file.encoding.pkg=sun.io 
-    user.country=CN 
-    sun.os.patch.level=Service Pack 2 
-    java.vm.specification.name=Java Virtual Machine Specification 
-    user.dir=D:\wapSearchLogService 
-    java.runtime.version=1.5.0_08-b03 
-    java.awt.graphicsenv=sun.awt.Win32GraphicsEnvironment 
-    java.endorsed.dirs=C:\Program Files\Java\jre1.5.0_08\lib... 
-    os.arch=x86 
-    java.io.tmpdir=C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\ 
-    line.separator= 
-    java.vm.specification.vendor=Sun Microsystems Inc. 
-    user.variant= 
-    os.name=Windows XP 
-    sun.jnu.encoding=GBK 
-    java.library.path=C:\Program Files\Java\jre1.5.0_08\bin... 
-    java.specification.name=Java Platform API Specification 
-    java.class.version=49.0 
-    sun.management.compiler=HotSpot Client Compiler 
-    os.version=5.1 
-    user.home=C:\Documents and Settings\Administrator 
-    user.timezone=Asia/Shanghai 
-    java.awt.printerjob=sun.awt.windows.WPrinterJob 
-    file.encoding=GBK 
-    java.specification.version=1.5 
-    user.name=Administrator 
-    java.class.path=D:\wapSearchLogService\bin;D:\wapSear... 
-    java.vm.specification.version=1.0 
-    sun.arch.data.model=32 
-    java.home=C:\Program Files\Java\jre1.5.0_08 
-    java.specification.vendor=Sun Microsystems Inc. 
-    user.language=zh 
-    awt.toolkit=sun.awt.windows.WToolkit 
-    java.vm.info=mixed mode, sharing 
-    java.version=1.5.0_08 
-    java.ext.dirs=C:\Program Files\Java\jre1.5.0_08\lib... 
-    sun.boot.class.path=C:\Program Files\Java\jre1.5.0_08\lib... 
-    java.vendor=Sun Microsystems Inc. 
-    file.separator=\ 
-    java.vendor.url.bug=http://java.sun.com/cgi-bin/bugreport... 
-    sun.cpu.endian=little 
-    sun.io.unicode.encoding=UnicodeLittle 
-    sun.desktop=windows 
-    sun.cpu.isalist=amd64
-    
-*** java
-*** -server
-    -server
-    -Xms100M
-    -Xmx200M
-    -XX:PermSize=32m
-    -XX:MaxPermSize=256m
-    -XX:MaxDirectMemorySize=128m
-*** -jar
-*** javac 
 ** JVM
 *** JVM简述
     JVM是Java虚拟机的简称，它是Java语言的跨平台特性实现的关键。一般的高级语言如果要在不同的平台上运行，至少需要编译成不同的目标代码。而引入Java语言虚拟机后，Java语言在不同平台上运行时不需要重新编译。Java语言使用Java虚拟机屏蔽了与具体平台相关的信息，使得Java语言编译程序只需生成在Java虚拟机上运行的目标代码（字节码），就可以在多种平台上不加修改地运行。Java虚拟机在执行字节码时，把字节码解释成具体平台上的机器指令执行。这就是Java的能够“一次编译，到处运行”的原因。
 *** JVM生命周期
     JVM的唯一用途就是执行一个Java程序，当一个Java程序启动（main方法），一个JVM实例（在操作系统层面上是一个java进程）就诞生了；当程序关闭退出，这个虚拟机实例也就随之消亡。
 *** JVM内存结构
-    JVM运行时包含几块区域：方法区、堆、Java栈、PC寄存器和本地方法栈，其中方法区和堆是线程共享的，而Java栈和PC寄存器则是每个线程独有的。
+    JVM运行时包含几块区域：方法区(元空间)、堆、Java栈、PC寄存器和本地方法栈，其中方法区和堆是线程共享的，而Java栈和PC寄存器则是每个线程独有的。
 *** 堆和栈的区别
     1. 堆储存类的实例，栈储存基本类型、引用类型
     2. 堆是线程共享的，即堆的内容可以被多个线程访问；而栈是独享的，其他线程无法访问。
@@ -340,12 +228,7 @@ JAVA_HOME=$(/usr/libexec/java_home)
     3. 弱引用:弱引用与软引用类似，都是作为缓存来使用。但与软引用不同，弱引用在进行垃圾回收时，是一定会被回收掉的，因此其生命周期只存在于一个垃圾回收周期内。
     弱引用最常见的用处是在集合类中，尤其在哈希表中。哈希表的接口允许使用任何Java对象作为键来使用。当一个键值对被放入到哈希表中之后，哈希表对象本身就有了对这些键和值对象的引用。如果这种引用是强引用的话，那么只要哈希表对象本身还存活，其中所包含的键和值对象是不会被回收的。如果某个存活时间很长的哈希表中包含的键值对很多，最终就有可能消耗掉JVM中全部的内存
     4. 虚引用:虚引用get方法永远返回null，它的唯一作用是追踪对象何时被添加到回收队列中，需要和ReferenceQueue引用队列配合使用，虚引用会可以在其引用对象被回收之后自动添加到引用队列中，我们可以知道那些对象将要被回收。
-*** JVM垃圾回收算法
-    1. 引用计数
-    2. 标记-清除
-    3. 复制
-    4. 标记-整理
-    5. 分代收集
+
 *** Java类加载器
    1. 类加载器的作用
       ClassLoader用来加载Java字节码文件（.class）到Java虚拟机中运行，它使得Java类可以被动态加载到 Java 虚拟机中并执行。
@@ -370,6 +253,31 @@ JAVA_HOME=$(/usr/libexec/java_home)
       通过代理模式，对于 Java 核心库的类的加载工作由引导类加载器来统一完成，保证了 Java 应用所使用的都是同一个版本的 Java 核心库的类，是互相兼容的。
    4. 类加载器于Web容器
    5. OSGI
+*** JVM垃圾回收算法
+    1. 引用计数
+    2. 标记-清除
+    3. 复制
+    4. 标记-整理
+    5. 分代收集
+*** CMS过程
+    基于标记-清除算法，与PartNew配合使用，用于老年代。
+    目标：获取最短回收停顿时间为目标的收集器。
+    初始标记：这个过程十分快速，需要 「stop the world」，遍历所有的对象并且标记初始的gc root
+    并发标记：这个过程可以和用户线程一起并发完成，所以对于系统进程的影响较小，主要的工作为在系统线程运行的时候通过gc root对于对象进行根节点枚举的操作，标记对象是否存活，注意这里的标记也是较为迅速和简单的，因为下一步还需要重新标记
+    重新标记：需要 「stop the world」，这个阶段会继续完成上一个阶段的动作，对于上一个步骤标记的对象进行二次遍历，重新标记是否存活。
+    并发清理：和用户线程一起并发，负责将没有Gc root引用的垃圾对象进行回收。
+*** CMS缺点
+
+*** G1垃圾回收算法
+    基于标记整理算法，
+    目标：将STW停顿的时间(-XX:MaxGCPauseMillis 默认200ms)和分布变成可预期以及可配置的。
+    方案：堆不再分成连续的年轻代和老年代空间，而是划分为多个(通常是 2048个)可以存放对象的 (smaller heap regions)。每region都可能是 Eden区, Survivor区或者Old区
+    辅助结构：
+    过程：
+    1. 转移暂停，清理年轻代
+    2. 全局并发标记
+    3. 混合转移暂停
+*** 标记算法-三色标记法
 
 *** Java对象初始化
 * 高级
@@ -424,29 +332,33 @@ JAVA_HOME=$(/usr/libexec/java_home)
     1. 运行top命令,发现进程43945的java程序CPU达到200%
     2. 运行jmap -histo:live 43945，查看当前Java进程创建的活跃对象数目和占用内存大小
     3. 运行jmap -dump:live,format=b,file=dump.txt 43945导出内存占用情况
-* 招聘
-** Java技术经理要求
-   1. JAVA基础扎实：精通多线程编程，掌握常用的设计模式；熟悉JVM，包括内存模型、类加载机制以及性能优化；
-   2. 精通Web编程：精通spring mvc、mybatis、hibernate/JPA，深入理解其运行原理；
-   3. 有一定安全意识并了解常见的安全问题解决方案；
-   4. 熟悉常见的一些解决方案及其原理：单点登录、分布式缓存（memcached）、SOA、全文检索（lucene/solr）、消息中间件（MQ），负载均衡、连接池、nosql（mongodb/redis）、流计算等；
-   5. 有良好的软件工程知识和编码规范意识，精通web软件分层设计；
-   6. 精通关系型数据库设计及SQL，具备SQL调优能力，熟悉数据库高负载和高可用方案；
-   7. 熟悉Web服务器部署、配置及工作原理：Nginx，Tomcat，JBoss，Jetty等
-   8. 熟悉linux操作系统，熟练使用svn、git等版本控制工具，熟悉Bash编程
-   9. 5年以上开发经验；技术视野开阔，学习能力好，对业界新技术敏感，喜欢钻研，具有良好的学习能力并注重团队合作。
-   有以下经验者优先：
-   1. 有大型分布式、高并发、高负载、高可用性系统设计和稳定性经验
-   2. 大数据量业务处理的实践经验；
-   3. 高性能跨源查询中间件设计、开发经验；
-   4. 分布式系统中间件设计、开发经验；
-* 常见问题
-** 包冲突解决 java.lang.NoSuchMethodError
-   1.如果能拿到类名，就去线上war包lib目录下排查是否有重复的类
-   命令：
-   grep -rl 'com.alibaba.da.common.exception.BizException' /home/admin/kpi/target/kpi.war/WEB-INF/lib
-   2.
+*** 系统假死
 
-* Footnotes
 
-[fn:1]DD
+
+** JavaNIO
+    JavaNIO实际上是Java New IO，来区别于以前的Java IO，一般也称之为Java非阻塞式IO
+*** 阻塞式IO
+    传统的Java IO是阻塞式的，即InputStream.read()方法时是阻塞的，当前线程处于等待状态，直到数据到来或超时才继续执行。
+
+    阻塞式IO的服务端并发模型是:
+    1. 服务端启动ServerSocket，执行到ServerSocket.accept()方法时处于阻塞状态，等待客户端连接
+    2. 客户端连接过来后，服务端都会启动一个线程去处理该客户端的请求，这个线程也是阻塞的
+
+    传统阻塞式IO的缺点:
+    1. 当客户端多时，会创建大量的处理线程。且每个线程都要占用栈空间和一些CPU时间
+    2. 阻塞可能带来频繁的上下文切换，且大部分上下文切换可能是无意义的
+*** 非阻塞式IO
+    JavaNIO提供了一种非阻塞的IO方式，
+
+    非阻塞式IO的服务端并发模型如下(被称为reactor模式):
+    1. 由一个专门的线程来处理所有的IO事件，并负责分发
+    2. 事件驱动机制:事件到的时候触发，而不是同步的去监视事件。
+    3. 线程通讯:线程之间通过wait,notify等方式通讯。保证每次上下文切换都是有意义的。减少无谓的线程切换。
+*** 比较
+    1. 面向流与面向缓冲
+       Java NIO和IO之间第一个最大的区别是，IO是面向流的，NIO是面向缓冲区的。 Java IO面向流意味着每次从流中读一个或多个字节，直至读取所有字节，它们没有被缓存在任何地方。此外，它不能前后移动流中的数据。如果需要前后移动从流中读取的数据，需要先将它缓存到一个缓冲区。 Java NIO的缓冲导向方法略有不同。数据读取到一个它稍后处理的缓冲区，需要时可在缓冲区中前后移动。这就增加了处理过程中的灵活性。但是，还需要检查是否该缓冲区中包含所有您需要处理的数据。而且，需确保当更多的数据读入缓冲区时，不要覆盖缓冲区里尚未处理的数据。
+    2. 阻塞与非阻塞IO
+       Java IO的各种流是阻塞的。这意味着，当一个线程调用read()或write()时，该线程被阻塞，直到有一些数据被读取，或数据完全写入。该线程在此期间不能再干任何事情了。 Java NIO的非阻塞模式，使一个线程从某通道发送请求读取数据，但是它仅能得到目前可用的数据，如果目前没有数据可用时，就什么都不会获取。而不是保持线程阻塞，所以直至数据变的可以读取之前，该线程可以继续做其他的事情。 非阻塞写也是如此。一个线程请求写入一些数据到某通道，但不需要等待它完全写入，这个线程同时可以去做别的事情。 线程通常将非阻塞IO的空闲时间用于在其它通道上执行IO操作，所以一个单独的线程现在可以管理多个输入和输出通道（channel）。
+    3. 选择器(Selectors)
+       Java NIO的选择器允许一个单独的线程来监视多个输入通道，你可以注册多个通道使用一个选择器，然后使用一个单独的线程来“选择”通道：这些通道里已经有可以处理的输入，或者选择已准备写入的通道。这种选择机制，使得一个单独的线程很容易来管理多个通道。

@@ -1,0 +1,9 @@
+* 链路流程
+** 一次数据请求背后的调用
+手机>应用端>域名解析>vipserver>mtop>
+sentinel>服务端>mtee>tair/redis>HSF/MQ>TDDL/Mysql>
+精卫>TT/D2/Flink>ODPS>FBI/OneService
+
+1. 网络层
+2. 应用层
+3.

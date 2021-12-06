@@ -33,14 +33,22 @@
   cd oh-my-zsh
   sh tools/install.sh
   sudo ln -s /etc/profile /etc/zprofile
-* 安装jenv
-brew install jenv
-echo 'export PATH="$HOME/.jenv/bin:$PATH"' >> ~/.zshrc
-echo 'eval "$(jenv init -)"' >> ~/.zshrc
-jenv add /System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home
 
-jenv versions
-jenv global 1.8
+* jdk环境安装
+** 检查
+显示当前生效的jdk实例：
+/usr/libexec/java_home
+显示已安装的jdk实例：
+/usr/libexec/java_home -V
+
+** 配置
+修改~/.zshenv或者~/.zshrc
+*** 步骤
+nano ~/.zshenv
+vi ~/.zshenv
+export JAVA_HOME=$(/usr/libexec/java_home -v1.8)
+source ~/.zshenv
+
 * 命令行终端颜色
 export CLICOLOR=1
 export LSCOLORS=gxfxaxdxcxegedabagaca

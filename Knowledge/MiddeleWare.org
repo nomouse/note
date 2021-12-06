@@ -72,7 +72,7 @@ JAVA_HOME=$(/usr/libexec/java_home)
 *** Map
     1. HashMap原理
       HashMap的所有数据存放在一个Entry数组中(transient Entry<K,V>[] table)，其中Entry代表一个键值对，并存放指向另外一个Entry的引用，
-      这样就构成一个链表，因此HashMap的数据结构是数组+链表。
+      这样就构成一个链表，因此HashMap的数据结构是数组+链表，JDK1.8后变成数组+红黑树。
       调用put方法时，先计算key的hash值，然后以此为下标将Entry放入table中，如果hash值相等，则放入对应的链表中。
       调用get方法时，先计算key的hash值，然后通过table下标取得Entry，并遍历链表返回value
     2. HashMap的性能问题
@@ -99,22 +99,24 @@ JAVA_HOME=$(/usr/libexec/java_home)
 ** 设计模式
    面向接口编程，而不是实现；优先使用组合，而不是继承
 *** 原则SOLID
-    1. 单一职责原则
+    1. 单一职责原则S
        一个类应该只负责一个职责
-    2. 里氏替换原则
+    2. 开闭原则O
+           一个软件实体如类、模块和函数应该对扩展开放，对修改关闭。
+           Factory Method/Abstract Factory
+    3. 里氏替换原则L
        继承时，子类可以扩展父类的功能，但不能改变父类原有的功能，即子类可以实现父类的抽象方法，但是不应该覆盖父类的非抽象方法
-    3. 依赖倒置原则
-       高层模块不应该依赖低层模块，二者都应该依赖其抽象；抽象不应该依赖细节；细节应该依赖抽象
-       Bridge
-    4. 接口隔离原则
+    4. 接口隔离原则I
        客户端不应该依赖它不需要的接口；一个类对另一个类的依赖应该建立在最小的接口上
        Adapter
-    5. 迪米特法则(最少知识原则)
+    5. 依赖倒置原则D
+       高层模块不应该依赖低层模块，二者都应该依赖其抽象；抽象不应该依赖细节；细节应该依赖抽象
+       Bridge
+    其他
+    1. 迪米特法则(最少知识原则)
        一个对象应该对其他对象保持最少的了解。低耦合，高内聚
        Visitor
-    6. 开闭原则
-       一个软件实体如类、模块和函数应该对扩展开放，对修改关闭。
-       Factory Method/Abstract Factory
+
 *** 设计模式表格
 
 |      | 创建型           | 结构型        | 行为型                  |
@@ -133,29 +135,30 @@ JAVA_HOME=$(/usr/libexec/java_home)
 |      |                  |               | Visitor                 |
 *** 设计模式详细
     1. (Factory Method)工厂方法模式
-       spring ioc
-       spring BeanFactory
+        spring ioc
+        spring BeanFactory
     2. (Abstract Factory)抽象工厂模式
     3. (Prototype)原型模式
-       spring ioc
+        spring ioc
     4. (Builder)构造器模式
-       android AlertDialog
-       gson GsonBuilder
+        android AlertDialog
+        gson GsonBuilder
     5. (Singleton)单例模式
-       spring ioc容器级别提供了单例的效果
+        spring ioc容器级别提供了单例的效果
     6. (Adapter)适配器模式
-       android ListView 
-       swing JTable
+        android ListView
+        swing JTable
     7. (Bridge)桥接模式
     8. (Composite)组合模式
-       android View树
-       swing JComponet树
+        android View树
+        swing JComponet树
     9. (Decorator)装饰器模式
-       jdk io库
+        jdk io库
     10. (Facade)门面模式
+        Slf4j
     11. (Flyweight)享元模式
     12. (Proxy)代理模式
-       spring aop动态代理
+        spring aop动态代理
     13. (Interpreter)解释器模式
     14. (Template Method)模板方法模式
         jdbc Template
@@ -174,6 +177,8 @@ JAVA_HOME=$(/usr/libexec/java_home)
     22. (Strategy)策略模式
         hibernate Dialect
     23. (Visitor)访问者模式
+        订单优惠计算
+        营销活动设置
 ** Java多线程
 *** 线程和进程的区别
    1. 在引入线程的操作系统中，通常都是把进程作为分配资源的基本单位，而把线程作为独立运行和独立调度的基本单位。
