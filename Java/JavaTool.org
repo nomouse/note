@@ -1,0 +1,10 @@
+* Spring
+* CommonUtils/Guava
+* Mybatis
+* BeanCopy
+* Validator
+* JSON
+* Log
+* lombok
+* JUnit
+
