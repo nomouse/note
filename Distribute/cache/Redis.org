@@ -32,3 +32,57 @@
 最终业务采用了一主几十从的架构去做链式的广播消息推送，这个架构特别复杂且运维难度很高。如果 Redis 能支持1对几十甚至几百的广播能力就不用这么多从节点了。
 
 
+
+
+* 安装
+* 配置
+** 主从配置
+   主redis 192.168.100.38:6379
+   从redis 192.168.100.37:6379
+   1. 修改从主机的配置文件/usr/local/redis/etc/redis.conf
+      slave of 192.168.100.37 6379
+* 数据结构
+   1. string字符串
+   2. list链表
+   3. hash哈希表
+   4. set集合
+   5. sorted set有序集合
+
+* 基本命令
+** key相关
+*** del
+*** exists
+*** keys
+*** expire
+** string
+*** get
+*** set
+*** setex
+*** setnx
+*** mset
+*** incr
+*** incrby
+** list
+*** lpush
+*** lpop
+*** lrange
+** hash
+*** hset
+*** hget
+*** hgetall
+*** hmget
+*** hmset
+** set
+*** sadd
+*** sdiff
+** sorted set
+** 事务
+   multi 开始事务
+   ...
+   exec 提交事务开始执行
+   需要注意的是redis事务执行失败的情况下，需要开发人员自行处理
+* 高级
+** redis持久化方式
+1. 快照方式,这种方式是就是将内存中数据以快照的方式写入到二进制文件中,默认的文件名为dump.rdb。可以通过配置设置自动做快照持久 化的方式。我们可以配置redis在n秒内如果超过m个key被修改就自动做快照。
+2. AOF(Append-only file),aof 比快照方式有更好的持久化性，是由于在使用aof持久化方式时,redis会将每一个收到的写命令都通过write函数追加到文件中(默认是 appendonly.aof)。
+   当redis重启时会通过重新执行文件中保存的写命令来在内存中重建整个数据库的内容。当然由于os会在内核中缓存write做的修改，所以可能不是立即写到磁盘上。这样aof方式的持久化也还是有可能会丢失部分修改。
