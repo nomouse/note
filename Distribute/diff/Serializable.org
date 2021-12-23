@@ -1,0 +1,28 @@
+* 概述
+Serializable 序列化，将文本转化成二进制文件在网络中传输的过程叫做序列化，将二进制文件转回文本的过程叫做反序列化。
+
+* 关键问题
+
+* 方案
+
+** Java原生
+
+** Json
+
+** Hessian
+
+** Protobuf
+
+** Kryo
+
+** Thrift
+
+* 结论
+
+
+Protobuf 腾讯，
+
+Thrift 美团，小米
+
+Hessian 阿里
+
