@@ -1,0 +1,98 @@
+
+
+
+** Java多线程
+*** 线程和进程的区别
+   1. 在引入线程的操作系统中，通常都是把进程作为分配资源的基本单位，而把线程作为独立运行和独立调度的基本单位。
+   2. 进程在执行过程中拥有独立的内存单元，而多个线程共享内存，从而极大地提高了程序的运行效率
+   3. 进程和线程的主要差别在于它们是不同的操作系统资源管理方式，进程有独立的地址空间，一个进程崩溃后，在保护模式下不会对其它进程产生影响，而线程只是一个进程中的不同执行路径。
+    线程有自己的堆栈和局部变量，但线程之间没有单独的地址空间，一个线程死掉就等于整个进程死掉，所以多进程的程序要比多线程的程序健壮，但在进程切换时，耗费资源较大，效率要差一些。
+    但对于一些要求同时进行并且又要共享某些变量的并发操作，只能用线程，不能用进程。
+*** 如何实现线程
+    1. Thread
+    2. Runnable
+    3. Sleep
+       sleep是Thread的静态方法，通常使用Thread.currentThread.sleep()来使用，作用是让线程休眠制定的时间，在时间到达时恢复，也就是说sleep将在接到时间到达事件事恢复线程执行，也可以强行调用具体线程实例的interrupted方法强行中断
+*** 线程生命周期
+    New->Runnable->Blocked/Waiting/Timed Waiting->Terminal
+*** ThreadPoolExecutor构造方法核心参数
+    corePoolSize：核心线程数，也就是线程池期望池化的最大线程数
+    maximumPoolSize：最大线程数，也就是允许线程池临时超载后达到的最大线程数，虽然期望将并发状态保持在一定范围，但是在任务过多的情况下，增加非核心线程来临时处理任务。非核心线程数 = maximumPoolSize - corePoolSize
+    workQueue：阻塞队列，存储实现Runnable接口的线程任务
+    keepAliveTime：在没有任务时线程的存活时间
+    threadFactory：线程工厂，用来创建新线程
+    handler：当任务已满，并且无法再增加线程数时，或拒绝添加任务时，所执行的策略
+*** 线程池的核心步骤
+    1.提交一个任务，线程池里存活的核心线程数小于线程数corePoolSize时，线程池会创建一个核心线程去处理提交的任务。
+    2.如果线程池核心线程数已满，即线程数已经等于corePoolSize，一个新提交的任务，会被放进任务队列workQueue排队等待执行。
+    3.当线程池里面存活的线程数已经等于corePoolSize了，并且任务队列workQueue已满，再判断线程数是否达到maximumPoolSize，即最大线程数是否已满，如果没到达，创建一个非核心线程执行提交的任务。
+    4.如果当前的线程数达到了maximumPoolSize，还有新的任务过来的话，直接采用拒绝策略处理。
+*** ThreadLocal
+
+** Java并发
+*** 并发的三个问题
+   1. 原子性
+      原子性：即一个操作或者多个操作 要么全部执行并且执行的过程不会被任何因素打断，要么就都不执行。
+   2. 可见性
+      可见性是指当多个线程访问同一个变量时，一个线程修改了这个变量的值，其他线程能够立即看得到修改的值。
+   3. 有序性
+      有序性：即程序执行的顺序按照代码的先后顺序执行。
+*** 如何实现多线程同步
+    1. synchronized
+       两种使用方式，同步方法和同步块。
+    2. lock
+    3. wait nofify
+       wait是Object的方法，也就是说可以对任意一个对象调用wait方法，调用wait方法将会将调用者的线程挂起，直到其他线程调用同一个对象的notify方法才会重新激活调用者，需要配合同步块或方法实现
+       在使用wait和nofity之前都必须首先获得相关的锁，而wait()被调用后，会释放之前进行同步块所获取到的锁。
+*** volitile
+    volatile来保证并发对象的有序性和可见性。
+    可见性问题的根源是因为CPU高速缓存和主存的数据不一致，通过MESI协议(CPU缓存一致性协议)保证
+    volatile变量修饰后，在总线上注册MESI协议，开启CPU总线嗅探机制，一个高速缓存修改后就失效所有其他高速缓存内的值
+    有序性是通过内存屏障禁止java编译器和CPU指令重排，Load Barrier，Store Barrier，被volatile修饰的变量在写时前面插入
+    StoreStore写后插入StoreLoad，读前插入LoadLoad,读后插入LoadStore。
+
+*** synchronized原理
+    synchronized是java关键字，是jvm层面提供的一种锁，
+    特性：可重入、非公平
+    字节码层面通过monitorentry和monitorexit来完成
+
+*** synchronized锁升级过程
+    锁主要存在四种状态，依次是:无锁状态、偏向锁状态、轻量级锁状态、重量级锁状态，他们会随着竞争的激烈而逐渐升级。
+    无锁：
+        偏向的线程ID是0，偏向一个Anonymous BiasedLock
+        如果有线程去抢占锁，那么这个时候线程会先去抢占偏向锁
+    偏向锁：
+        也就是把markword的线程ID改为当前抢占锁的线程ID的过程
+        如果有线程竞争，这个时候会撤销偏向锁，升级到轻量级锁
+    轻量级锁：
+        线程在自己的线程栈帧中会创建一个 LockRecord，用CAS操作把markword设置为指向自己这个线程的LR的指针，设置成功后表示抢占到锁。
+        如果竞争加剧，比如有线程超过10次自旋(-XX:PreBlockSpin参数配置)，在1.6之后，或者自旋线程数超过 CPU核心数的一般，加入了自适应自旋Adapative Self Spinning.JVM会根据上次竞争 的情况来自动控制自旋的时间，
+    重量级锁：
+        升级到重量级锁，向操作系统申请资源， Linux Mutex，然后线程被挂起进入到等待队列。
+
+*** ReentrantLock原理
+    ReentrantLock是java juc包中提供的代码层面的锁
+    特性：可重入、支持公平和非公平、支持条件
+*** AQS原理
+*** synchronized和ReentrantLock区别
+
+** Java并发应用
+*** CountDownLatch
+    计数器，一个任务等待其他4个任务结束后再执行
+    await() countDown()
+*** CyclicBarrier
+    字面意思回环栅栏，通过它可以实现让一组线程等待至某个状态之后再全部同时执行。
+    await()
+*** Semaphore
+    Semaphore翻译成字面意思为信号量，Semaphore可以控同时访问的线程个数，
+    通过 acquire()获取一个许可，如果没有就等待，而release() 释放一个许可。
+*** ConcurrentHashMap
+    原理，区别于HashTable的Entry数组(Entry<K,V>[] table)，ConcurrentHashMap的数据存放在Segment数组中(Segment<K,V>[] segments)
+    其中每个segment包含一个HashEntry数组(HashEntry<K,V>[] table)，也就是说ConcurrentHashMap是由多个小hashmap构成的。
+    这样的优点是访问数据时，不需要对整个对象进行加锁，只需要对相应的segament加锁，这样就提高的效率
+*** CopyOnWriteArrayList
+    原理，更新时先lock一个重入锁ReentrantLock，然后将原有数组复制一份新的数组上进行更新，再将引用指向新的数组,然后unlock
+    在更新过程中如果有线程进行读操作，先查看锁状态，如果是lock则是再原有列表上操作的，不会出现数据不一致
+    因此，使用时要避免频繁更新
+*** ArrayBlockingQueue
+    底层采用ReentrantLock+Condition实现，
