@@ -1,0 +1,143 @@
+* 多班排名
+假设某中学高三年级有多位同学，分成多个班，我们有统一记录学生成绩的表（demo.student)和班级信息表（demo.class），具体信息如下所示：
+学生成绩表：demo.student
+id,stuname,points,classid
+班级信息表：demo.class
+id,classname
+
+要求：写一个SQL查询语句，查出每个班级前三名的同学。
+说明一下，针对上面的数据，正确的SQL查询应该得出下面的结果：
+
+classname,staname,points
+
+解析：
+
+从题目给出的查询结果看，不需要考虑并列的情况。那么，现在要选出分数排名前三的同学，其实只要找出3个最好的分数以及对应的同学就可以了。
+这道题需要用到我们讲过的关联查询和子查询的知识。
+WHERE语句的筛选条件表达式中，也可以包括一个子查询的结果。
+第一步，我们假设有一个分数X，就是那个第N好的分数，算一下有多少个同学的成绩优于这个分数：
+
+SELECT COUNT(DISTINCT b.points)
+FROM demo.student AS b
+WHERE b.points > X;
+这个查询的结果小于3的话，就代表这个分数X是排名第三的分数了。
+
+第二步，查询出哪些同学满足成绩排名前三的这个档次：
+
+mysql> SELECT a.stdname,a.points
+    -> FROM demo.student AS a
+    -> WHERE 3 >                       -- 比这个成绩好的不超过3，说明这是第三好的成绩
+    -> (
+    ->   SELECT COUNT(DISTINCT b.points)   -- 统计一下有几个成绩
+    ->   FROM demo.student AS b
+    ->   WHERE b.points > a.points         -- 比这个成绩好
+    -> );
++---------+--------+
+| stdname | points |
++---------+--------+
+| 张三    |     85 |
+| 李四    |     80 |
+| 赵六    |     90 |
+| 周八    |     85 |
++---------+--------+
+4 rows in set (0.00 sec)
+第三步，与班级表关联，按班级统计前三名同学的成绩，并且获取班级信息：
+
+mysql> SELECT c.classname,a.stdname,a.points
+    -> FROM demo.student AS a
+    -> JOIN demo.class AS c
+    -> ON (a.classid = c.id)          -- 关联班级信息
+    -> WHERE 3 >
+    -> (
+    ->   SELECT COUNT(DISTINCT b.points)
+    ->   FROM demo.student AS b
+    ->   WHERE b.points > a.points
+    ->   AND b.classid = a.classid   -- 按班级分别查询
+    -> )
+    -> ORDER BY c.classname,a.points DESC;
++-----------+---------+--------+
+| classname | stdname | points |
++-----------+---------+--------+
+| 创新班    | 赵六    |     90 |
+| 创新班    | 张三    |     85 |
+| 创新班    | 周八    |     85 |
+| 创新班    | 郑九    |     70 |
+| 普通班    | 李四    |     80 |
+| 普通班    | 王五    |     65 |
++-----------+---------+--------+
+6 rows in set (0.00 sec)
+
+
+
+* 查找老师
+假设有这样一个教学表（demo.teach)，里面包含了人员编号（id）、姓名（fname）和对应的老师的人员编号（teacherid）。
+如果一个人是学生，那么他一定有对应的老师编号，通过这个编号，就可以找到老师的信息；如果一个人是老师，那么他对应的老师编号就是空。
+比如说，下表中李四的老师编号是101，我们就可以通过搜索人员编号，找到101的名称是张三，那么李四的老师就是张三；
+而张三自己就是老师，所以他对应的老师编号是空。
+
+要求：请写一个SQL语句，查询出至少有2名学生的老师姓名。
+说明一下，在刚刚的数据表中，张三有3名学生，分别是李四、王五和周八。赵六有一名学生，是孙七。因此，正确的SQL语句的查询结果应该是：
+
+
+
+解析：
+
+针对这道题，我们可以按照这样的思路去做：
+
+通过统计学生对应的老师编号，就可以获取至少有2个学生的老师的编号。
+通过关联查询和自连接获取需要的信息。所谓的自连接，就是数据表与自身进行连接。你可以认为是把数据表复制成一模一样的2个表，通过给数据表起不同的名字来区分它们，这样方便对表进行操作，然后就可以对这2个表进行连接操作了。
+通过使用条件语句WHERE和HAVING对数据进行筛选：先用WHERE筛选出所有的老师编号，再用HAVING筛选出有2个以上学生的老师编号。
+首先，我们来获取老师编号，如下：
+
+mysql> SELECT teacherid
+    -> FROM demo.teach
+    -> WHERE teacherid is not NULL     -- 用WHERE筛选出所有的老师编号
+    -> GROUP BY teacherid
+    -> HAVING COUNT(*)>=2;             -- 用HAVING筛选出有2个以上学生的老师编号
++-----------+
+| teacherid |
++-----------+
+|       101 |
++-----------+
+1 row in set (0.00 sec)
+接着，通过自连接，来获取老师的姓名：
+
+mysql> SELECT a.id,a.fname
+    -> FROM demo.teach AS a
+    -> JOIN
+    -> (
+    ->  SELECT teacherid
+    ->  FROM demo.teach
+    ->  WHERE teacherid IS NOT NULL
+    ->  GROUP BY teacherid
+    ->  HAVING COUNT(*)>=2
+    -> ) AS b
+    -> ON (a.id = b.teacherid);
++-----+-------+
+| id  | fname |
++-----+-------+
+| 101 | 张三  |
++-----+-------+
+1 row in set (0.00 sec)
+
+
+
+select tearcherid
+from
+(
+select teacherid,count(*) as stucount from demo.teach
+where teacherid is not null group by teacherid) a
+where a.stucount>1;
+
+
+
+
+
+
+
+
+
+
+
+
+

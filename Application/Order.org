@@ -3,4 +3,15 @@
 
 ** 中间件
 
-** 中间件
+
+** 经典方案
+
+*** 订单模型扩展
+主子订单
+订单扩展表
+订单标签表
+
+*** 订单状态机
+
+*** 订单超时关闭
+https://www.cnblogs.com/88223100/p/How-to-handle-order-overtime.html
