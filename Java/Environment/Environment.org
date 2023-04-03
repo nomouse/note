@@ -23,10 +23,10 @@ JAVA_HOME=$(/usr/libexec/java_home)
 ** JVM常用配置
    -server -Xms1024m -Xmx1024m -XX:PermSize=256m -XX:MaxNewSize=256m -XX:MaxPermSize=256m
 
-
-
 * JDK
-  jdk1.7
+  JDK下载地址
+  https://jdk.java.net/archive/
+  http://www.codebaoku.com/jdk/jdk-index.html
 * Eclipse
   3.6+ 推荐Luna，因为包含了git、maven、mylyn等插件
 ** svn插件subclipse
@@ -46,6 +46,8 @@ JAVA_HOME=$(/usr/libexec/java_home)
 ** properties文件编辑工具
    http://propedit.osdn.jp/index_en.html
    http://propedit.osdn.jp/eclipse/updates/
+* Idea
+
 * Subversion
   eclipse插件安装
   svn客户端安装 http://subversion.tigris.org/getting.html

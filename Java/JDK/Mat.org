@@ -1,0 +1,6 @@
+* 概述
+
+
+* 设置
+alias mat="/Applications/mat.app/Contents/MacOS/MemoryAnalyzer -vm $(/usr/libexec/java_home)/bin
+-vmargs -Xmx7g -XX:-UseGCOverheadlimit"
